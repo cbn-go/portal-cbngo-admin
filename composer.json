@@ -78,6 +78,9 @@
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         },
+        "platform": {
+            "php": "8.2.0"
+        },
         "policy": {
             "advisories": {
                 "ignore-id": [
