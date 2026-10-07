@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Enums\PublishStatus;
+use App\Enums\UserRole;
 use Database\Factories\ArticleFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -58,5 +60,26 @@ class Article extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
+     */
+    public function scopeForUser(Builder $query, User $user): Builder
+    {
+        if (! $user->is_active) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        if ($user->role->hasAdminPanelAccess()) {
+            return $query;
+        }
+
+        if ($user->role === UserRole::AUTHOR) {
+            return $query->where('user_id', $user->id);
+        }
+
+        return $query->whereRaw('1 = 0');
     }
 }

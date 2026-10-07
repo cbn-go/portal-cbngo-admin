@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Enums\PublishStatus;
+use App\Enums\UserRole;
 use Database\Factories\NewsFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -77,5 +79,26 @@ class News extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
+     */
+    public function scopeForUser(Builder $query, User $user): Builder
+    {
+        if (! $user->is_active) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        if ($user->role->hasAdminPanelAccess()) {
+            return $query;
+        }
+
+        if ($user->role === UserRole::CHURCH_REPRESENTATIVE && $user->church_id !== null) {
+            return $query->where('church_id', $user->church_id);
+        }
+
+        return $query->whereRaw('1 = 0');
     }
 }

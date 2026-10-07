@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\NoticePriority;
 use Database\Factories\NoticeFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -64,5 +65,22 @@ class Notice extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
+     */
+    public function scopeForUser(Builder $query, User $user): Builder
+    {
+        if (! $user->is_active) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        if ($user->role->hasAdminPanelAccess()) {
+            return $query;
+        }
+
+        return $query->whereRaw('1 = 0');
     }
 }
