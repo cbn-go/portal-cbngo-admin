@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 80" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cbnGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2C974"/>
+      <stop offset="50%" stop-color="#C5A059"/>
+      <stop offset="100%" stop-color="#9E782F"/>
+    </linearGradient>
+    <linearGradient id="cbnBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0B192C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Emblema / Símbolo -->
+  <g transform="translate(10, 8)">
+    <rect x="0" y="0" width="64" height="64" rx="14" fill="url(#cbnBlue)"/>
+    <circle cx="32" cy="32" r="24" fill="none" stroke="url(#cbnGold)" stroke-width="2.5"/>
+    <path d="M 32 16 L 32 48 M 20 28 L 44 28" stroke="url(#cbnGold)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 24 38 Q 32 46 40 38" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+  </g>
+
+  <!-- Tipografia Oficial -->
+  <text x="88" y="38" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="26" fill="#0B192C" letter-spacing="1">CBN<tspan fill="url(#cbnGold)">•GO</tspan></text>
+  <text x="88" y="58" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="11" fill="#4B5563" letter-spacing="1.5">CONVENÇÃO BATISTA NACIONAL DE GOIÁS</text>
+</svg>
