@@ -26,35 +26,36 @@ trait ConfiguresCbngoTheme
         return $panel
             ->login(Login::class)
             ->passwordReset()
-            ->brandLogo(fn () => asset('images/logo-cbngo.svg'))
-            ->darkModeBrandLogo(fn () => asset('images/logo-cbngo-dark.svg'))
-            ->brandLogoHeight('2.5rem')
+            // Logo oficial CBN | GO (kit CBN_ESTADUAIS). Paleta amostrada dos arquivos *-CORES.png: vermelho #E81828 + tinta #201820.
+            ->brandLogo(fn () => asset('images/logo-cbngo.png'))
+            ->darkModeBrandLogo(fn () => asset('images/logo-cbngo-dark.png'))
+            ->brandLogoHeight('2.75rem')
             ->colors([
                 'primary' => [
-                    50 => '#fbf8ed',
-                    100 => '#f5eed2',
-                    200 => '#ecdc9e',
-                    300 => '#e0c464',
-                    400 => '#d5aa37',
-                    500 => '#c5a059', // Dourado CBN-GO
-                    600 => '#a8803a',
-                    700 => '#86602e',
-                    800 => '#6d4c28',
-                    900 => '#5b3f23',
-                    950 => '#342111',
+                    50 => '#fdeced',
+                    100 => '#fbdadc',
+                    200 => '#f7b5ba',
+                    300 => '#f38b93',
+                    400 => '#ee5864',
+                    500 => '#e81828',
+                    600 => '#c51422',
+                    700 => '#a2101c',
+                    800 => '#7f0d16',
+                    900 => '#5c0910',
+                    950 => '#330508',
                 ],
                 'gray' => [
-                    50 => '#f0f4f8',
-                    100 => '#d9e2ec',
-                    200 => '#bcccdc',
-                    300 => '#9fb3c8',
-                    400 => '#627d98',
-                    500 => '#486581',
-                    600 => '#334e68',
-                    700 => '#243b53',
-                    800 => '#102a43',
-                    900 => '#0b192c', // Azul Noturno CBN-GO
-                    950 => '#060d17',
+                    50 => '#f6f5f6',
+                    100 => '#e8e7e8',
+                    200 => '#d2d0d2',
+                    300 => '#b0aeb0',
+                    400 => '#8f8b8f',
+                    500 => '#746f74',
+                    600 => '#5e585e',
+                    700 => '#484148',
+                    800 => '#362f36',
+                    900 => '#201820',
+                    950 => '#1b141b',
                 ],
             ])
             ->widgets([
