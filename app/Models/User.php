@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Enums\UserRole;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,7 +28,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -107,5 +110,37 @@ class User extends Authenticatable
     public function notices(): HasMany
     {
         return $this->hasMany(Notice::class);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if (! $this->is_active) {
+            return false;
+        }
+
+        return match ($panel->getId()) {
+            'admin' => $this->role->hasAdminPanelAccess(),
+            'portal' => $this->role->hasPortalPanelAccess(),
+            default => false,
+        };
+    }
+
+    public function getDefaultPanelUrl(): string
+    {
+        $panelId = $this->role->hasAdminPanelAccess() ? 'admin' : 'portal';
+
+        return url(filament()->getPanel($panelId)->getPath());
+    }
+
+    /**
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        if (! $this->is_active) {
+            return;
+        }
+
+        $this->notify(new ResetPassword($token));
     }
 }
