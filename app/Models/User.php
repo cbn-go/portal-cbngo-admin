@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -129,5 +130,17 @@ class User extends Authenticatable implements FilamentUser
         $panelId = $this->role->hasAdminPanelAccess() ? 'admin' : 'portal';
 
         return url(filament()->getPanel($panelId)->getPath());
+    }
+
+    /**
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        if (! $this->is_active) {
+            return;
+        }
+
+        $this->notify(new ResetPassword($token));
     }
 }

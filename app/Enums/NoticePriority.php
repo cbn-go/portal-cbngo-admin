@@ -16,8 +16,8 @@ enum NoticePriority: string implements HasColor, HasIcon, HasLabel
     {
         return match ($this) {
             self::NORMAL => '1: Normal',
-            self::HIGH => '2: High',
-            self::URGENT => '3: Urgent',
+            self::HIGH => '2: Alta',
+            self::URGENT => '3: Urgente',
         };
     }
 
