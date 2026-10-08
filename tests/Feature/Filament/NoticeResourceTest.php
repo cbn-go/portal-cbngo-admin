@@ -288,4 +288,94 @@ class NoticeResourceTest extends TestCase
 
         $this->assertModelMissing($notice);
     }
+
+    public function test_cannot_create_notice_with_incomplete_cta(): void
+    {
+        $admin = User::factory()->create([
+            'role' => UserRole::SUPER_ADMIN,
+            'is_active' => true,
+        ]);
+
+        // 1. URL sem texto de ação
+        Livewire::actingAs($admin)
+            ->test(CreateNotice::class)
+            ->fillForm([
+                'title' => 'Aviso com CTA Incompleto',
+                'slug' => 'aviso-cta-incompleto-1',
+                'content' => '<p>Conteúdo</p>',
+                'priority' => NoticePriority::NORMAL,
+                'action_url' => 'https://cbngo.com.br',
+                'action_label' => null,
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['action_label']);
+
+        // 2. Texto de ação sem URL
+        Livewire::actingAs($admin)
+            ->test(CreateNotice::class)
+            ->fillForm([
+                'title' => 'Aviso com CTA Incompleto 2',
+                'slug' => 'aviso-cta-incompleto-2',
+                'content' => '<p>Conteúdo</p>',
+                'priority' => NoticePriority::NORMAL,
+                'action_url' => null,
+                'action_label' => 'Clique Aqui',
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['action_url']);
+    }
+
+    public function test_can_toggle_notice_active_status_in_table(): void
+    {
+        $admin = User::factory()->create([
+            'role' => UserRole::SUPER_ADMIN,
+            'is_active' => true,
+        ]);
+
+        $notice = Notice::factory()->create([
+            'user_id' => $admin->id,
+            'title' => 'Aviso Ativo Originalmente',
+            'is_active' => true,
+        ]);
+
+        Livewire::actingAs($admin)
+            ->test(ListNotices::class)
+            ->assertSuccessful()
+            ->call('updateTableColumnState', 'is_active', (string) $notice->getKey(), false);
+
+        $this->assertFalse($notice->fresh()->is_active);
+    }
+
+    public function test_notice_resource_eager_loads_author(): void
+    {
+        $eagerLoads = NoticeResource::getEloquentQuery()->getEagerLoads();
+
+        $this->assertArrayHasKey('author', $eagerLoads);
+    }
+
+    public function test_can_filter_notices_by_inactive_validity(): void
+    {
+        $admin = User::factory()->create([
+            'role' => UserRole::SUPER_ADMIN,
+            'is_active' => true,
+        ]);
+
+        $activeNotice = Notice::factory()->create([
+            'user_id' => $admin->id,
+            'title' => 'Aviso Ativo',
+            'is_active' => true,
+        ]);
+
+        $inactiveNotice = Notice::factory()->create([
+            'user_id' => $admin->id,
+            'title' => 'Aviso Desativado',
+            'is_active' => false,
+        ]);
+
+        Livewire::actingAs($admin)
+            ->test(ListNotices::class)
+            ->filterTable('validity', 'inactive')
+            ->assertCanSeeTableRecords([$inactiveNotice])
+            ->assertCanNotSeeTableRecords([$activeNotice]);
+    }
 }

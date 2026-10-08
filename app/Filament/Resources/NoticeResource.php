@@ -72,11 +72,13 @@ class NoticeResource extends Resource
                             ->label('URL de Destino')
                             ->url()
                             ->maxLength(255)
+                            ->requiredWith('action_label')
                             ->placeholder('https://cbngo.com.br/edital'),
 
                         Forms\Components\TextInput::make('action_label')
                             ->label('Texto do Botão / Ação')
                             ->maxLength(100)
+                            ->requiredWith('action_url')
                             ->placeholder('Ex: Acessar Edital, Saiba Mais'),
                     ])
                     ->columns(2),
@@ -186,6 +188,7 @@ class NoticeResource extends Resource
                         'active' => 'Vigentes',
                         'scheduled' => 'Agendados',
                         'expired' => 'Expirados',
+                        'inactive' => 'Inativos',
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         /** @var Builder<Notice> $noticeQuery */
@@ -195,6 +198,7 @@ class NoticeResource extends Resource
                             'active' => $noticeQuery->currentlyActive(),
                             'scheduled' => $noticeQuery->scheduled(),
                             'expired' => $noticeQuery->expired(),
+                            'inactive' => $noticeQuery->inactive(),
                             default => $query,
                         };
                     }),
@@ -208,6 +212,17 @@ class NoticeResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    /**
+     * @return Builder<Notice>
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        /** @var Builder<Notice> $query */
+        $query = parent::getEloquentQuery()->with('author');
+
+        return $query;
     }
 
     public static function getPages(): array

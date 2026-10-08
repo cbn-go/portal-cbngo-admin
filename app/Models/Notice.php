@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder<static> currentlyActive()
  * @method static Builder<static> scheduled()
  * @method static Builder<static> expired()
+ * @method static Builder<static> inactive()
  * @method static Builder<static> forUser(\App\Models\User $user)
  */
 class Notice extends Model
@@ -164,7 +165,17 @@ class Notice extends Model
      */
     public function scopeExpired(Builder $query): Builder
     {
-        return $query->whereNotNull('expires_at')
+        return $query->where('is_active', true)
+            ->whereNotNull('expires_at')
             ->where('expires_at', '<', now());
+    }
+
+    /**
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
+     */
+    public function scopeInactive(Builder $query): Builder
+    {
+        return $query->where('is_active', false);
     }
 }

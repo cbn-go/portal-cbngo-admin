@@ -170,18 +170,36 @@ class NoticeValidityTest extends TestCase
             'expires_at' => Carbon::parse('2026-10-08 14:00:00'),
         ]);
 
+        // 6. Inativo com data passada (não pode entrar em expired)
+        $inactivePastDate = Notice::factory()->create([
+            'user_id' => $user->id,
+            'is_active' => false,
+            'starts_at' => Carbon::parse('2026-10-08 08:00:00'),
+            'expires_at' => Carbon::parse('2026-10-08 10:00:00'),
+        ]);
+
         $currentlyActiveIds = Notice::query()->currentlyActive()->pluck('id')->all();
         $this->assertContains($activeNoDates->id, $currentlyActiveIds);
         $this->assertContains($activeInBounds->id, $currentlyActiveIds);
         $this->assertNotContains($scheduled->id, $currentlyActiveIds);
         $this->assertNotContains($expired->id, $currentlyActiveIds);
         $this->assertNotContains($inactive->id, $currentlyActiveIds);
+        $this->assertNotContains($inactivePastDate->id, $currentlyActiveIds);
 
         $scheduledIds = Notice::query()->scheduled()->pluck('id')->all();
         $this->assertSame([$scheduled->id], $scheduledIds);
 
         $expiredIds = Notice::query()->expired()->pluck('id')->all();
         $this->assertSame([$expired->id], $expiredIds);
+        $this->assertNotContains($inactivePastDate->id, $expiredIds);
+
+        $inactiveIds = Notice::query()->inactive()->pluck('id')->all();
+        $this->assertContains($inactive->id, $inactiveIds);
+        $this->assertContains($inactivePastDate->id, $inactiveIds);
+        $this->assertNotContains($activeNoDates->id, $inactiveIds);
+        $this->assertNotContains($activeInBounds->id, $inactiveIds);
+        $this->assertNotContains($scheduled->id, $inactiveIds);
+        $this->assertNotContains($expired->id, $inactiveIds);
 
         Carbon::setTestNow();
     }
