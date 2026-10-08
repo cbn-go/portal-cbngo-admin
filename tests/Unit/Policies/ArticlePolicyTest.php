@@ -87,18 +87,14 @@ class ArticlePolicyTest extends TestCase
         $this->assertFalse($this->policy->delete($churchRep, $article));
     }
 
-    public function test_inactive_users_are_denied_all_article_actions(): void
+    public function test_inactive_users_are_denied_via_before_hook(): void
     {
         $inactiveAuthor = $this->makeUser(UserRole::AUTHOR, false, 10);
         $inactiveAdmin = $this->makeUser(UserRole::SUPER_ADMIN, false, 1);
-        $article = $this->makeArticle(10);
 
         foreach ([$inactiveAuthor, $inactiveAdmin] as $inactiveUser) {
-            $this->assertFalse($this->policy->viewAny($inactiveUser));
-            $this->assertFalse($this->policy->view($inactiveUser, $article));
-            $this->assertFalse($this->policy->create($inactiveUser));
-            $this->assertFalse($this->policy->update($inactiveUser, $article));
-            $this->assertFalse($this->policy->delete($inactiveUser, $article));
+            $this->assertFalse($this->policy->before($inactiveUser, 'viewAny'));
+            $this->assertFalse($this->policy->before($inactiveUser, 'update'));
         }
     }
 }

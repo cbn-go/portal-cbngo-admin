@@ -65,15 +65,11 @@ class NoticePolicyTest extends TestCase
         }
     }
 
-    public function test_inactive_users_are_denied_notice_actions(): void
+    public function test_inactive_users_are_denied_via_before_hook(): void
     {
         $inactiveAdmin = $this->makeUser(UserRole::SUPER_ADMIN, false, 1);
-        $notice = $this->makeNotice();
 
-        $this->assertFalse($this->policy->viewAny($inactiveAdmin));
-        $this->assertFalse($this->policy->view($inactiveAdmin, $notice));
-        $this->assertFalse($this->policy->create($inactiveAdmin));
-        $this->assertFalse($this->policy->update($inactiveAdmin, $notice));
-        $this->assertFalse($this->policy->delete($inactiveAdmin, $notice));
+        $this->assertFalse($this->policy->before($inactiveAdmin, 'viewAny'));
+        $this->assertFalse($this->policy->before($inactiveAdmin, 'update'));
     }
 }

@@ -9,14 +9,22 @@ use App\Models\User;
 class ArticlePolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Perform pre-authorization checks.
      */
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): ?bool
     {
         if (! $user->is_active) {
             return false;
         }
 
+        return null;
+    }
+
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
         return $user->role->hasAdminPanelAccess() || $user->role === UserRole::AUTHOR;
     }
 
@@ -25,19 +33,11 @@ class ArticlePolicy
      */
     public function view(User $user, Article $article): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         if ($user->role->hasAdminPanelAccess()) {
             return true;
         }
 
-        if ($user->role === UserRole::AUTHOR) {
-            return $article->user_id === $user->id;
-        }
-
-        return false;
+        return $user->role === UserRole::AUTHOR && $article->user_id === $user->id;
     }
 
     /**
@@ -45,10 +45,6 @@ class ArticlePolicy
      */
     public function create(User $user): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess() || $user->role === UserRole::AUTHOR;
     }
 
@@ -57,19 +53,11 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         if ($user->role->hasAdminPanelAccess()) {
             return true;
         }
 
-        if ($user->role === UserRole::AUTHOR) {
-            return $article->user_id === $user->id;
-        }
-
-        return false;
+        return $user->role === UserRole::AUTHOR && $article->user_id === $user->id;
     }
 
     /**
@@ -77,19 +65,11 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         if ($user->role->hasAdminPanelAccess()) {
             return true;
         }
 
-        if ($user->role === UserRole::AUTHOR) {
-            return $article->user_id === $user->id;
-        }
-
-        return false;
+        return $user->role === UserRole::AUTHOR && $article->user_id === $user->id;
     }
 
     /**
@@ -97,10 +77,6 @@ class ArticlePolicy
      */
     public function restore(User $user, Article $article): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess();
     }
 
@@ -109,10 +85,6 @@ class ArticlePolicy
      */
     public function forceDelete(User $user, Article $article): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess();
     }
 }

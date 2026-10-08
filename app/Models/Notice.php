@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Enums\NoticePriority;
+use App\Models\Scopes\NoticeScope;
 use Database\Factories\NoticeFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property int $id
@@ -52,11 +54,26 @@ class Notice extends Model
     protected function casts(): array
     {
         return [
+            'user_id' => 'integer',
             'priority' => NoticePriority::class,
             'is_active' => 'boolean',
             'starts_at' => 'datetime',
             'expires_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new NoticeScope);
+
+        static::creating(function (Notice $notice): void {
+            /** @var User|null $user */
+            $user = Auth::user();
+
+            if ($user !== null && $notice->user_id === null) {
+                $notice->user_id = $user->id;
+            }
+        });
     }
 
     /**
@@ -73,6 +90,8 @@ class Notice extends Model
      */
     public function scopeForUser(Builder $query, User $user): Builder
     {
+        $query->withoutGlobalScope(NoticeScope::class);
+
         if (! $user->is_active) {
             return $query->whereRaw('1 = 0');
         }

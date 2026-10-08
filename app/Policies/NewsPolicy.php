@@ -9,14 +9,22 @@ use App\Models\User;
 class NewsPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Perform pre-authorization checks.
      */
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): ?bool
     {
         if (! $user->is_active) {
             return false;
         }
 
+        return null;
+    }
+
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
         if ($user->role->hasAdminPanelAccess()) {
             return true;
         }
@@ -29,19 +37,13 @@ class NewsPolicy
      */
     public function view(User $user, News $news): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         if ($user->role->hasAdminPanelAccess()) {
             return true;
         }
 
-        if ($user->role === UserRole::CHURCH_REPRESENTATIVE && $user->church_id !== null) {
-            return $news->church_id === $user->church_id;
-        }
-
-        return false;
+        return $user->role === UserRole::CHURCH_REPRESENTATIVE
+            && $user->church_id !== null
+            && $news->church_id === $user->church_id;
     }
 
     /**
@@ -49,10 +51,6 @@ class NewsPolicy
      */
     public function create(User $user): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         if ($user->role->hasAdminPanelAccess()) {
             return true;
         }
@@ -65,19 +63,13 @@ class NewsPolicy
      */
     public function update(User $user, News $news): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         if ($user->role->hasAdminPanelAccess()) {
             return true;
         }
 
-        if ($user->role === UserRole::CHURCH_REPRESENTATIVE && $user->church_id !== null) {
-            return $news->church_id === $user->church_id;
-        }
-
-        return false;
+        return $user->role === UserRole::CHURCH_REPRESENTATIVE
+            && $user->church_id !== null
+            && $news->church_id === $user->church_id;
     }
 
     /**
@@ -85,19 +77,13 @@ class NewsPolicy
      */
     public function delete(User $user, News $news): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         if ($user->role->hasAdminPanelAccess()) {
             return true;
         }
 
-        if ($user->role === UserRole::CHURCH_REPRESENTATIVE && $user->church_id !== null) {
-            return $news->church_id === $user->church_id;
-        }
-
-        return false;
+        return $user->role === UserRole::CHURCH_REPRESENTATIVE
+            && $user->church_id !== null
+            && $news->church_id === $user->church_id;
     }
 
     /**
@@ -105,10 +91,6 @@ class NewsPolicy
      */
     public function restore(User $user, News $news): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess();
     }
 
@@ -117,10 +99,6 @@ class NewsPolicy
      */
     public function forceDelete(User $user, News $news): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess();
     }
 }

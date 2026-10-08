@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
+use App\Models\Scopes\NewsScope;
 use Database\Factories\NewsFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property int $id
@@ -57,12 +59,48 @@ class News extends Model
     protected function casts(): array
     {
         return [
+            'church_id' => 'integer',
+            'user_id' => 'integer',
             'status' => PublishStatus::class,
             'gallery' => 'array',
             'event_date' => 'date',
             'is_official' => 'boolean',
             'published_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new NewsScope);
+
+        static::creating(function (News $news): void {
+            /** @var User|null $user */
+            $user = Auth::user();
+
+            if ($user !== null && $user->role === UserRole::CHURCH_REPRESENTATIVE) {
+                if ($user->church_id !== null) {
+                    $news->church_id = $user->church_id;
+                }
+                $news->user_id = $user->id;
+            }
+        });
+
+        static::updating(function (News $news): void {
+            /** @var User|null $user */
+            $user = Auth::user();
+
+            if ($user === null || $user->role !== UserRole::CHURCH_REPRESENTATIVE) {
+                return;
+            }
+
+            if ($news->isDirty('church_id')) {
+                $news->church_id = $news->getOriginal('church_id');
+            }
+
+            if ($news->isDirty('user_id')) {
+                $news->user_id = (int) $news->getOriginal('user_id');
+            }
+        });
     }
 
     /**
@@ -87,6 +125,8 @@ class News extends Model
      */
     public function scopeForUser(Builder $query, User $user): Builder
     {
+        $query->withoutGlobalScope(NewsScope::class);
+
         if (! $user->is_active) {
             return $query->whereRaw('1 = 0');
         }

@@ -8,14 +8,22 @@ use App\Models\User;
 class NoticePolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Perform pre-authorization checks.
      */
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): ?bool
     {
         if (! $user->is_active) {
             return false;
         }
 
+        return null;
+    }
+
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
         return $user->role->hasAdminPanelAccess();
     }
 
@@ -24,10 +32,6 @@ class NoticePolicy
      */
     public function view(User $user, Notice $notice): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess();
     }
 
@@ -36,10 +40,6 @@ class NoticePolicy
      */
     public function create(User $user): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess();
     }
 
@@ -48,10 +48,6 @@ class NoticePolicy
      */
     public function update(User $user, Notice $notice): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess();
     }
 
@@ -60,10 +56,6 @@ class NoticePolicy
      */
     public function delete(User $user, Notice $notice): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess();
     }
 
@@ -72,10 +64,6 @@ class NoticePolicy
      */
     public function restore(User $user, Notice $notice): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess();
     }
 
@@ -84,10 +72,6 @@ class NoticePolicy
      */
     public function forceDelete(User $user, Notice $notice): bool
     {
-        if (! $user->is_active) {
-            return false;
-        }
-
         return $user->role->hasAdminPanelAccess();
     }
 }
