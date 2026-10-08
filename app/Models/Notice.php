@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\NoticePriority;
+use App\Enums\NoticeValidityStatus;
 use App\Models\Scopes\NoticeScope;
 use Database\Factories\NoticeFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,8 +25,14 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon|null $starts_at
  * @property Carbon|null $expires_at
  * @property bool $is_active
+ * @property-read NoticeValidityStatus $validity_status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
+ * @method static Builder<static> currentlyActive()
+ * @method static Builder<static> scheduled()
+ * @method static Builder<static> expired()
+ * @method static Builder<static> forUser(\App\Models\User $user)
  */
 class Notice extends Model
 {
@@ -101,5 +108,63 @@ class Notice extends Model
         }
 
         return $query->whereRaw('1 = 0');
+    }
+
+    public function getValidityStatusAttribute(): NoticeValidityStatus
+    {
+        if (! $this->is_active) {
+            return NoticeValidityStatus::INACTIVE;
+        }
+
+        $now = now();
+
+        if ($this->starts_at !== null && $this->starts_at->isFuture()) {
+            return NoticeValidityStatus::SCHEDULED;
+        }
+
+        if ($this->expires_at !== null && $this->expires_at->isPast()) {
+            return NoticeValidityStatus::EXPIRED;
+        }
+
+        return NoticeValidityStatus::ACTIVE;
+    }
+
+    public function isCurrentlyActive(): bool
+    {
+        return $this->validity_status === NoticeValidityStatus::ACTIVE;
+    }
+
+    /**
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
+     */
+    public function scopeCurrentlyActive(Builder $query): Builder
+    {
+        $now = now();
+
+        return $query->where('is_active', true)
+            ->where(fn (Builder $q) => $q->whereNull('starts_at')->orWhere('starts_at', '<=', $now))
+            ->where(fn (Builder $q) => $q->whereNull('expires_at')->orWhere('expires_at', '>=', $now));
+    }
+
+    /**
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
+     */
+    public function scopeScheduled(Builder $query): Builder
+    {
+        return $query->where('is_active', true)
+            ->whereNotNull('starts_at')
+            ->where('starts_at', '>', now());
+    }
+
+    /**
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
+     */
+    public function scopeExpired(Builder $query): Builder
+    {
+        return $query->whereNotNull('expires_at')
+            ->where('expires_at', '<', now());
     }
 }
