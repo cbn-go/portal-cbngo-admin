@@ -82,7 +82,7 @@ class EnumContractTest extends TestCase
         $this->assertInstanceOf(HasIcon::class, NoticePriority::NORMAL);
 
         $this->assertSame('1: Normal', NoticePriority::NORMAL->getLabel());
-        $this->assertSame('2: Alta', NoticePriority::HIGH->getLabel());
+        $this->assertSame('2: Alta Relevância', NoticePriority::HIGH->getLabel());
         $this->assertSame('3: Urgente', NoticePriority::URGENT->getLabel());
 
         $this->assertSame('gray', NoticePriority::NORMAL->getColor());
