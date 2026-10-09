@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\Scopes\ArticleScope;
+use App\Services\HtmlSanitizerService;
 use Database\Factories\ArticleFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 /**
  * @property int $id
@@ -68,6 +70,10 @@ class Article extends Model
             if ($user !== null && $user->role === UserRole::AUTHOR) {
                 $article->user_id = $user->id;
             }
+
+            if (blank($article->slug) && filled($article->title)) {
+                $article->slug = static::generateUniqueSlug($article->title);
+            }
         });
 
         static::updating(function (Article $article): void {
@@ -78,6 +84,41 @@ class Article extends Model
                 $article->user_id = (int) $article->getOriginal('user_id');
             }
         });
+
+        static::saving(function (Article $article): void {
+            if ($article->isDirty('content') && filled($article->content)) {
+                $article->content = app(HtmlSanitizerService::class)->sanitize($article->content);
+            }
+
+            if ($article->status === PublishStatus::PUBLISHED && $article->published_at === null) {
+                $article->published_at = now();
+            }
+        });
+    }
+
+    /**
+     * Gera um slug único amigável a partir do título fornecido.
+     */
+    public static function generateUniqueSlug(string $title, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($title);
+
+        if (blank($slug)) {
+            $slug = 'artigo';
+        }
+
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (static::query()->withoutGlobalScope(ArticleScope::class)
+            ->where('slug', $slug)
+            ->when($ignoreId !== null, fn (Builder $q): Builder => $q->where('id', '!=', $ignoreId))
+            ->exists()) {
+            $slug = "{$originalSlug}-{$count}";
+            $count++;
+        }
+
+        return $slug;
     }
 
     /**
