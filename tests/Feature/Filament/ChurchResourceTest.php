@@ -196,6 +196,30 @@ class ChurchResourceTest extends TestCase
             ]);
     }
 
+    public function test_cannot_upload_invalid_file_type_as_church_logo(): void
+    {
+        Storage::fake('public');
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        $invalidLogo = UploadedFile::fake()->create('logo.pdf', 100, 'application/pdf');
+
+        Livewire::test(CreateChurch::class)
+            ->fillForm([
+                'name' => 'Igreja com Logo Inválido',
+                'city' => 'Goiânia',
+                'state' => 'GO',
+                'logo' => $invalidLogo,
+                'is_active' => true,
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['logo']);
+
+        $this->assertDatabaseMissing('churches', [
+            'name' => 'Igreja com Logo Inválido',
+        ]);
+    }
+
     public function test_super_admin_can_update_church(): void
     {
         Filament::setCurrentPanel(Filament::getPanel('admin'));

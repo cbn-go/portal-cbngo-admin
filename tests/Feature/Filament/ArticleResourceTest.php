@@ -352,4 +352,28 @@ class ArticleResourceTest extends TestCase
         $this->assertNotNull($article->cover_image);
         Storage::disk('public')->assertExists($article->cover_image);
     }
+
+    public function test_cannot_upload_invalid_file_type_as_cover_image(): void
+    {
+        Storage::fake('public');
+        Filament::setCurrentPanel(Filament::getPanel('portal'));
+        $this->actingAs($this->author);
+
+        $invalidFile = UploadedFile::fake()->create('payload.pdf', 100, 'application/pdf');
+
+        Livewire::test(CreateArticle::class)
+            ->fillForm([
+                'title' => 'Artigo com Upload Inválido',
+                'slug' => 'artigo-com-upload-invalido',
+                'content' => '<p>Tentativa de capa em PDF.</p>',
+                'status' => PublishStatus::DRAFT->value,
+                'cover_image' => $invalidFile,
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['cover_image']);
+
+        $this->assertDatabaseMissing('articles', [
+            'slug' => 'artigo-com-upload-invalido',
+        ]);
+    }
 }
