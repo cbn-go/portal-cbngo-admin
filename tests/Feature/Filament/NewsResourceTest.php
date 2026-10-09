@@ -315,6 +315,32 @@ class NewsResourceTest extends TestCase
         }
     }
 
+    public function test_cannot_upload_invalid_file_type_as_featured_image_or_gallery(): void
+    {
+        Storage::fake('public');
+        Filament::setCurrentPanel(Filament::getPanel('portal'));
+        $this->actingAs($this->churchRep);
+
+        $invalidFeatured = UploadedFile::fake()->create('destaque.pdf', 100, 'application/pdf');
+        $invalidGallery = UploadedFile::fake()->create('foto.exe', 100, 'application/x-msdownload');
+
+        Livewire::test(CreateNews::class)
+            ->fillForm([
+                'title' => 'Notícia com Upload Inválido',
+                'slug' => 'noticia-com-upload-invalido',
+                'content' => '<p>Tentativa de mídia inválida.</p>',
+                'status' => PublishStatus::DRAFT->value,
+                'featured_image' => $invalidFeatured,
+                'gallery' => [$invalidGallery],
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['featured_image', 'gallery']);
+
+        $this->assertDatabaseMissing('news', [
+            'slug' => 'noticia-com-upload-invalido',
+        ]);
+    }
+
     public function test_church_representative_cannot_see_or_modify_is_official_field(): void
     {
         Filament::setCurrentPanel(Filament::getPanel('portal'));
