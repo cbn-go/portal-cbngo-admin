@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\Scopes\NewsScope;
+use App\Services\HtmlSanitizerService;
 use Database\Factories\NewsFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 /**
  * @property int $id
@@ -77,11 +79,24 @@ class News extends Model
             /** @var User|null $user */
             $user = Auth::user();
 
-            if ($user !== null && $user->role === UserRole::CHURCH_REPRESENTATIVE) {
-                if ($user->church_id !== null) {
-                    $news->church_id = $user->church_id;
+            if ($user !== null) {
+                if ($user->role === UserRole::CHURCH_REPRESENTATIVE) {
+                    if ($user->church_id !== null) {
+                        $news->church_id = $user->church_id;
+                    }
+                    $news->user_id = $user->id;
+                    $news->is_official = false;
+                } elseif (! $user->role->hasAdminPanelAccess()) {
+                    $news->is_official = false;
                 }
-                $news->user_id = $user->id;
+
+                if (blank($news->user_id)) {
+                    $news->user_id = $user->id;
+                }
+            }
+
+            if (blank($news->slug) && filled($news->title)) {
+                $news->slug = static::generateUniqueSlug($news->title);
             }
         });
 
@@ -89,18 +104,63 @@ class News extends Model
             /** @var User|null $user */
             $user = Auth::user();
 
-            if ($user === null || $user->role !== UserRole::CHURCH_REPRESENTATIVE) {
-                return;
-            }
+            if ($user !== null && $user->role === UserRole::CHURCH_REPRESENTATIVE) {
+                if ($news->isDirty('church_id')) {
+                    $news->church_id = $news->getOriginal('church_id');
+                }
 
-            if ($news->isDirty('church_id')) {
-                $news->church_id = $news->getOriginal('church_id');
-            }
+                if ($news->isDirty('user_id')) {
+                    $news->user_id = (int) $news->getOriginal('user_id');
+                }
 
-            if ($news->isDirty('user_id')) {
-                $news->user_id = (int) $news->getOriginal('user_id');
+                if ($news->isDirty('is_official')) {
+                    $news->is_official = (bool) $news->getOriginal('is_official');
+                }
+            } elseif ($user !== null && ! $user->role->hasAdminPanelAccess()) {
+                if ($news->isDirty('is_official')) {
+                    $news->is_official = (bool) $news->getOriginal('is_official');
+                }
             }
         });
+
+        static::saving(function (News $news): void {
+            if ($news->isDirty('content') && filled($news->content)) {
+                $news->content = app(HtmlSanitizerService::class)->sanitize($news->content);
+            }
+
+            if ($news->status === PublishStatus::PUBLISHED && $news->published_at === null) {
+                $news->published_at = now();
+            }
+        });
+    }
+
+    /**
+     * Gera um slug único amigável a partir do título fornecido.
+     */
+    public static function generateUniqueSlug(string $title, ?int $ignoreId = null): string
+    {
+        if (preg_match('/[a-zA-Z0-9]/u', $title) !== 1) {
+            $slug = 'noticia';
+        } else {
+            $slug = Str::slug($title);
+        }
+
+        if (blank($slug)) {
+            $slug = 'noticia';
+        }
+
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (static::query()->withoutGlobalScope(NewsScope::class)
+            ->where('slug', $slug)
+            ->when($ignoreId !== null, fn (Builder $q): Builder => $q->where('id', '!=', $ignoreId))
+            ->exists()) {
+            $slug = "{$originalSlug}-{$count}";
+            $count++;
+        }
+
+        return $slug;
     }
 
     /**
