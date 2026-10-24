@@ -3,6 +3,8 @@
 namespace Tests\Unit\Models;
 
 use App\Enums\ArticleCategory;
+use App\Enums\BoardGroup;
+use App\Enums\DocumentCategory;
 use App\Enums\NewsCategory;
 use App\Enums\NoticePriority;
 use App\Enums\PublishStatus;
@@ -55,5 +57,21 @@ class EnumTest extends TestCase
         $this->assertSame('info', NoticePriority::NORMAL->publicBannerType());
         $this->assertSame('warning', NoticePriority::HIGH->publicBannerType());
         $this->assertSame('critical', NoticePriority::URGENT->publicBannerType());
+    }
+
+    public function test_board_group_values_match_public_portal_order(): void
+    {
+        $this->assertSame(
+            ['presidencia', 'vice_presidencia', 'secretaria', 'tesouraria', 'conselho_fiscal', 'coordenacao_regional'],
+            array_column(BoardGroup::cases(), 'value'),
+        );
+    }
+
+    public function test_document_category_backed_values(): void
+    {
+        $this->assertSame(
+            ['estatuto', 'regimento', 'pacto', 'atas', 'outros'],
+            array_column(DocumentCategory::cases(), 'value'),
+        );
     }
 }
