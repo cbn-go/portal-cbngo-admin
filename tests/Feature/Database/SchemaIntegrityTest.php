@@ -25,6 +25,7 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasColumns('churches', [
             'id',
             'name',
+            'slug',
             'cnpj',
             'registration_number',
             'pastor_name',
@@ -35,10 +36,13 @@ class SchemaIntegrityTest extends TestCase
             'address',
             'number',
             'complement',
+            'latitude',
+            'longitude',
             'phone',
             'cellphone',
             'email',
             'social_links',
+            'service_times',
             'logo',
             'is_active',
             'created_at',
@@ -47,6 +51,8 @@ class SchemaIntegrityTest extends TestCase
 
         $this->assertTrue(Schema::hasIndex('churches', ['city']));
         $this->assertTrue(Schema::hasIndex('churches', ['is_active']));
+        $this->assertTrue(Schema::hasIndex('churches', ['slug'], 'unique'));
+        $this->assertTrue(Schema::hasIndex('churches', ['is_active', 'city']));
     }
 
     public function test_users_columns_and_indexes(): void
@@ -77,6 +83,7 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasColumns('author_profiles', [
             'id',
             'user_id',
+            'slug',
             'pastoral_title',
             'bio',
             'avatar',
@@ -86,6 +93,7 @@ class SchemaIntegrityTest extends TestCase
         ]));
 
         $this->assertTrue(Schema::hasIndex('author_profiles', ['user_id'], 'unique'));
+        $this->assertTrue(Schema::hasIndex('author_profiles', ['slug'], 'unique'));
         $this->assertForeignKeyOnDelete('author_profiles', 'user_id', 'users', 'cascade');
     }
 
@@ -123,8 +131,10 @@ class SchemaIntegrityTest extends TestCase
             'user_id',
             'title',
             'slug',
+            'category',
             'excerpt',
             'content',
+            'reading_time',
             'cover_image',
             'status',
             'published_at',
@@ -137,6 +147,7 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasIndex('articles', ['status']));
         $this->assertTrue(Schema::hasIndex('articles', ['published_at']));
         $this->assertTrue(Schema::hasIndex('articles', ['status', 'published_at']));
+        $this->assertTrue(Schema::hasIndex('articles', ['category', 'status', 'published_at']));
         $this->assertForeignKeyOnDelete('articles', 'user_id', 'users', 'cascade');
     }
 
@@ -148,6 +159,7 @@ class SchemaIntegrityTest extends TestCase
             'user_id',
             'title',
             'slug',
+            'category',
             'excerpt',
             'content',
             'featured_image',
@@ -168,6 +180,7 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasIndex('news', ['status']));
         $this->assertTrue(Schema::hasIndex('news', ['published_at']));
         $this->assertTrue(Schema::hasIndex('news', ['status', 'published_at']));
+        $this->assertTrue(Schema::hasIndex('news', ['category', 'status', 'published_at']));
         $this->assertForeignKeyOnDelete('news', 'church_id', 'churches', 'cascade');
         $this->assertForeignKeyOnDelete('news', 'user_id', 'users', 'cascade');
     }

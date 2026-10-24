@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ArticleCategory;
 use App\Enums\PublishStatus;
 use App\Models\Article;
 use App\Models\User;
@@ -21,6 +22,7 @@ class ArticleFactory extends Factory
             'user_id' => User::factory(),
             'title' => fake()->sentence(),
             'slug' => fake()->unique()->slug(),
+            'category' => fake()->randomElement(ArticleCategory::cases()),
             'excerpt' => fake()->optional()->paragraph(),
             'content' => fake()->paragraphs(3, true),
             'cover_image' => null,

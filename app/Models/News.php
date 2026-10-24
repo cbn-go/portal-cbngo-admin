@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\NewsCategory;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\Scopes\NewsScope;
@@ -21,6 +22,7 @@ use Illuminate\Support\Str;
  * @property int $user_id
  * @property string $title
  * @property string $slug
+ * @property NewsCategory $category
  * @property string|null $excerpt
  * @property string $content
  * @property string|null $featured_image
@@ -45,6 +47,7 @@ class News extends Model
         'user_id',
         'title',
         'slug',
+        'category',
         'excerpt',
         'content',
         'featured_image',
@@ -63,6 +66,7 @@ class News extends Model
         return [
             'church_id' => 'integer',
             'user_id' => 'integer',
+            'category' => NewsCategory::class,
             'status' => PublishStatus::class,
             'gallery' => 'array',
             'event_date' => 'date',

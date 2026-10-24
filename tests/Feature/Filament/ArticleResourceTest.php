@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Filament;
 
+use App\Enums\ArticleCategory;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Filament\Resources\ArticleResource;
@@ -375,5 +376,60 @@ class ArticleResourceTest extends TestCase
         $this->assertDatabaseMissing('articles', [
             'slug' => 'artigo-com-upload-invalido',
         ]);
+    }
+
+    public function test_article_is_created_with_category_and_computed_reading_time(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('portal'));
+        $this->actingAs($this->author);
+
+        Livewire::test(CreateArticle::class)
+            ->fillForm([
+                'title' => 'Missões Urbanas em Goiânia',
+                'slug' => 'missoes-urbanas-em-goiania',
+                'category' => ArticleCategory::MISSOES->value,
+                'content' => '<p>'.str_repeat('palavra ', 450).'</p>',
+                'status' => PublishStatus::DRAFT->value,
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas('articles', [
+            'slug' => 'missoes-urbanas-em-goiania',
+            'category' => 'Missões',
+            'reading_time' => 3,
+        ]);
+    }
+
+    public function test_article_category_is_required(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('portal'));
+        $this->actingAs($this->author);
+
+        Livewire::test(CreateArticle::class)
+            ->fillForm([
+                'title' => 'Sem Categoria',
+                'slug' => 'sem-categoria',
+                'category' => null,
+                'content' => '<p>Texto</p>',
+                'status' => PublishStatus::DRAFT->value,
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['category' => 'required']);
+    }
+
+    public function test_admin_can_filter_articles_by_category(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        $theology = Article::factory()->create(['category' => ArticleCategory::TEOLOGIA]);
+        $family = Article::factory()->create(['category' => ArticleCategory::FAMILIA]);
+
+        Livewire::test(ListArticles::class)
+            ->assertCanRenderTableColumn('category')
+            ->filterTable('category', ArticleCategory::FAMILIA->value)
+            ->assertCanSeeTableRecords([$family])
+            ->assertCanNotSeeTableRecords([$theology]);
     }
 }

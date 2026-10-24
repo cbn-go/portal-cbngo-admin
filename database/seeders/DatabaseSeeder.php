@@ -15,5 +15,9 @@ class DatabaseSeeder extends Seeder
             ChurchSeeder::class,
             SuperAdminSeeder::class,
         ]);
+
+        if (app()->environment('local', 'testing')) {
+            $this->call(DevelopmentContentSeeder::class);
+        }
     }
 }

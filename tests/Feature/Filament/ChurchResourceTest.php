@@ -269,4 +269,102 @@ class ChurchResourceTest extends TestCase
         Livewire::test(EditChurch::class, ['record' => $churchWithUser->getKey()])
             ->assertActionHidden(DeleteAction::class);
     }
+
+    public function test_super_admin_can_create_church_with_public_portal_fields(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        Livewire::test(CreateChurch::class)
+            ->fillForm([
+                'name' => 'Igreja Batista Nacional Setor Bueno',
+                'city' => 'Goiânia',
+                'state' => 'GO',
+                'latitude' => '-16.7066713',
+                'longitude' => '-49.2689843',
+                'service_times' => [
+                    ['day' => 'Domingo', 'time' => '19h00', 'label' => 'Culto de Celebração'],
+                    ['day' => 'Quarta-feira', 'time' => '20h00', 'label' => 'Reunião de Oração'],
+                ],
+            ])
+            ->assertFormSet(['slug' => 'igreja-batista-nacional-setor-bueno'])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $church = Church::query()->where('slug', 'igreja-batista-nacional-setor-bueno')->firstOrFail();
+
+        $this->assertSame('-16.7066713', $church->latitude);
+        $this->assertSame('-49.2689843', $church->longitude);
+        $this->assertSame([
+            ['day' => 'Domingo', 'time' => '19h00', 'label' => 'Culto de Celebração'],
+            ['day' => 'Quarta-feira', 'time' => '20h00', 'label' => 'Reunião de Oração'],
+        ], $church->service_times);
+    }
+
+    public function test_church_slug_is_kept_when_name_changes_on_edit(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        $church = Church::factory()->create(['name' => 'Igreja Original', 'slug' => 'igreja-original']);
+
+        Livewire::test(EditChurch::class, ['record' => $church->getKey()])
+            ->fillForm(['name' => 'Igreja Renomeada'])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas('churches', [
+            'id' => $church->id,
+            'name' => 'Igreja Renomeada',
+            'slug' => 'igreja-original',
+        ]);
+    }
+
+    public function test_cannot_create_church_with_duplicate_slug_or_invalid_coordinates(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        Church::factory()->create(['slug' => 'igreja-existente']);
+
+        Livewire::test(CreateChurch::class)
+            ->fillForm([
+                'name' => 'Igreja Existente',
+                'slug' => 'igreja-existente',
+                'city' => 'Goiânia',
+                'state' => 'GO',
+                'latitude' => '-95',
+                'longitude' => '190',
+            ])
+            ->call('create')
+            ->assertHasFormErrors([
+                'slug' => 'unique',
+                'latitude' => 'min',
+                'longitude' => 'max',
+            ]);
+    }
+
+    public function test_service_time_requires_day_and_valid_time(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        $component = Livewire::test(CreateChurch::class)
+            ->fillForm([
+                'name' => 'Igreja Horário Inválido',
+                'city' => 'Goiânia',
+                'state' => 'GO',
+                'service_times' => [
+                    ['day' => null, 'time' => '25h00', 'label' => 'Culto'],
+                ],
+            ])
+            ->call('create');
+
+        $key = array_key_first($component->get('data.service_times'));
+
+        $component->assertHasFormErrors([
+            "service_times.{$key}.day" => 'required',
+            "service_times.{$key}.time" => 'regex',
+        ]);
+    }
 }
