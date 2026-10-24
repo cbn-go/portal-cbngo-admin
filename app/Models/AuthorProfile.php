@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasImageVariants;
 use Database\Factories\AuthorProfileFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -27,6 +28,8 @@ class AuthorProfile extends Model
 {
     /** @use HasFactory<AuthorProfileFactory> */
     use HasFactory;
+
+    use HasImageVariants;
 
     /**
      * @var list<string>
@@ -101,5 +104,15 @@ class AuthorProfile extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Atributos com imagens no disco de mídia que ganham versões WebP.
+     *
+     * @return list<string>
+     */
+    public function imageAttributes(): array
+    {
+        return ['avatar'];
     }
 }

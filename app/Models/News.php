@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\NewsCategory;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
+use App\Models\Concerns\HasImageVariants;
 use App\Models\Scopes\NewsScope;
 use App\Services\HtmlSanitizerService;
 use Database\Factories\NewsFactory;
@@ -38,6 +39,8 @@ class News extends Model
 {
     /** @use HasFactory<NewsFactory> */
     use HasFactory;
+
+    use HasImageVariants;
 
     /**
      * @var list<string>
@@ -204,5 +207,15 @@ class News extends Model
         }
 
         return $query->whereRaw('1 = 0');
+    }
+
+    /**
+     * Atributos com imagens no disco de mídia que ganham versões WebP.
+     *
+     * @return list<string>
+     */
+    public function imageAttributes(): array
+    {
+        return ['featured_image', 'gallery'];
     }
 }

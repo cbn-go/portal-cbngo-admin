@@ -84,7 +84,7 @@ class BoardMemberResource extends Resource
                         Forms\Components\FileUpload::make('photo')
                             ->label('Foto')
                             ->image()
-                            ->disk('public')
+                            ->disk(config('media.disk'))
                             ->directory('board/photos')
                             ->visibility('public')
                             ->maxSize(2048)
@@ -101,7 +101,7 @@ class BoardMemberResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('photo')
                     ->label('Foto')
-                    ->disk('public')
+                    ->disk(config('media.disk'))
                     ->circular(),
 
                 Tables\Columns\TextColumn::make('name')

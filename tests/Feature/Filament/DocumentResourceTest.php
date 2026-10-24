@@ -60,7 +60,7 @@ class DocumentResourceTest extends TestCase
 
     public function test_super_admin_can_upload_pdf_document(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 
@@ -83,12 +83,12 @@ class DocumentResourceTest extends TestCase
         $this->assertNull($document->external_url);
         $this->assertNotNull($document->file);
         $this->assertStringStartsWith('documents/files/', $document->file);
-        Storage::disk('public')->assertExists($document->file);
+        Storage::disk('media')->assertExists($document->file);
     }
 
     public function test_super_admin_can_upload_docx_document(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 
@@ -147,7 +147,7 @@ class DocumentResourceTest extends TestCase
 
     public function test_document_cannot_have_file_and_external_link(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 
@@ -167,7 +167,7 @@ class DocumentResourceTest extends TestCase
 
     public function test_cannot_upload_invalid_file_type(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 

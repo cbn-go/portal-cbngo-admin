@@ -92,7 +92,7 @@ class DocumentResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('file')
                             ->label('Arquivo')
-                            ->disk('public')
+                            ->disk(config('media.disk'))
                             ->directory('documents/files')
                             ->visibility('public')
                             ->maxSize(10240)
@@ -184,7 +184,7 @@ class DocumentResource extends Resource
     public static function publicUrl(Document $document): ?string
     {
         if (filled($document->file)) {
-            return Storage::disk('public')->url($document->file);
+            return Storage::disk(config('media.disk'))->url($document->file);
         }
 
         return $document->external_url;

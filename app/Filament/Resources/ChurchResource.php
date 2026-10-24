@@ -88,7 +88,7 @@ class ChurchResource extends Resource
                         Forms\Components\FileUpload::make('logo')
                             ->label('Logotipo Oficial')
                             ->image()
-                            ->disk('public')
+                            ->disk(config('media.disk'))
                             ->directory('churches/logos')
                             ->visibility('public')
                             ->maxSize(2048)
@@ -234,7 +234,7 @@ class ChurchResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('logo')
                     ->label('Logo')
-                    ->disk('public')
+                    ->disk(config('media.disk'))
                     ->circular()
                     ->toggleable(),
 

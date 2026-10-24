@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasImageVariants;
 use Database\Factories\ChurchFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,6 +41,8 @@ class Church extends Model
 {
     /** @use HasFactory<ChurchFactory> */
     use HasFactory;
+
+    use HasImageVariants;
 
     /**
      * @var list<string>
@@ -130,5 +133,15 @@ class Church extends Model
     public function news(): HasMany
     {
         return $this->hasMany(News::class);
+    }
+
+    /**
+     * Atributos com imagens no disco de mídia que ganham versões WebP.
+     *
+     * @return list<string>
+     */
+    public function imageAttributes(): array
+    {
+        return ['logo'];
     }
 }

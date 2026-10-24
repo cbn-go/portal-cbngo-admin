@@ -60,7 +60,7 @@ class BoardMemberResourceTest extends TestCase
 
     public function test_super_admin_can_create_board_member_with_photo(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 
@@ -82,7 +82,7 @@ class BoardMemberResourceTest extends TestCase
         $this->assertSame(1, $member->position);
         $this->assertNotNull($member->photo);
         $this->assertStringStartsWith('board/photos/', $member->photo);
-        Storage::disk('public')->assertExists($member->photo);
+        Storage::disk('media')->assertExists($member->photo);
     }
 
     public function test_regional_coordinator_requires_region(): void
@@ -103,7 +103,7 @@ class BoardMemberResourceTest extends TestCase
 
     public function test_cannot_upload_invalid_file_type_as_photo(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 

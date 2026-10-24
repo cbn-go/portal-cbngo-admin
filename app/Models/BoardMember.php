@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\BoardGroup;
+use App\Models\Concerns\HasImageVariants;
 use Database\Factories\BoardMemberFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +29,8 @@ class BoardMember extends Model
 {
     /** @use HasFactory<BoardMemberFactory> */
     use HasFactory;
+
+    use HasImageVariants;
 
     /**
      * @var list<string>
@@ -88,5 +91,15 @@ class BoardMember extends Model
             ->orderByDesc('term_label')
             ->pluck('term_label', 'term_label')
             ->all();
+    }
+
+    /**
+     * Atributos com imagens no disco de mídia que ganham versões WebP.
+     *
+     * @return list<string>
+     */
+    public function imageAttributes(): array
+    {
+        return ['photo'];
     }
 }

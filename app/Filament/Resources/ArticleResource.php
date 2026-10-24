@@ -84,7 +84,7 @@ class ArticleResource extends Resource
                                 'underline',
                                 'undo',
                             ])
-                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDisk(config('media.disk'))
                             ->fileAttachmentsDirectory('articles/attachments')
                             ->fileAttachmentsVisibility('public'),
                     ])
@@ -132,7 +132,7 @@ class ArticleResource extends Resource
                         Forms\Components\FileUpload::make('cover_image')
                             ->label('Imagem de Capa')
                             ->image()
-                            ->disk('public')
+                            ->disk(config('media.disk'))
                             ->directory('articles/covers')
                             ->visibility('public')
                             ->maxSize(5120)
@@ -154,7 +154,7 @@ class ArticleResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('cover_image')
                     ->label('Capa')
-                    ->disk('public')
+                    ->disk(config('media.disk'))
                     ->circular()
                     ->toggleable(),
 
