@@ -10,7 +10,7 @@ O painel administrativo (`cbn-go/portal-cbngo-admin`) e o portal público (`cbn-
   GRANT SELECT ON cbngo.* TO 'cbngo_site'@'%';
   ```
 
-- **Imagens** (`featured_image`, `gallery`, `cover_image`, `avatar`, `logo`) são caminhos relativos no disco `public` do painel, por exemplo `news/featured/abc.jpg`. O portal monta a URL com a URL pública de storage do painel, por exemplo `ADMIN_STORAGE_URL=https://admin.cbngo.org.br/storage`.
+- **Arquivos** (`featured_image`, `gallery`, `cover_image`, `avatar`, `logo`, `board_members.photo`, `documents.file`) são caminhos relativos no disco `public` do painel, por exemplo `news/featured/abc.jpg`. O portal monta a URL com a URL pública de storage do painel, por exemplo `ADMIN_STORAGE_URL=https://admin.cbngo.org.br/storage`.
 - **Conteúdo** (`content`) é HTML gerado pelo RichEditor. Em `articles` e `news` o HTML é sanitizado pelo painel ao salvar (`HtmlSanitizerService`). Em `notices` ele **não** é sanitizado no servidor, então o portal deve tratá-lo como HTML não confiável.
 
 ## Regra de publicação (`news` e `articles`)
@@ -89,6 +89,38 @@ O perfil é criado quando o autor salva **Meu Perfil de Autor** no portal (`/por
 
 Um aviso está vigente quando `is_active = 1`, `starts_at` é nulo ou `<= NOW()`, e `expires_at` é nulo ou `>= NOW()`. É a mesma regra de `Notice::currentlyActive()`. Quando houver mais de um aviso vigente, exiba o de maior prioridade (`urgent` > `high` > `normal`) e, em caso de empate, o mais recente.
 
+## `board_members` (site: `board_members`)
+
+Gerido em **Institucional → Diretoria**, apenas pelo super administrador.
+
+| Painel | Site (antes) | Observação |
+|---|---|---|
+| `name`, `role` | iguais | |
+| `group` | `group` | Mesmas chaves de `BoardMember::GROUPS` do site (`App\Enums\BoardGroup`), na ordem de exibição: `presidencia`, `vice_presidencia`, `secretaria`, `tesouraria`, `conselho_fiscal`, `coordenacao_regional` |
+| `region` | `region` | Preenchido apenas para `coordenacao_regional` |
+| `term_label` | `term_label` | Ex.: "Gestão 2025–2027" |
+| `photo` | `photo_url` | Caminho no disco `public` (`board/photos/...`); nulo = exibir as iniciais |
+| `position` | `position` | Ordem única da diretoria, definida arrastando as linhas no painel |
+| `is_active` | `is_active` | |
+
+Exibir: `is_active = 1`, agrupado por `group` na ordem acima e ordenado por `position`.
+
+## `documents` (site: `documents`)
+
+Gerido em **Institucional → Documentos**, apenas pelo super administrador.
+
+| Painel | Site (antes) | Observação |
+|---|---|---|
+| `title`, `slug`, `description` | iguais | `slug` é único |
+| `category` | `category` | `estatuto`, `regimento`, `pacto`, `atas`, `outros` (`App\Enums\DocumentCategory`) |
+| `file` | `file_url` | Caminho no disco `public` (`documents/files/...`), PDF, DOC ou DOCX |
+| `external_url` | `file_url` | Link externo usado quando não há arquivo. Exatamente um dos dois é preenchido |
+| `file_format` | `file_format` | Detectado pelo painel ao salvar: `PDF`, `DOC`, `DOCX` ou `Página` (link para uma página web) |
+| `position` | `position` | Ordem definida arrastando as linhas no painel |
+| `is_active` | `is_active` | |
+
+URL do documento: `ADMIN_STORAGE_URL/{file}` quando `file` está preenchido; senão, `external_url`. Exibir: `is_active = 1 ORDER BY position`.
+
 ## Dados de desenvolvimento
 
 `php artisan migrate:fresh --seed` em ambiente `local` cria:
@@ -96,6 +128,7 @@ Um aviso está vigente quando `is_active = 1`, `starts_at` é nulo ou `<= NOW()`
 - as 8 igrejas polo com slug, coordenadas e horários de culto;
 - 3 autores com perfil;
 - artigos e notícias em todas as categorias, incluindo rascunhos e conteúdo pendente de revisão;
-- avisos vigente, agendado e expirado.
+- avisos vigente, agendado e expirado;
+- a diretoria da gestão 2025–2027 e os documentos Estatuto, Regimento Interno e Pacto Renovado (como links).
 
 Veja `Database\Seeders\DevelopmentContentSeeder`.
