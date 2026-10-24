@@ -284,7 +284,7 @@ class NewsResourceTest extends TestCase
 
     public function test_church_representative_creates_news_with_featured_image_and_gallery_uploads(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('portal'));
         $this->actingAs($this->churchRep);
 
@@ -307,18 +307,18 @@ class NewsResourceTest extends TestCase
         $news = News::where('slug', 'congresso-com-galeria-de-fotos')->first();
         $this->assertNotNull($news);
         $this->assertNotNull($news->featured_image);
-        Storage::disk('public')->assertExists($news->featured_image);
+        Storage::disk('media')->assertExists($news->featured_image);
 
         $this->assertIsArray($news->gallery);
         $this->assertCount(2, $news->gallery);
         foreach ($news->gallery as $galleryItem) {
-            Storage::disk('public')->assertExists($galleryItem);
+            Storage::disk('media')->assertExists($galleryItem);
         }
     }
 
     public function test_cannot_upload_invalid_file_type_as_featured_image_or_gallery(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('portal'));
         $this->actingAs($this->churchRep);
 

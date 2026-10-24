@@ -84,7 +84,7 @@ class NewsResource extends Resource
                                 'underline',
                                 'undo',
                             ])
-                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDisk(config('media.disk'))
                             ->fileAttachmentsDirectory('news/attachments')
                             ->fileAttachmentsVisibility('public'),
                     ])
@@ -96,7 +96,7 @@ class NewsResource extends Resource
                         Forms\Components\FileUpload::make('featured_image')
                             ->label('Imagem de Destaque')
                             ->image()
-                            ->disk('public')
+                            ->disk(config('media.disk'))
                             ->directory('news/featured')
                             ->visibility('public')
                             ->maxSize(5120)
@@ -113,7 +113,7 @@ class NewsResource extends Resource
                             ->image()
                             ->multiple()
                             ->reorderable()
-                            ->disk('public')
+                            ->disk(config('media.disk'))
                             ->directory('news/galleries')
                             ->visibility('public')
                             ->maxSize(5120)
@@ -177,7 +177,7 @@ class NewsResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('featured_image')
                     ->label('Capa')
-                    ->disk('public')
+                    ->disk(config('media.disk'))
                     ->circular()
                     ->toggleable(),
 

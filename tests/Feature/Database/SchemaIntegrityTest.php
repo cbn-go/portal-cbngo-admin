@@ -18,6 +18,8 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasTable('notices'));
         $this->assertTrue(Schema::hasTable('articles'));
         $this->assertTrue(Schema::hasTable('news'));
+        $this->assertTrue(Schema::hasTable('board_members'));
+        $this->assertTrue(Schema::hasTable('documents'));
     }
 
     public function test_churches_columns_and_indexes(): void
@@ -183,6 +185,48 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasIndex('news', ['category', 'status', 'published_at']));
         $this->assertForeignKeyOnDelete('news', 'church_id', 'churches', 'cascade');
         $this->assertForeignKeyOnDelete('news', 'user_id', 'users', 'cascade');
+    }
+
+    public function test_board_members_columns_and_indexes(): void
+    {
+        $this->assertTrue(Schema::hasColumns('board_members', [
+            'id',
+            'name',
+            'role',
+            'group',
+            'region',
+            'term_label',
+            'photo',
+            'position',
+            'is_active',
+            'created_at',
+            'updated_at',
+        ]));
+
+        $this->assertTrue(Schema::hasIndex('board_members', ['is_active', 'group', 'position']));
+        $this->assertTrue(Schema::hasIndex('board_members', ['term_label']));
+    }
+
+    public function test_documents_columns_and_indexes(): void
+    {
+        $this->assertTrue(Schema::hasColumns('documents', [
+            'id',
+            'title',
+            'slug',
+            'description',
+            'category',
+            'file',
+            'external_url',
+            'file_format',
+            'position',
+            'is_active',
+            'created_at',
+            'updated_at',
+        ]));
+
+        $this->assertTrue(Schema::hasIndex('documents', ['slug'], 'unique'));
+        $this->assertTrue(Schema::hasIndex('documents', ['category']));
+        $this->assertTrue(Schema::hasIndex('documents', ['is_active', 'position']));
     }
 
     private function assertForeignKeyOnDelete(string $table, string $column, string $references, string $onDelete): void

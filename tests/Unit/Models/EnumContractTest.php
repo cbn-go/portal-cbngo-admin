@@ -3,6 +3,8 @@
 namespace Tests\Unit\Models;
 
 use App\Enums\ArticleCategory;
+use App\Enums\BoardGroup;
+use App\Enums\DocumentCategory;
 use App\Enums\NewsCategory;
 use App\Enums\NoticePriority;
 use App\Enums\PublishStatus;
@@ -107,5 +109,25 @@ class EnumContractTest extends TestCase
             $this->assertNotNull($category->getColor());
             $this->assertNotNull($category->getIcon());
         }
+    }
+
+    public function test_institutional_enums_implement_filament_contracts(): void
+    {
+        foreach (BoardGroup::cases() as $group) {
+            $this->assertInstanceOf(HasLabel::class, $group);
+            $this->assertInstanceOf(HasColor::class, $group);
+            $this->assertNotSame('', $group->getLabel());
+        }
+
+        $this->assertSame('Coordenadores de Regiões', BoardGroup::COORDENACAO_REGIONAL->getLabel());
+
+        foreach (DocumentCategory::cases() as $category) {
+            $this->assertInstanceOf(HasLabel::class, $category);
+            $this->assertInstanceOf(HasColor::class, $category);
+            $this->assertInstanceOf(HasIcon::class, $category);
+            $this->assertNotNull($category->getIcon());
+        }
+
+        $this->assertSame('Regimento Interno', DocumentCategory::REGIMENTO->getLabel());
     }
 }

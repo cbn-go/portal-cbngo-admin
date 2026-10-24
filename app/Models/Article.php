@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ArticleCategory;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
+use App\Models\Concerns\HasImageVariants;
 use App\Models\Scopes\ArticleScope;
 use App\Services\HtmlSanitizerService;
 use App\Support\ReadingTime;
@@ -36,6 +37,8 @@ class Article extends Model
 {
     /** @use HasFactory<ArticleFactory> */
     use HasFactory;
+
+    use HasImageVariants;
 
     /**
      * @var list<string>
@@ -161,5 +164,15 @@ class Article extends Model
         }
 
         return $query->whereRaw('1 = 0');
+    }
+
+    /**
+     * Atributos com imagens no disco de mídia que ganham versões WebP.
+     *
+     * @return list<string>
+     */
+    public function imageAttributes(): array
+    {
+        return ['cover_image'];
     }
 }

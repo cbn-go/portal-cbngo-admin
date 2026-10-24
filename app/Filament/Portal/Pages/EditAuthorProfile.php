@@ -69,7 +69,7 @@ class EditAuthorProfile extends EditProfile
                         Forms\Components\FileUpload::make('avatar')
                             ->label('Foto de Perfil')
                             ->image()
-                            ->disk('public')
+                            ->disk(config('media.disk'))
                             ->directory('authors/avatars')
                             ->visibility('public')
                             ->avatar()

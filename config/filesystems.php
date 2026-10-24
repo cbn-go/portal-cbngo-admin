@@ -47,6 +47,20 @@ return [
             'report' => false,
         ],
 
+        /*
+        | Mídia compartilhada com o portal público. Em produção, MEDIA_ROOT aponta
+        | para a pasta servida pelo subdomínio de mídia e MEDIA_URL para esse
+        | subdomínio. Os padrões mantêm o mesmo comportamento do disco "public".
+        */
+        'media' => [
+            'driver' => 'local',
+            'root' => env('MEDIA_ROOT') ?: storage_path('app/public'),
+            'url' => env('MEDIA_URL') ?: env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

@@ -131,7 +131,7 @@ class ChurchResourceTest extends TestCase
 
     public function test_super_admin_can_create_church_with_logo_and_complete_data(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 
@@ -175,7 +175,7 @@ class ChurchResourceTest extends TestCase
         $church = Church::where('name', 'Igreja Batista Nacional Ebenézer')->first();
         $this->assertNotNull($church);
         $this->assertNotNull($church->logo);
-        Storage::disk('public')->assertExists($church->logo);
+        Storage::disk('media')->assertExists($church->logo);
         $this->assertSame('https://instagram.com/ibnebenezer', $church->social_links['instagram']);
     }
 
@@ -198,7 +198,7 @@ class ChurchResourceTest extends TestCase
 
     public function test_cannot_upload_invalid_file_type_as_church_logo(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 

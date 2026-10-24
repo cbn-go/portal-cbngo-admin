@@ -326,7 +326,7 @@ class ArticleResourceTest extends TestCase
 
     public function test_author_can_upload_cover_image_with_proper_storage(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('portal'));
         $this->actingAs($this->author);
 
@@ -351,12 +351,12 @@ class ArticleResourceTest extends TestCase
         $article = Article::where('slug', 'artigo-com-imagem-de-capa')->first();
         $this->assertNotNull($article);
         $this->assertNotNull($article->cover_image);
-        Storage::disk('public')->assertExists($article->cover_image);
+        Storage::disk('media')->assertExists($article->cover_image);
     }
 
     public function test_cannot_upload_invalid_file_type_as_cover_image(): void
     {
-        Storage::fake('public');
+        Storage::fake('media');
         Filament::setCurrentPanel(Filament::getPanel('portal'));
         $this->actingAs($this->author);
 
