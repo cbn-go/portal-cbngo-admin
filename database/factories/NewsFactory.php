@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\NewsCategory;
 use App\Enums\PublishStatus;
 use App\Models\Church;
 use App\Models\News;
@@ -23,6 +24,7 @@ class NewsFactory extends Factory
             'user_id' => User::factory(),
             'title' => fake()->sentence(),
             'slug' => fake()->unique()->slug(),
+            'category' => fake()->randomElement(NewsCategory::cases()),
             'excerpt' => fake()->optional()->paragraph(),
             'content' => fake()->paragraphs(3, true),
             'featured_image' => null,

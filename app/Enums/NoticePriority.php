@@ -21,6 +21,18 @@ enum NoticePriority: string implements HasColor, HasIcon, HasLabel
         };
     }
 
+    /**
+     * Tipo do banner de aviso urgente no portal público (`urgent-banner`).
+     */
+    public function publicBannerType(): string
+    {
+        return match ($this) {
+            self::NORMAL => 'info',
+            self::HIGH => 'warning',
+            self::URGENT => 'critical',
+        };
+    }
+
     public function getColor(): string|array|null
     {
         return match ($this) {

@@ -6,9 +6,11 @@ use App\Filament\Resources\ChurchResource\Pages;
 use App\Models\Church;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class ChurchResource extends Resource
 {
@@ -26,6 +28,21 @@ class ChurchResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    /**
+     * Dias da semana no formato exibido pelo portal público.
+     *
+     * @var list<string>
+     */
+    public const SERVICE_DAYS = [
+        'Domingo',
+        'Segunda-feira',
+        'Terça-feira',
+        'Quarta-feira',
+        'Quinta-feira',
+        'Sexta-feira',
+        'Sábado',
+    ];
+
     public static function form(Form $form): Form
     {
         return $form
@@ -36,7 +53,21 @@ class ChurchResource extends Resource
                         Forms\Components\TextInput::make('name')
                             ->label('Razão Social / Nome Fantasia')
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function (string $operation, ?string $state, Set $set): void {
+                                if ($operation === 'create' && filled($state)) {
+                                    $set('slug', Str::slug($state));
+                                }
+                            }),
+
+                        Forms\Components\TextInput::make('slug')
+                            ->label('Slug / Identificador URL')
+                            ->required()
+                            ->maxLength(255)
+                            ->unique(Church::class, 'slug', ignoreRecord: true)
+                            ->alphaDash()
+                            ->helperText('Identificador único usado na página pública da igreja no portal.'),
 
                         Forms\Components\TextInput::make('cnpj')
                             ->label('CNPJ')
@@ -105,8 +136,58 @@ class ChurchResource extends Resource
                         Forms\Components\TextInput::make('complement')
                             ->label('Complemento')
                             ->maxLength(100),
+
+                        Forms\Components\TextInput::make('latitude')
+                            ->label('Latitude')
+                            ->numeric()
+                            ->minValue(-90)
+                            ->maxValue(90)
+                            ->placeholder('-16.6868912')
+                            ->helperText('No Google Maps, clique com o botão direito no templo e copie as coordenadas.'),
+
+                        Forms\Components\TextInput::make('longitude')
+                            ->label('Longitude')
+                            ->numeric()
+                            ->minValue(-180)
+                            ->maxValue(180)
+                            ->placeholder('-49.2647943'),
                     ])
                     ->columns(2),
+
+                Forms\Components\Section::make('Horários de Culto')
+                    ->description('Programação semanal exibida na página pública da igreja.')
+                    ->schema([
+                        Forms\Components\Repeater::make('service_times')
+                            ->label('Horários')
+                            ->schema([
+                                Forms\Components\Select::make('day')
+                                    ->label('Dia')
+                                    ->options(array_combine(self::SERVICE_DAYS, self::SERVICE_DAYS))
+                                    ->required()
+                                    ->native(false),
+
+                                Forms\Components\TextInput::make('time')
+                                    ->label('Horário')
+                                    ->required()
+                                    ->mask('99h99')
+                                    ->regex('/^([01]\d|2[0-3])h[0-5]\d$/')
+                                    ->placeholder('19h00'),
+
+                                Forms\Components\TextInput::make('label')
+                                    ->label('Descrição')
+                                    ->maxLength(100)
+                                    ->placeholder('Culto de Celebração'),
+                            ])
+                            ->columns(3)
+                            ->reorderable()
+                            ->collapsible()
+                            ->itemLabel(fn (array $state): ?string => implode(' · ', array_filter([
+                                trim(($state['day'] ?? '').' '.($state['time'] ?? '')),
+                                $state['label'] ?? null,
+                            ])) ?: null)
+                            ->addActionLabel('Adicionar horário')
+                            ->defaultItems(0),
+                    ]),
 
                 Forms\Components\Section::make('Contato & Redes Sociais')
                     ->description('Canais de comunicação direta e presença digital da congregação.')

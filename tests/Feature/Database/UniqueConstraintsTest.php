@@ -4,6 +4,7 @@ namespace Tests\Feature\Database;
 
 use App\Models\Article;
 use App\Models\AuthorProfile;
+use App\Models\Church;
 use App\Models\News;
 use App\Models\Notice;
 use App\Models\User;
@@ -59,5 +60,23 @@ class UniqueConstraintsTest extends TestCase
         $this->expectException(UniqueConstraintViolationException::class);
 
         News::factory()->create(['slug' => 'noticia-unica']);
+    }
+
+    public function test_church_slug_is_unique(): void
+    {
+        Church::factory()->create(['slug' => 'igreja-unica']);
+
+        $this->expectException(UniqueConstraintViolationException::class);
+
+        Church::factory()->create(['slug' => 'igreja-unica']);
+    }
+
+    public function test_author_profile_slug_is_unique(): void
+    {
+        AuthorProfile::factory()->create(['slug' => 'autor-unico']);
+
+        $this->expectException(UniqueConstraintViolationException::class);
+
+        AuthorProfile::factory()->create(['slug' => 'autor-unico']);
     }
 }

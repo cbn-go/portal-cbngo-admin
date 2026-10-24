@@ -185,4 +185,35 @@ class AuthorProfilePageTest extends TestCase
 
         $this->assertTrue(Hash::check('NovaSenhaSegura123!', $this->author->fresh()->password));
     }
+
+    public function test_profile_created_through_page_gets_public_slug_that_survives_name_changes(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('portal'));
+        $this->actingAs($this->author);
+
+        $this->author->update(['name' => 'Ana Beatriz Moura']);
+
+        Livewire::test(EditAuthorProfile::class)
+            ->fillForm([
+                'name' => 'Ana Beatriz Moura',
+                'email' => $this->author->email,
+                'pastoral_title' => 'Pastora',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $profile = AuthorProfile::query()->where('user_id', $this->author->id)->firstOrFail();
+        $this->assertSame('ana-beatriz-moura', $profile->slug);
+
+        Livewire::test(EditAuthorProfile::class)
+            ->assertSee('/autores/ana-beatriz-moura')
+            ->fillForm(['name' => 'Ana Beatriz Moura Silva'])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $profile->refresh();
+        $this->assertSame('ana-beatriz-moura', $profile->slug);
+        $this->assertSame('Ana Beatriz Moura Silva', $profile->user->name);
+        $this->assertSame('Ana Beatriz Moura Silva', $profile->display_name);
+    }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\ArticleCategory;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\Scopes\ArticleScope;
 use App\Services\HtmlSanitizerService;
+use App\Support\ReadingTime;
 use Database\Factories\ArticleFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,8 +22,10 @@ use Illuminate\Support\Str;
  * @property int $user_id
  * @property string $title
  * @property string $slug
+ * @property ArticleCategory $category
  * @property string|null $excerpt
  * @property string $content
+ * @property int $reading_time
  * @property string|null $cover_image
  * @property PublishStatus $status
  * @property Carbon|null $published_at
@@ -40,6 +44,7 @@ class Article extends Model
         'user_id',
         'title',
         'slug',
+        'category',
         'excerpt',
         'content',
         'cover_image',
@@ -54,6 +59,8 @@ class Article extends Model
     {
         return [
             'user_id' => 'integer',
+            'category' => ArticleCategory::class,
+            'reading_time' => 'integer',
             'status' => PublishStatus::class,
             'published_at' => 'datetime',
         ];
@@ -88,6 +95,10 @@ class Article extends Model
         static::saving(function (Article $article): void {
             if ($article->isDirty('content') && filled($article->content)) {
                 $article->content = app(HtmlSanitizerService::class)->sanitize($article->content);
+            }
+
+            if ($article->isDirty('content') || ! $article->exists) {
+                $article->reading_time = ReadingTime::fromHtml($article->content);
             }
 
             if ($article->status === PublishStatus::PUBLISHED && $article->published_at === null) {

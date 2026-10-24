@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Filament;
 
+use App\Enums\NewsCategory;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Filament\Resources\NewsResource;
@@ -474,5 +475,60 @@ class NewsResourceTest extends TestCase
             array_key_exists('author', $query->getEagerLoads()),
             'O relacionamento author deve ser eager-loaded para prevenir N+1.'
         );
+    }
+
+    public function test_news_is_created_with_category(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        Livewire::test(CreateNews::class)
+            ->fillForm([
+                'title' => 'Conferência Estadual de Missões',
+                'slug' => 'conferencia-estadual-de-missoes',
+                'category' => NewsCategory::EVENTOS->value,
+                'content' => '<p>Programação completa da conferência.</p>',
+                'status' => PublishStatus::DRAFT->value,
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas('news', [
+            'slug' => 'conferencia-estadual-de-missoes',
+            'category' => 'Eventos',
+        ]);
+    }
+
+    public function test_news_category_defaults_to_geral_and_is_required(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        Livewire::test(CreateNews::class)
+            ->assertFormSet(['category' => NewsCategory::GERAL])
+            ->fillForm([
+                'title' => 'Sem Categoria',
+                'slug' => 'sem-categoria',
+                'category' => null,
+                'content' => '<p>Texto</p>',
+                'status' => PublishStatus::DRAFT->value,
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['category' => 'required']);
+    }
+
+    public function test_admin_can_filter_news_by_category(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        $missions = News::factory()->create(['church_id' => $this->firstChurch->id, 'category' => NewsCategory::MISSOES]);
+        $social = News::factory()->create(['church_id' => $this->firstChurch->id, 'category' => NewsCategory::ACAO_SOCIAL]);
+
+        Livewire::test(ListNews::class)
+            ->assertCanRenderTableColumn('category')
+            ->filterTable('category', NewsCategory::MISSOES->value)
+            ->assertCanSeeTableRecords([$missions])
+            ->assertCanNotSeeTableRecords([$social]);
     }
 }

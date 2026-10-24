@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Models;
 
+use App\Enums\ArticleCategory;
+use App\Enums\NewsCategory;
 use App\Enums\NoticePriority;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
@@ -92,5 +94,18 @@ class EnumContractTest extends TestCase
         $this->assertSame('heroicon-m-information-circle', NoticePriority::NORMAL->getIcon());
         $this->assertSame('heroicon-m-exclamation-circle', NoticePriority::HIGH->getIcon());
         $this->assertSame('heroicon-m-exclamation-triangle', NoticePriority::URGENT->getIcon());
+    }
+
+    public function test_category_enums_implement_filament_contracts(): void
+    {
+        foreach ([...NewsCategory::cases(), ...ArticleCategory::cases()] as $category) {
+            $this->assertInstanceOf(HasLabel::class, $category);
+            $this->assertInstanceOf(HasColor::class, $category);
+            $this->assertInstanceOf(HasIcon::class, $category);
+
+            $this->assertSame($category->value, $category->getLabel());
+            $this->assertNotNull($category->getColor());
+            $this->assertNotNull($category->getIcon());
+        }
     }
 }

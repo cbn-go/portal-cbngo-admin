@@ -48,6 +48,19 @@ class EditAuthorProfile extends EditProfile
                 Forms\Components\Section::make('Identificação Pastoral & Biografia')
                     ->description('Apresentação pública do autor nos artigos e publicações da CBN-GO.')
                     ->schema([
+                        Forms\Components\Placeholder::make('public_url')
+                            ->label('Página Pública do Autor')
+                            ->content(function (): string {
+                                /** @var User $user */
+                                $user = $this->getUser();
+                                $slug = $user->authorProfile?->slug;
+
+                                return $slug !== null
+                                    ? "/autores/{$slug}"
+                                    : 'Será gerada ao salvar o perfil pela primeira vez.';
+                            })
+                            ->columnSpanFull(),
+
                         Forms\Components\TextInput::make('pastoral_title')
                             ->label('Título Pastoral / Ministerial')
                             ->maxLength(50)
@@ -183,7 +196,7 @@ class EditAuthorProfile extends EditProfile
             'website' => $data['social_website'] ?? null,
         ]);
 
-        $record->authorProfile()->updateOrCreate(
+        $profile = $record->authorProfile()->updateOrCreate(
             ['user_id' => $record->id],
             [
                 'pastoral_title' => $data['pastoral_title'] ?? null,
@@ -192,6 +205,9 @@ class EditAuthorProfile extends EditProfile
                 'social_links' => count($socialLinks) > 0 ? $socialLinks : null,
             ]
         );
+
+        // Mantém a relação atualizada para o formulário exibir a URL pública logo após o primeiro salvamento.
+        $record->setRelation('authorProfile', $profile);
 
         return $record;
     }

@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Models;
 
+use App\Enums\ArticleCategory;
+use App\Enums\NewsCategory;
 use App\Enums\NoticePriority;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
@@ -30,5 +32,28 @@ class EnumTest extends TestCase
         $this->assertSame('normal', NoticePriority::NORMAL->value);
         $this->assertSame('high', NoticePriority::HIGH->value);
         $this->assertSame('urgent', NoticePriority::URGENT->value);
+    }
+
+    public function test_news_category_values_are_public_labels(): void
+    {
+        $this->assertSame(
+            ['Geral', 'Comunicado Oficial', 'Missões', 'Educação Teológica', 'Eventos', 'Ação Social'],
+            array_column(NewsCategory::cases(), 'value'),
+        );
+    }
+
+    public function test_article_category_values_are_public_labels(): void
+    {
+        $this->assertSame(
+            ['Teologia', 'Missões', 'Liderança', 'Família', 'Discipulado', 'Devocional'],
+            array_column(ArticleCategory::cases(), 'value'),
+        );
+    }
+
+    public function test_notice_priority_maps_to_public_banner_type(): void
+    {
+        $this->assertSame('info', NoticePriority::NORMAL->publicBannerType());
+        $this->assertSame('warning', NoticePriority::HIGH->publicBannerType());
+        $this->assertSame('critical', NoticePriority::URGENT->publicBannerType());
     }
 }

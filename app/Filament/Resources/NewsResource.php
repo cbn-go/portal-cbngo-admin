@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\NewsCategory;
 use App\Enums\PublishStatus;
 use App\Filament\Resources\NewsResource\Pages;
 use App\Models\News;
@@ -133,6 +134,13 @@ class NewsResource extends Resource
                             ->visible(fn (): bool => auth()->user()?->role->hasAdminPanelAccess() ?? false)
                             ->helperText('Deixe vazio para publicações institucionais gerais da Convenção Estadual.'),
 
+                        Forms\Components\Select::make('category')
+                            ->label('Categoria')
+                            ->options(NewsCategory::class)
+                            ->default(NewsCategory::GERAL)
+                            ->required()
+                            ->native(false),
+
                         Forms\Components\DatePicker::make('event_date')
                             ->label('Data do Evento')
                             ->native(false)
@@ -193,6 +201,12 @@ class NewsResource extends Resource
                     ->sortable()
                     ->visible(fn (): bool => auth()->user()?->role->hasAdminPanelAccess() ?? false),
 
+                Tables\Columns\TextColumn::make('category')
+                    ->label('Categoria')
+                    ->badge()
+                    ->sortable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('event_date')
                     ->label('Data do Evento')
                     ->date('d/m/Y')
@@ -221,6 +235,10 @@ class NewsResource extends Resource
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status')
                     ->options(PublishStatus::class),
+
+                Tables\Filters\SelectFilter::make('category')
+                    ->label('Categoria')
+                    ->options(NewsCategory::class),
 
                 Tables\Filters\TernaryFilter::make('is_official')
                     ->label('Oficial CBN-GO')

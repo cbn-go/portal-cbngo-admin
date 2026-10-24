@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\ArticleCategory;
 use App\Enums\PublishStatus;
 use App\Filament\Resources\ArticleResource\Pages;
 use App\Models\Article;
@@ -101,6 +102,19 @@ class ArticleResource extends Resource
                             ->default(fn () => auth()->id())
                             ->required(fn (): bool => auth()->user()?->role->hasAdminPanelAccess() ?? false),
 
+                        Forms\Components\Select::make('category')
+                            ->label('Categoria')
+                            ->options(ArticleCategory::class)
+                            ->default(ArticleCategory::TEOLOGIA)
+                            ->required()
+                            ->native(false),
+
+                        Forms\Components\Placeholder::make('reading_time')
+                            ->label('Tempo de Leitura')
+                            ->content(fn (?Article $record): string => "{$record?->reading_time} min")
+                            ->helperText('Calculado automaticamente a partir do texto ao salvar.')
+                            ->visibleOn('edit'),
+
                         Forms\Components\Select::make('status')
                             ->label('Status de Publicação')
                             ->options(PublishStatus::class)
@@ -157,6 +171,12 @@ class ArticleResource extends Resource
                     ->sortable()
                     ->visible(fn (): bool => auth()->user()?->role->hasAdminPanelAccess() ?? false),
 
+                Tables\Columns\TextColumn::make('category')
+                    ->label('Categoria')
+                    ->badge()
+                    ->sortable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
@@ -179,6 +199,10 @@ class ArticleResource extends Resource
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status')
                     ->options(PublishStatus::class),
+
+                Tables\Filters\SelectFilter::make('category')
+                    ->label('Categoria')
+                    ->options(ArticleCategory::class),
 
                 Tables\Filters\SelectFilter::make('user_id')
                     ->label('Autor')
