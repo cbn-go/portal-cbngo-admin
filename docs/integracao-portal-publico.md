@@ -152,12 +152,49 @@ ORDER BY position
 
 É a mesma regra de `Banner::visible()`. Sem banners visíveis, o site exibe o hero institucional.
 
+## `social_projects` (site: `/projetos-sociais`)
+
+Gerido em **Conteúdo → Projetos Sociais**. O representante da igreja cadastra os projetos da própria igreja e envia para revisão; o super administrador e o editor da convenção aprovam a publicação. Quando o representante edita um projeto publicado, ele volta para revisão e sai do site até ser aprovado de novo.
+
+| Coluna | Observação |
+|---|---|
+| `title`, `slug` | `slug` é único; rota `/projetos-sociais/{slug}` |
+| `category` | Valor = rótulo exibido (`App\Enums\ProjectCategory`): `Social`, `Cultural`, `Educação`, `Liderança` |
+| `summary` | Até 300 caracteres, para os cards |
+| `description` | HTML sanitizado pelo painel ao salvar (`HtmlSanitizerService`) |
+| `church_id` → `churches` | Igreja responsável (obrigatória); link para `/igrejas` |
+| `city` | Cidade do projeto (padrão: cidade da igreja) |
+| `cover_image`, `gallery` (JSON, lista de caminhos) | Disco de mídia (`projects/covers`, `projects/galleries`), com versões WebP |
+| `target_audience`, `beneficiaries_count` | Opcionais |
+| `started_at`, `ended_at` | Datas. `ended_at` nulo = em andamento |
+| `contact_name`, `contact_phone`, `contact_email`, `how_to_help` | Opcionais. `contact_phone` no formato `(62) 99999-9999`; usar para o botão de WhatsApp |
+| `status` + `published_at` | Ver a regra abaixo |
+| `is_featured` | Destaque definido pela administração |
+| `review_notes` | Uso interno do painel (motivo da devolução). Não exibir |
+
+Um projeto é público quando:
+
+```
+status = 'published' AND published_at IS NOT NULL AND published_at <= NOW()
+```
+
+É a regra de `SocialProject::published()`. Ordenar por `is_featured DESC, published_at DESC`. Um projeto está **em andamento** quando `ended_at IS NULL OR ended_at >= CURDATE()`.
+
+Categorias e o Pacto de Lausanne (`ProjectCategory::description()` e `lausanneReference()`):
+
+| Categoria | Referência |
+|---|---|
+| Social | Art. 5: Responsabilidade social cristã |
+| Cultural | Art. 10: Evangelização e cultura |
+| Educação | Art. 11: Educação e liderança |
+| Liderança | Art. 11: Educação e liderança |
+
 ## Mídia compartilhada
 
 Todos os uploads do painel vão para o disco `media`, servido em produção pelo subdomínio `midia.cbngo.org.br` (veja `docs/deploy-hostinger-midia.md`).
 
 - **URL final:** `MEDIA_URL` + `/` + caminho salvo no banco. Nunca há URL absoluta no banco para esses campos.
-- **Versões WebP:** toda imagem (`featured_image`, itens de `gallery`, `cover_image`, `avatar`, `logo`, `photo`, `banners.image`) ganha três versões ao lado do original, geradas logo após o salvamento:
+- **Versões WebP:** toda imagem (`featured_image`, itens de `gallery`, `cover_image`, `avatar`, `logo`, `photo`, `banners.image`, `social_projects.cover_image` e itens de `social_projects.gallery`) ganha três versões ao lado do original, geradas logo após o salvamento:
 
   | Versão | Largura máxima | Exemplo para `news/featured/abc.jpg` |
   |---|---|---|
@@ -167,7 +204,7 @@ Todos os uploads do painel vão para o disco `media`, servido em produção pelo
 
   A proporção é mantida e a imagem nunca é ampliada (uma imagem de 600 px gera `card` e `cover` com 600 px). Use as versões em `srcset` e mantenha o original como fallback, porque as versões podem levar alguns segundos para existir após o upload.
 - **Documentos** (`documents.file`) não têm versões.
-- **Anexos do RichEditor** (`news/attachments`, `articles/attachments`) ficam embutidos no HTML de `content` já com a URL absoluta de `MEDIA_URL`.
+- **Anexos do RichEditor** (`news/attachments`, `articles/attachments`, `projects/attachments`) ficam embutidos no HTML de `content` já com a URL absoluta de `MEDIA_URL`.
 - Quando uma imagem é substituída ou o registro é excluído, o painel apaga o original e as versões.
 
 ## Dados de desenvolvimento
@@ -179,6 +216,7 @@ Todos os uploads do painel vão para o disco `media`, servido em produção pelo
 - artigos e notícias em todas as categorias, incluindo rascunhos e conteúdo pendente de revisão;
 - avisos vigente, agendado e expirado;
 - a diretoria da gestão 2025–2027 e os documentos Estatuto, Regimento Interno e Pacto Renovado (como links);
-- banners do hero vigentes (link interno e externo), agendado e expirado, com artes de exemplo em 16:9 criadas no disco de mídia quando ainda não existem.
+- banners do hero vigentes (link interno e externo), agendado e expirado, com artes de exemplo em 16:9 criadas no disco de mídia quando ainda não existem;
+- 8 projetos sociais publicados (2 por categoria, em igrejas diferentes), um pendente de revisão e um rascunho devolvido para ajustes da igreja de Goiânia.
 
 Veja `Database\Seeders\DevelopmentContentSeeder`.

@@ -21,6 +21,7 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasTable('board_members'));
         $this->assertTrue(Schema::hasTable('documents'));
         $this->assertTrue(Schema::hasTable('banners'));
+        $this->assertTrue(Schema::hasTable('social_projects'));
     }
 
     public function test_churches_columns_and_indexes(): void
@@ -255,6 +256,24 @@ class SchemaIntegrityTest extends TestCase
         $this->assertForeignKeyOnDelete('banners', 'user_id', 'users', 'set null');
         $this->assertFalse(Schema::hasColumn('banners', 'subtitle'));
         $this->assertFalse(Schema::hasColumn('banners', 'focal_point'));
+    }
+
+    public function test_social_projects_columns_indexes_and_foreign_keys(): void
+    {
+        $this->assertTrue(Schema::hasColumns('social_projects', [
+            'id', 'church_id', 'user_id', 'title', 'slug', 'category', 'summary', 'description',
+            'cover_image', 'gallery', 'target_audience', 'beneficiaries_count', 'city',
+            'started_at', 'ended_at', 'contact_name', 'contact_phone', 'contact_email', 'how_to_help',
+            'status', 'published_at', 'is_featured', 'review_notes', 'created_at', 'updated_at',
+        ]));
+
+        $this->assertTrue(Schema::hasIndex('social_projects', ['slug'], 'unique'));
+        $this->assertTrue(Schema::hasIndex('social_projects', ['status', 'published_at']));
+        $this->assertTrue(Schema::hasIndex('social_projects', ['category', 'status', 'published_at']));
+        $this->assertTrue(Schema::hasIndex('social_projects', ['city']));
+        $this->assertTrue(Schema::hasIndex('social_projects', ['is_featured']));
+        $this->assertForeignKeyOnDelete('social_projects', 'church_id', 'churches', 'cascade');
+        $this->assertForeignKeyOnDelete('social_projects', 'user_id', 'users', 'set null');
     }
 
     private function assertForeignKeyOnDelete(string $table, string $column, string $references, string $onDelete): void
