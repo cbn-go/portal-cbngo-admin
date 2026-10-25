@@ -121,12 +121,40 @@ Gerido em **Institucional → Documentos**, apenas pelo super administrador.
 
 URL do documento: `MEDIA_URL/{file}` quando `file` está preenchido; senão, `external_url`. Exibir: `is_active = 1 ORDER BY position`.
 
+## `banners` (site: hero da página inicial)
+
+Gerido em **Comunicação → Banners da Home** pelo super administrador e pelo editor da convenção. Não confundir com `notices`, que continuam sendo a barra fina no topo do site.
+
+| Coluna | Observação |
+|---|---|
+| `title`, `subtitle` | Escritos em HTML pelo site sobre a imagem. `subtitle` é opcional |
+| `image` | Caminho no disco de mídia (`banners/...`); URL `MEDIA_URL/{image}`, com as versões WebP `-thumb`, `-card` e `-cover` (veja [Mídia compartilhada](#mídia-compartilhada)). Mínimo 1280×533, recomendado 1920×800 |
+| `focal_point` | `center`, `left` ou `right`. Aplicar como `object-position`: `center center`, `left center`, `right center` (`BannerFocalPoint::objectPosition()`) |
+| `alt_text` | Sempre preenchido; usar no `alt` da imagem |
+| `link_url` | Opcional. Caminho do site (`/eventos/assembleia`) ou URL completa `http(s)://`. Vazio = sem botão |
+| `link_label` | Texto do botão; usar "Saiba mais" quando vazio |
+| `opens_in_new_tab` | Quando `1`, abrir com `target="_blank" rel="noopener noreferrer"`. O painel marca automaticamente para domínios fora de `cbngo.org.br`/`cbngo.com.br` |
+| `position` | Ordem do carrossel, definida arrastando as linhas no painel |
+| `starts_at`, `ends_at` | Opcionais. Nulos = sem início/fim |
+| `is_active` | |
+
+Um banner é exibido quando:
+
+```
+is_active = 1
+AND (starts_at IS NULL OR starts_at <= NOW())
+AND (ends_at IS NULL OR ends_at >= NOW())
+ORDER BY position
+```
+
+É a mesma regra de `Banner::visible()`. Sem banners visíveis, o site exibe o hero institucional.
+
 ## Mídia compartilhada
 
 Todos os uploads do painel vão para o disco `media`, servido em produção pelo subdomínio `midia.cbngo.org.br` (veja `docs/deploy-hostinger-midia.md`).
 
 - **URL final:** `MEDIA_URL` + `/` + caminho salvo no banco. Nunca há URL absoluta no banco para esses campos.
-- **Versões WebP:** toda imagem (`featured_image`, itens de `gallery`, `cover_image`, `avatar`, `logo`, `photo`) ganha três versões ao lado do original, geradas logo após o salvamento:
+- **Versões WebP:** toda imagem (`featured_image`, itens de `gallery`, `cover_image`, `avatar`, `logo`, `photo`, `banners.image`) ganha três versões ao lado do original, geradas logo após o salvamento:
 
   | Versão | Largura máxima | Exemplo para `news/featured/abc.jpg` |
   |---|---|---|
@@ -147,6 +175,7 @@ Todos os uploads do painel vão para o disco `media`, servido em produção pelo
 - 3 autores com perfil;
 - artigos e notícias em todas as categorias, incluindo rascunhos e conteúdo pendente de revisão;
 - avisos vigente, agendado e expirado;
-- a diretoria da gestão 2025–2027 e os documentos Estatuto, Regimento Interno e Pacto Renovado (como links).
+- a diretoria da gestão 2025–2027 e os documentos Estatuto, Regimento Interno e Pacto Renovado (como links);
+- banners do hero vigentes (link interno e externo), agendado e expirado. As imagens não são criadas pelo seeder.
 
 Veja `Database\Seeders\DevelopmentContentSeeder`.

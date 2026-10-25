@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\ArticleCategory;
+use App\Enums\BannerFocalPoint;
 use App\Enums\BoardGroup;
 use App\Enums\DocumentCategory;
 use App\Enums\NewsCategory;
@@ -10,6 +11,7 @@ use App\Enums\NoticePriority;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\Article;
+use App\Models\Banner;
 use App\Models\BoardMember;
 use App\Models\Church;
 use App\Models\Document;
@@ -72,6 +74,7 @@ class DevelopmentContentSeeder extends Seeder
         $this->seedNotices();
         $this->seedBoardMembers();
         $this->seedDocuments();
+        $this->seedBanners();
     }
 
     private function seedStaff(): void
@@ -417,6 +420,72 @@ class DevelopmentContentSeeder extends Seeder
             Document::query()->updateOrCreate(
                 ['slug' => $data['slug']],
                 [...$data, 'file' => null, 'is_active' => true],
+            );
+        }
+    }
+
+    /**
+     * Banners do hero: dois vigentes (link interno e externo), um agendado e um expirado.
+     */
+    private function seedBanners(): void
+    {
+        $editor = User::query()->where('email', self::EDITOR_EMAIL)->firstOrFail();
+
+        $banners = [
+            [
+                'image' => 'banners/assembleia-estadual.jpg',
+                'title' => 'Assembleia Estadual 2026',
+                'subtitle' => 'Inscrições de mensageiros abertas até o fim do mês.',
+                'alt_text' => 'Plenário da assembleia com mensageiros reunidos',
+                'focal_point' => BannerFocalPoint::CENTER,
+                'link_url' => '/noticias',
+                'link_label' => 'Inscreva-se',
+                'opens_in_new_tab' => false,
+                'starts_at' => now()->subDays(2),
+                'ends_at' => now()->addDays(30),
+            ],
+            [
+                'image' => 'banners/campanha-missoes.jpg',
+                'title' => 'Campanha de Missões Nacionais',
+                'subtitle' => 'Ore, contribua e envie: juntos alcançamos o Brasil.',
+                'alt_text' => 'Missionários reunidos com crianças em uma comunidade',
+                'focal_point' => BannerFocalPoint::LEFT,
+                'link_url' => 'https://www.convencaobatistanacional.com.br',
+                'link_label' => null,
+                'opens_in_new_tab' => true,
+                'starts_at' => null,
+                'ends_at' => null,
+            ],
+            [
+                'image' => 'banners/retiro-pastores.jpg',
+                'title' => 'Retiro de Pastores e Esposas',
+                'subtitle' => 'Vagas abertas em breve.',
+                'alt_text' => 'Casal de pastores em um momento de oração ao ar livre',
+                'focal_point' => BannerFocalPoint::RIGHT,
+                'link_url' => null,
+                'link_label' => null,
+                'opens_in_new_tab' => false,
+                'starts_at' => now()->addDays(15),
+                'ends_at' => now()->addDays(60),
+            ],
+            [
+                'image' => 'banners/culto-de-gratidao.jpg',
+                'title' => 'Culto de Gratidão',
+                'subtitle' => 'Obrigado a todas as igrejas que participaram.',
+                'alt_text' => 'Igreja lotada durante o culto de gratidão',
+                'focal_point' => BannerFocalPoint::CENTER,
+                'link_url' => null,
+                'link_label' => null,
+                'opens_in_new_tab' => false,
+                'starts_at' => now()->subDays(40),
+                'ends_at' => now()->subDays(10),
+            ],
+        ];
+
+        foreach ($banners as $index => $data) {
+            Banner::query()->updateOrCreate(
+                ['image' => $data['image']],
+                [...$data, 'user_id' => $editor->id, 'position' => $index + 1, 'is_active' => true],
             );
         }
     }

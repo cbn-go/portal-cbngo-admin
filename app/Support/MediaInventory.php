@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Models\Article;
 use App\Models\AuthorProfile;
+use App\Models\Banner;
 use App\Models\BoardMember;
 use App\Models\Church;
 use App\Models\Document;
@@ -18,7 +19,7 @@ class MediaInventory
     /**
      * Models com imagens que ganham versões WebP.
      *
-     * @var list<class-string<News|Article|AuthorProfile|Church|BoardMember>>
+     * @var list<class-string<News|Article|AuthorProfile|Church|BoardMember|Banner>>
      */
     public const IMAGE_MODELS = [
         News::class,
@@ -26,6 +27,7 @@ class MediaInventory
         AuthorProfile::class,
         Church::class,
         BoardMember::class,
+        Banner::class,
     ];
 
     /**
@@ -47,7 +49,7 @@ class MediaInventory
 
         foreach (self::IMAGE_MODELS as $modelClass) {
             $modelClass::query()->withoutGlobalScopes()->lazyById()->each(
-                function (News|Article|AuthorProfile|Church|BoardMember $model) use (&$paths): void {
+                function (News|Article|AuthorProfile|Church|BoardMember|Banner $model) use (&$paths): void {
                     array_push($paths, ...$model->currentImagePaths());
                 },
             );
