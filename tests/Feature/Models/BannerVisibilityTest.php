@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Models;
 
-use App\Enums\BannerFocalPoint;
 use App\Enums\NoticeValidityStatus;
 use App\Enums\UserRole;
 use App\Models\Banner;
@@ -89,13 +88,10 @@ class BannerVisibilityTest extends TestCase
         $this->assertSame(2, $second->position);
     }
 
-    public function test_link_label_defaults_and_focal_point_css(): void
+    public function test_link_label_defaults(): void
     {
         $this->assertSame('Saiba mais', Banner::factory()->make(['link_label' => null])->display_link_label);
         $this->assertSame('Inscreva-se', Banner::factory()->make(['link_label' => 'Inscreva-se'])->display_link_label);
 
-        $this->assertSame('center center', BannerFocalPoint::CENTER->objectPosition());
-        $this->assertSame('left center', BannerFocalPoint::LEFT->objectPosition());
-        $this->assertSame('right center', BannerFocalPoint::RIGHT->objectPosition());
     }
 }

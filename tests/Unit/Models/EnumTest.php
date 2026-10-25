@@ -3,7 +3,6 @@
 namespace Tests\Unit\Models;
 
 use App\Enums\ArticleCategory;
-use App\Enums\BannerFocalPoint;
 use App\Enums\BoardGroup;
 use App\Enums\DocumentCategory;
 use App\Enums\NewsCategory;
@@ -74,11 +73,5 @@ class EnumTest extends TestCase
             ['estatuto', 'regimento', 'pacto', 'atas', 'outros'],
             array_column(DocumentCategory::cases(), 'value'),
         );
-    }
-
-    public function test_banner_focal_point_backed_values(): void
-    {
-        $this->assertSame(['center', 'left', 'right'], array_column(BannerFocalPoint::cases(), 'value'));
-        $this->assertSame('Centro', BannerFocalPoint::CENTER->getLabel());
     }
 }

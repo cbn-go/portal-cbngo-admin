@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\ArticleCategory;
-use App\Enums\BannerFocalPoint;
 use App\Enums\BoardGroup;
 use App\Enums\DocumentCategory;
 use App\Enums\NewsCategory;
@@ -18,6 +17,7 @@ use App\Models\Document;
 use App\Models\News;
 use App\Models\Notice;
 use App\Models\User;
+use App\Support\MediaVariants;
 use Illuminate\Database\Seeder;
 
 /**
@@ -425,7 +425,9 @@ class DevelopmentContentSeeder extends Seeder
     }
 
     /**
-     * Banners do hero: dois vigentes (link interno e externo), um agendado e um expirado.
+     * Banners do hero (arte completa em 16:9): dois vigentes (link interno e
+     * externo), um agendado e um expirado. Cria uma arte de exemplo quando o
+     * arquivo ainda não existe no disco de mídia.
      */
     private function seedBanners(): void
     {
@@ -433,61 +435,92 @@ class DevelopmentContentSeeder extends Seeder
 
         $banners = [
             [
-                'image' => 'banners/assembleia-estadual.jpg',
-                'title' => 'Assembleia Estadual 2026',
-                'subtitle' => 'Inscrições de mensageiros abertas até o fim do mês.',
-                'alt_text' => 'Plenário da assembleia com mensageiros reunidos',
-                'focal_point' => BannerFocalPoint::CENTER,
+                'image' => 'banners/encontro-missoes-nacionais-2026.jpg',
+                'title' => 'Encontro de Missões Nacionais 2026',
+                'alt_text' => 'Encontro de Missões Nacionais 2026, de 14 a 16 de novembro, no Centro de Convenções de Goiânia. Inscrições abertas.',
                 'link_url' => '/noticias',
-                'link_label' => 'Inscreva-se',
                 'opens_in_new_tab' => false,
                 'starts_at' => now()->subDays(2),
                 'ends_at' => now()->addDays(30),
+                'color' => [24, 56, 112],
             ],
             [
-                'image' => 'banners/campanha-missoes.jpg',
+                'image' => 'banners/campanha-missoes-nacionais.jpg',
                 'title' => 'Campanha de Missões Nacionais',
-                'subtitle' => 'Ore, contribua e envie: juntos alcançamos o Brasil.',
-                'alt_text' => 'Missionários reunidos com crianças em uma comunidade',
-                'focal_point' => BannerFocalPoint::LEFT,
+                'alt_text' => 'Campanha de Missões Nacionais: ore, contribua e envie. Juntos alcançamos o Brasil.',
                 'link_url' => 'https://www.convencaobatistanacional.com.br',
-                'link_label' => null,
                 'opens_in_new_tab' => true,
                 'starts_at' => null,
                 'ends_at' => null,
+                'color' => [140, 36, 40],
             ],
             [
-                'image' => 'banners/retiro-pastores.jpg',
+                'image' => 'banners/retiro-pastores-2026.jpg',
                 'title' => 'Retiro de Pastores e Esposas',
-                'subtitle' => 'Vagas abertas em breve.',
-                'alt_text' => 'Casal de pastores em um momento de oração ao ar livre',
-                'focal_point' => BannerFocalPoint::RIGHT,
+                'alt_text' => 'Retiro de Pastores e Esposas 2026. Vagas abertas em breve.',
                 'link_url' => null,
-                'link_label' => null,
                 'opens_in_new_tab' => false,
                 'starts_at' => now()->addDays(15),
                 'ends_at' => now()->addDays(60),
+                'color' => [36, 104, 68],
             ],
             [
                 'image' => 'banners/culto-de-gratidao.jpg',
                 'title' => 'Culto de Gratidão',
-                'subtitle' => 'Obrigado a todas as igrejas que participaram.',
-                'alt_text' => 'Igreja lotada durante o culto de gratidão',
-                'focal_point' => BannerFocalPoint::CENTER,
+                'alt_text' => 'Culto de Gratidão: obrigado a todas as igrejas que participaram.',
                 'link_url' => null,
-                'link_label' => null,
                 'opens_in_new_tab' => false,
                 'starts_at' => now()->subDays(40),
                 'ends_at' => now()->subDays(10),
+                'color' => [112, 84, 28],
             ],
         ];
 
         foreach ($banners as $index => $data) {
+            ['color' => $color] = $data;
+            unset($data['color']);
+
+            $this->ensureBannerArt($data['image'], $data['title'], $color);
+
             Banner::query()->updateOrCreate(
                 ['image' => $data['image']],
                 [...$data, 'user_id' => $editor->id, 'position' => $index + 1, 'is_active' => true],
             );
         }
+    }
+
+    /**
+     * Arte de exemplo 1920×1080 (cor sólida com o nome do banner), gravada
+     * apenas quando o arquivo ainda não existe.
+     *
+     * @param  array{0: int, 1: int, 2: int}  $color
+     */
+    private function ensureBannerArt(string $path, string $text, array $color): void
+    {
+        $disk = MediaVariants::disk();
+
+        if ($disk->exists($path) || ! function_exists('imagecreatetruecolor')) {
+            return;
+        }
+
+        // Desenha em 480×270 e amplia, porque as fontes embutidas do GD são pequenas.
+        $small = imagecreatetruecolor(480, 270);
+        imagefill($small, 0, 0, (int) imagecolorallocate($small, $color[0], $color[1], $color[2]));
+        $white = (int) imagecolorallocate($small, 255, 255, 255);
+        $label = mb_strtoupper(iconv('UTF-8', 'ASCII//TRANSLIT', $text) ?: $text);
+        $x = max(8, (int) ((480 - strlen($label) * imagefontwidth(5)) / 2));
+        imagestring($small, 5, $x, 120, $label, $white);
+        imagestring($small, 3, 8, 250, 'CBN-GO - arte de exemplo 16:9', $white);
+
+        $art = imagecreatetruecolor(Banner::RECOMMENDED_WIDTH, Banner::RECOMMENDED_HEIGHT);
+        imagecopyresampled($art, $small, 0, 0, 0, 0, Banner::RECOMMENDED_WIDTH, Banner::RECOMMENDED_HEIGHT, 480, 270);
+
+        ob_start();
+        imagejpeg($art, null, 85);
+        $disk->put($path, (string) ob_get_clean(), 'public');
+
+        imagedestroy($small);
+        imagedestroy($art);
     }
 
     private function church(string $city): ?Church

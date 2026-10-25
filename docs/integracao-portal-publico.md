@@ -125,18 +125,21 @@ URL do documento: `MEDIA_URL/{file}` quando `file` está preenchido; senão, `ex
 
 Gerido em **Comunicação → Banners da Home** pelo super administrador e pelo editor da convenção. Não confundir com `notices`, que continuam sendo a barra fina no topo do site.
 
+**O banner é a arte completa**, já com textos, datas e logos. O site exibe a imagem inteira, sem corte e sem escrever nada por cima: caixa 16:9 (`aspect-video`) com `object-contain` e fundo neutro para artes fora do padrão.
+
 | Coluna | Observação |
 |---|---|
-| `title`, `subtitle` | Escritos em HTML pelo site sobre a imagem. `subtitle` é opcional |
-| `image` | Caminho no disco de mídia (`banners/...`); URL `MEDIA_URL/{image}`, com as versões WebP `-thumb`, `-card` e `-cover` (veja [Mídia compartilhada](#mídia-compartilhada)). Mínimo 1280×533, recomendado 1920×800 |
-| `focal_point` | `center`, `left` ou `right`. Aplicar como `object-position`: `center center`, `left center`, `right center` (`BannerFocalPoint::objectPosition()`) |
-| `alt_text` | Sempre preenchido; usar no `alt` da imagem |
-| `link_url` | Opcional. Caminho do site (`/eventos/assembleia`) ou URL completa `http(s)://`. Vazio = sem botão |
-| `link_label` | Texto do botão; usar "Saiba mais" quando vazio |
-| `opens_in_new_tab` | Quando `1`, abrir com `target="_blank" rel="noopener noreferrer"`. O painel marca automaticamente para domínios fora de `cbngo.org.br`/`cbngo.com.br` |
+| `title` | **Nome interno.** Não é exibido sobre a imagem; use só nos rótulos dos controles do carrossel para leitores de tela |
+| `image` | Arte em 16:9, recomendado 1920×1080 (mínimo 1280×720). Caminho no disco de mídia (`banners/...`); URL `MEDIA_URL/{image}`, com as versões WebP `-thumb`, `-card` e `-cover` (veja [Mídia compartilhada](#mídia-compartilhada)). Use `width="1920" height="1080"` para reservar o espaço |
+| `alt_text` | Sempre preenchido (até 500 caracteres). Transcreve a arte (evento, datas, local); é o nome acessível da imagem e do link |
+| `link_url` | Opcional. Caminho do site (`/eventos/assembleia`) ou URL completa `http(s)://`. Com link, **a arte inteira é o link**; vazio = imagem não clicável |
+| `opens_in_new_tab` | Quando `1`, abrir com `target="_blank" rel="noopener noreferrer"` e aviso "(abre em nova aba)" para leitores de tela. O painel marca automaticamente para domínios fora de `cbngo.org.br`/`cbngo.com.br` |
+| `link_label` | Não é mais usado (não há botão). A coluna continua existindo, sem edição no painel |
 | `position` | Ordem do carrossel, definida arrastando as linhas no painel |
 | `starts_at`, `ends_at` | Opcionais. Nulos = sem início/fim |
 | `is_active` | |
+
+`subtitle` e `focal_point` foram removidos (#26).
 
 Um banner é exibido quando:
 
@@ -176,6 +179,6 @@ Todos os uploads do painel vão para o disco `media`, servido em produção pelo
 - artigos e notícias em todas as categorias, incluindo rascunhos e conteúdo pendente de revisão;
 - avisos vigente, agendado e expirado;
 - a diretoria da gestão 2025–2027 e os documentos Estatuto, Regimento Interno e Pacto Renovado (como links);
-- banners do hero vigentes (link interno e externo), agendado e expirado. As imagens não são criadas pelo seeder.
+- banners do hero vigentes (link interno e externo), agendado e expirado, com artes de exemplo em 16:9 criadas no disco de mídia quando ainda não existem.
 
 Veja `Database\Seeders\DevelopmentContentSeeder`.
