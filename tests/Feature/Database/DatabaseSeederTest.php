@@ -6,6 +6,7 @@ use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\Article;
 use App\Models\AuthorProfile;
+use App\Models\Banner;
 use App\Models\BoardMember;
 use App\Models\Church;
 use App\Models\Document;
@@ -91,6 +92,10 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame(4, BoardMember::query()->where('group', 'coordenacao_regional')->whereNotNull('region')->count());
         $this->assertSame('PDF', Document::query()->where('slug', 'estatuto-da-cbn')->value('file_format'));
         $this->assertSame('Página', Document::query()->where('slug', 'pacto-renovado')->value('file_format'));
+
+        $this->assertSame(2, Banner::query()->visible()->count());
+        $this->assertSame(1, Banner::query()->scheduled()->count());
+        $this->assertSame(1, Banner::query()->expired()->count());
     }
 
     public function test_seeders_are_idempotent(): void
@@ -105,5 +110,6 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame(3, Notice::query()->count());
         $this->assertSame(14, BoardMember::query()->count());
         $this->assertSame(3, Document::query()->count());
+        $this->assertSame(4, Banner::query()->count());
     }
 }

@@ -20,6 +20,7 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasTable('news'));
         $this->assertTrue(Schema::hasTable('board_members'));
         $this->assertTrue(Schema::hasTable('documents'));
+        $this->assertTrue(Schema::hasTable('banners'));
     }
 
     public function test_churches_columns_and_indexes(): void
@@ -227,6 +228,33 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasIndex('documents', ['slug'], 'unique'));
         $this->assertTrue(Schema::hasIndex('documents', ['category']));
         $this->assertTrue(Schema::hasIndex('documents', ['is_active', 'position']));
+    }
+
+    public function test_banners_columns_indexes_and_foreign_key(): void
+    {
+        $this->assertTrue(Schema::hasColumns('banners', [
+            'id',
+            'user_id',
+            'title',
+            'subtitle',
+            'image',
+            'focal_point',
+            'alt_text',
+            'link_url',
+            'link_label',
+            'opens_in_new_tab',
+            'position',
+            'starts_at',
+            'ends_at',
+            'is_active',
+            'created_at',
+            'updated_at',
+        ]));
+
+        $this->assertTrue(Schema::hasIndex('banners', ['is_active', 'position']));
+        $this->assertTrue(Schema::hasIndex('banners', ['starts_at']));
+        $this->assertTrue(Schema::hasIndex('banners', ['ends_at']));
+        $this->assertForeignKeyOnDelete('banners', 'user_id', 'users', 'set null');
     }
 
     private function assertForeignKeyOnDelete(string $table, string $column, string $references, string $onDelete): void
