@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\BannerFocalPoint;
 use App\Enums\NoticeValidityStatus;
 use App\Models\Concerns\HasImageVariants;
 use Database\Factories\BannerFactory;
@@ -14,14 +13,14 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Banner do hero da página inicial do portal público.
+ * Banner do hero da página inicial do portal público: a arte completa
+ * (com textos e logos embutidos), exibida inteira pelo site. O título é
+ * um nome interno e o texto alternativo transcreve a arte.
  *
  * @property int $id
  * @property int|null $user_id
  * @property string $title
- * @property string|null $subtitle
  * @property string $image
- * @property BannerFocalPoint $focal_point
  * @property string $alt_text
  * @property string|null $link_url
  * @property string|null $link_label
@@ -53,14 +52,23 @@ class Banner extends Model
     public const DEFAULT_LINK_LABEL = 'Saiba mais';
 
     /**
+     * Proporção padrão da arte (16:9): tamanho recomendado e mínimo aceito.
+     */
+    public const RECOMMENDED_WIDTH = 1920;
+
+    public const RECOMMENDED_HEIGHT = 1080;
+
+    public const MIN_WIDTH = 1280;
+
+    public const MIN_HEIGHT = 720;
+
+    /**
      * @var list<string>
      */
     protected $fillable = [
         'user_id',
         'title',
-        'subtitle',
         'image',
-        'focal_point',
         'alt_text',
         'link_url',
         'link_label',
@@ -78,7 +86,6 @@ class Banner extends Model
     {
         return [
             'user_id' => 'integer',
-            'focal_point' => BannerFocalPoint::class,
             'opens_in_new_tab' => 'boolean',
             'position' => 'integer',
             'starts_at' => 'datetime',

@@ -2,14 +2,17 @@
 
 namespace Tests\Feature\Filament;
 
-use App\Enums\BannerFocalPoint;
 use App\Enums\UserRole;
+use App\Filament\Resources\BannerResource;
 use App\Filament\Resources\BannerResource\Pages\CreateBanner;
 use App\Filament\Resources\BannerResource\Pages\EditBanner;
 use App\Filament\Resources\BannerResource\Pages\ListBanners;
 use App\Models\Banner;
 use App\Models\User;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
@@ -43,10 +46,8 @@ class BannerResourceTest extends TestCase
     {
         return [
             'title' => 'Assembleia Estadual 2026',
-            'subtitle' => 'Inscrições abertas',
-            'image' => UploadedFile::fake()->image('banner.jpg', 1920, 800),
-            'focal_point' => BannerFocalPoint::CENTER->value,
-            'alt_text' => 'Plenário da assembleia',
+            'image' => UploadedFile::fake()->image('banner.jpg', 1920, 1080),
+            'alt_text' => 'Assembleia Estadual 2026, de 14 a 16 de novembro, em Goiânia. Inscrições abertas.',
             'is_active' => true,
             ...$overrides,
         ];
@@ -99,6 +100,63 @@ class BannerResourceTest extends TestCase
         $this->assertSame(1, $banner->position);
     }
 
+    public function test_form_has_internal_name_and_no_overlay_fields(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        Livewire::test(CreateBanner::class)
+            ->assertFormFieldExists('title', fn (TextInput $field): bool => $field->getLabel() === 'Nome do banner (uso interno)')
+            ->assertFormFieldExists('alt_text', fn (Textarea $field): bool => str_contains((string) $field->getHelperText(), 'Transcreva'))
+            ->assertFormFieldExists('image', fn (FileUpload $field): bool => $field->hasImageEditor()
+                && str_contains((string) $field->getHelperText(), 'já com textos e logos, em 16:9 (1920×1080)'))
+            ->assertFormFieldDoesNotExist('subtitle')
+            ->assertFormFieldDoesNotExist('focal_point')
+            ->assertFormFieldDoesNotExist('link_label');
+    }
+
+    public function test_accepts_real_art_size_and_enforces_minimum(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        Livewire::test(CreateBanner::class)
+            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('missoes.jpg', 1376, 768)]))
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame(1, Banner::query()->count());
+    }
+
+    public function test_warns_without_blocking_when_art_is_not_16_9(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        Livewire::test(CreateBanner::class)
+            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('quadrada.jpg', 1376, 900)]))
+            ->assertSee('Atenção: a arte tem 1376×900')
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        Livewire::test(CreateBanner::class)
+            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('padrao.jpg', 1376, 768)]))
+            ->assertDontSee('Atenção: a arte tem');
+
+        $this->assertSame(1, Banner::query()->count());
+    }
+
+    public function test_aspect_ratio_warning_reads_saved_images(): void
+    {
+        Storage::disk('media')->put('banners/torta.jpg', UploadedFile::fake()->image('t.jpg', 1600, 1200)->getContent());
+        Storage::disk('media')->put('banners/certa.jpg', UploadedFile::fake()->image('c.jpg', 1920, 1080)->getContent());
+
+        $this->assertStringContainsString('1600×1200', (string) BannerResource::aspectRatioWarning(['uuid' => 'banners/torta.jpg']));
+        $this->assertNull(BannerResource::aspectRatioWarning(['uuid' => 'banners/certa.jpg']));
+        $this->assertNull(BannerResource::aspectRatioWarning([]));
+        $this->assertNull(BannerResource::aspectRatioWarning('banners/nao-existe.jpg'));
+    }
+
     public function test_title_image_and_alt_text_are_required(): void
     {
         Filament::setCurrentPanel(Filament::getPanel('admin'));
@@ -116,7 +174,7 @@ class BannerResourceTest extends TestCase
         $this->actingAs($this->superAdmin);
 
         Livewire::test(CreateBanner::class)
-            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('pequena.jpg', 800, 400)]))
+            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('pequena.jpg', 1200, 675)]))
             ->call('create')
             ->assertHasFormErrors(['image']);
 
@@ -179,7 +237,7 @@ class BannerResourceTest extends TestCase
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 
-        Storage::disk('media')->put('banners/existente.jpg', UploadedFile::fake()->image('e.jpg', 1920, 800)->getContent());
+        Storage::disk('media')->put('banners/existente.jpg', UploadedFile::fake()->image('e.jpg', 1920, 1080)->getContent());
         $banner = Banner::factory()->create(['image' => 'banners/existente.jpg', 'link_url' => null]);
 
         Livewire::test(EditBanner::class, ['record' => $banner->getKey()])

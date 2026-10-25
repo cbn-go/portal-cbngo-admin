@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\BannerFocalPoint;
 use App\Models\Banner;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,10 +18,8 @@ class BannerFactory extends Factory
         return [
             'user_id' => null,
             'title' => fake()->sentence(4),
-            'subtitle' => fake()->sentence(),
             'image' => 'banners/'.fake()->uuid().'.jpg',
-            'focal_point' => BannerFocalPoint::CENTER,
-            'alt_text' => fake()->sentence(6),
+            'alt_text' => 'Encontro de Missões Nacionais 2026, de 14 a 16 de novembro, em Goiânia. Inscrições abertas.',
             'link_url' => '/eventos',
             'link_label' => null,
             'opens_in_new_tab' => false,

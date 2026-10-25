@@ -17,11 +17,20 @@ use Database\Seeders\ChurchSeeder;
 use Database\Seeders\DevelopmentContentSeeder;
 use Database\Seeders\SuperAdminSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class DatabaseSeederTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // O seeder grava artes de exemplo dos banners no disco de mídia.
+        Storage::fake('media');
+    }
 
     public function test_seeders_create_super_admin_and_polo_churches(): void
     {
@@ -96,6 +105,13 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame(2, Banner::query()->visible()->count());
         $this->assertSame(1, Banner::query()->scheduled()->count());
         $this->assertSame(1, Banner::query()->expired()->count());
+
+        foreach (Banner::query()->pluck('image') as $image) {
+            Storage::disk('media')->assertExists($image);
+            $info = getimagesizefromstring((string) Storage::disk('media')->get($image));
+            $this->assertIsArray($info);
+            $this->assertSame([1920, 1080], [$info[0], $info[1]]);
+        }
     }
 
     public function test_seeders_are_idempotent(): void
