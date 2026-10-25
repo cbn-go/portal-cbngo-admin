@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Filament\Portal\Pages\EditAuthorProfile;
 use App\Filament\Resources\ArticleResource;
 use App\Filament\Resources\NewsResource;
+use App\Filament\Resources\SocialProjectResource;
 use App\Providers\Filament\Concerns\ConfiguresCbngoTheme;
 use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationItem;
@@ -34,6 +35,7 @@ class PortalPanelProvider extends PanelProvider
             ->resources([
                 ArticleResource::class,
                 NewsResource::class,
+                SocialProjectResource::class,
             ])
             ->navigationItems([
                 NavigationItem::make('Meu Perfil de Autor')

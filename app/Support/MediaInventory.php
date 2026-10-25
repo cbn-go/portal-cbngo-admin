@@ -9,6 +9,7 @@ use App\Models\BoardMember;
 use App\Models\Church;
 use App\Models\Document;
 use App\Models\News;
+use App\Models\SocialProject;
 
 /**
  * Lista os arquivos de mídia referenciados pelo banco, usada pelos comandos
@@ -19,7 +20,7 @@ class MediaInventory
     /**
      * Models com imagens que ganham versões WebP.
      *
-     * @var list<class-string<News|Article|AuthorProfile|Church|BoardMember|Banner>>
+     * @var list<class-string<News|Article|AuthorProfile|Church|BoardMember|Banner|SocialProject>>
      */
     public const IMAGE_MODELS = [
         News::class,
@@ -28,6 +29,7 @@ class MediaInventory
         Church::class,
         BoardMember::class,
         Banner::class,
+        SocialProject::class,
     ];
 
     /**
@@ -38,6 +40,7 @@ class MediaInventory
     public const ATTACHMENT_DIRECTORIES = [
         'news/attachments',
         'articles/attachments',
+        'projects/attachments',
     ];
 
     /**
@@ -49,7 +52,7 @@ class MediaInventory
 
         foreach (self::IMAGE_MODELS as $modelClass) {
             $modelClass::query()->withoutGlobalScopes()->lazyById()->each(
-                function (News|Article|AuthorProfile|Church|BoardMember|Banner $model) use (&$paths): void {
+                function (News|Article|AuthorProfile|Church|BoardMember|Banner|SocialProject $model) use (&$paths): void {
                     array_push($paths, ...$model->currentImagePaths());
                 },
             );

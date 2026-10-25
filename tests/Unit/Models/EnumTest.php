@@ -7,6 +7,7 @@ use App\Enums\BoardGroup;
 use App\Enums\DocumentCategory;
 use App\Enums\NewsCategory;
 use App\Enums\NoticePriority;
+use App\Enums\ProjectCategory;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use PHPUnit\Framework\TestCase;
@@ -73,5 +74,22 @@ class EnumTest extends TestCase
             ['estatuto', 'regimento', 'pacto', 'atas', 'outros'],
             array_column(DocumentCategory::cases(), 'value'),
         );
+    }
+
+    public function test_project_category_values_and_lausanne_references(): void
+    {
+        $this->assertSame(['Social', 'Cultural', 'Educação', 'Liderança'], array_column(ProjectCategory::cases(), 'value'));
+
+        $this->assertStringContainsString('art. 5', ProjectCategory::SOCIAL->lausanneReference());
+        $this->assertStringContainsString('art. 10', ProjectCategory::CULTURAL->lausanneReference());
+        $this->assertStringContainsString('art. 11', ProjectCategory::EDUCACAO->lausanneReference());
+        $this->assertStringContainsString('art. 11', ProjectCategory::LIDERANCA->lausanneReference());
+
+        foreach (ProjectCategory::cases() as $category) {
+            $this->assertSame($category->value, $category->getLabel());
+            $this->assertNotSame('', $category->description());
+            $this->assertNotNull($category->getColor());
+            $this->assertNotNull($category->getIcon());
+        }
     }
 }

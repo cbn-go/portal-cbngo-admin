@@ -7,6 +7,7 @@ use App\Enums\BoardGroup;
 use App\Enums\DocumentCategory;
 use App\Enums\NewsCategory;
 use App\Enums\NoticePriority;
+use App\Enums\ProjectCategory;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\Article;
@@ -16,6 +17,7 @@ use App\Models\Church;
 use App\Models\Document;
 use App\Models\News;
 use App\Models\Notice;
+use App\Models\SocialProject;
 use App\Models\User;
 use App\Support\MediaVariants;
 use Illuminate\Database\Seeder;
@@ -75,6 +77,7 @@ class DevelopmentContentSeeder extends Seeder
         $this->seedBoardMembers();
         $this->seedDocuments();
         $this->seedBanners();
+        $this->seedSocialProjects();
     }
 
     private function seedStaff(): void
@@ -521,6 +524,109 @@ class DevelopmentContentSeeder extends Seeder
 
         imagedestroy($small);
         imagedestroy($art);
+    }
+
+    /**
+     * Projetos sociais: dois publicados por categoria, em igrejas diferentes
+     * (um em andamento e um encerrado), dois em destaque, e um pendente de
+     * revisão e um rascunho devolvido para ajustes da igreja de Goiânia.
+     */
+    private function seedSocialProjects(): void
+    {
+        $editor = User::query()->where('email', self::EDITOR_EMAIL)->firstOrFail();
+        $representative = User::query()->where('email', self::REPRESENTATIVE_EMAIL)->firstOrFail();
+
+        $projects = [
+            ['slug' => 'sopa-solidaria', 'title' => 'Sopa Solidária', 'category' => ProjectCategory::SOCIAL, 'city' => 'Goiânia',
+                'summary' => 'Distribuição semanal de sopa e acolhimento para pessoas em situação de rua no centro de Goiânia.',
+                'target_audience' => 'Pessoas em situação de rua', 'beneficiaries_count' => 180, 'ended' => false, 'featured' => true],
+            ['slug' => 'cestas-que-transformam', 'title' => 'Cestas que Transformam', 'category' => ProjectCategory::SOCIAL, 'city' => 'Anápolis',
+                'summary' => 'Arrecadação e entrega de cestas básicas a famílias cadastradas, com acompanhamento pastoral.',
+                'target_audience' => 'Famílias em vulnerabilidade', 'beneficiaries_count' => 75, 'ended' => true, 'featured' => false],
+            ['slug' => 'coral-comunitario', 'title' => 'Coral Comunitário', 'category' => ProjectCategory::CULTURAL, 'city' => 'Rio Verde',
+                'summary' => 'Aulas gratuitas de canto coral para crianças e adolescentes, com apresentações abertas à cidade.',
+                'target_audience' => 'Crianças e adolescentes de 8 a 17 anos', 'beneficiaries_count' => 40, 'ended' => false, 'featured' => false],
+            ['slug' => 'festival-de-artes-do-bairro', 'title' => 'Festival de Artes do Bairro', 'category' => ProjectCategory::CULTURAL, 'city' => 'Catalão',
+                'summary' => 'Festival anual com teatro, música e artesanato que aproxima a igreja da comunidade local.',
+                'target_audience' => 'Moradores do bairro', 'beneficiaries_count' => 600, 'ended' => true, 'featured' => false],
+            ['slug' => 'reforco-escolar-semear', 'title' => 'Reforço Escolar Semear', 'category' => ProjectCategory::EDUCACAO, 'city' => 'Aparecida de Goiânia',
+                'summary' => 'Reforço escolar de português e matemática no contraturno para alunos da rede pública.',
+                'target_audience' => 'Alunos do ensino fundamental', 'beneficiaries_count' => 60, 'ended' => false, 'featured' => true],
+            ['slug' => 'alfabetizar-e-amar', 'title' => 'Alfabetizar é Amar', 'category' => ProjectCategory::EDUCACAO, 'city' => 'Luziânia',
+                'summary' => 'Turmas de alfabetização de jovens e adultos aos sábados, com material didático gratuito.',
+                'target_audience' => 'Jovens e adultos não alfabetizados', 'beneficiaries_count' => 32, 'ended' => true, 'featured' => false],
+            ['slug' => 'escola-de-lideres-jovens', 'title' => 'Escola de Líderes Jovens', 'category' => ProjectCategory::LIDERANCA, 'city' => 'Jataí',
+                'summary' => 'Formação de jovens líderes com mentoria, estudos bíblicos e projetos de serviço na cidade.',
+                'target_audience' => 'Jovens de 16 a 25 anos', 'beneficiaries_count' => 25, 'ended' => false, 'featured' => false],
+            ['slug' => 'capacitacao-de-lideres-comunitarios', 'title' => 'Capacitação de Líderes Comunitários', 'category' => ProjectCategory::LIDERANCA, 'city' => 'Itumbiara',
+                'summary' => 'Encontros de capacitação para líderes de associações de bairro e ministérios locais.',
+                'target_audience' => 'Líderes comunitários e de ministérios', 'beneficiaries_count' => 50, 'ended' => true, 'featured' => false],
+        ];
+
+        foreach ($projects as $index => $data) {
+            $church = $this->church($data['city']);
+
+            if ($church === null) {
+                continue;
+            }
+
+            SocialProject::query()->withoutGlobalScopes()->updateOrCreate(
+                ['slug' => $data['slug']],
+                [
+                    'church_id' => $church->id,
+                    'user_id' => $editor->id,
+                    'title' => $data['title'],
+                    'category' => $data['category'],
+                    'summary' => $data['summary'],
+                    'description' => $this->content($data['title'], 3),
+                    'target_audience' => $data['target_audience'],
+                    'beneficiaries_count' => $data['beneficiaries_count'],
+                    'city' => $data['city'],
+                    'started_at' => now()->subMonths(18 - $index)->startOfMonth(),
+                    'ended_at' => $data['ended'] ? now()->subMonths(2)->endOfMonth() : null,
+                    'contact_name' => 'Secretaria '.$church->name,
+                    'contact_phone' => '(62) 99876-54'.str_pad((string) ($index + 10), 2, '0', STR_PAD_LEFT),
+                    'contact_email' => $church->email,
+                    'how_to_help' => 'Seja voluntário ou contribua com doações. Fale com a secretaria da igreja.',
+                    'status' => PublishStatus::PUBLISHED,
+                    'published_at' => now()->subDays(30 - $index),
+                    'is_featured' => $data['featured'],
+                    'review_notes' => null,
+                ],
+            );
+        }
+
+        $goiania = $this->church('Goiânia');
+
+        if ($goiania === null) {
+            return;
+        }
+
+        $fromRepresentative = [
+            ['slug' => 'futebol-e-valores', 'title' => 'Futebol e Valores', 'category' => ProjectCategory::SOCIAL,
+                'summary' => 'Escolinha de futebol gratuita com momentos de reflexão sobre valores para crianças do bairro.',
+                'status' => PublishStatus::PENDING_REVIEW, 'review_notes' => null],
+            ['slug' => 'oficina-de-violao', 'title' => 'Oficina de Violão', 'category' => ProjectCategory::CULTURAL,
+                'summary' => 'Aulas de violão para iniciantes.',
+                'status' => PublishStatus::DRAFT, 'review_notes' => 'Inclua o horário das aulas, o público atendido e uma foto de capa antes de reenviar.'],
+        ];
+
+        foreach ($fromRepresentative as $data) {
+            SocialProject::query()->withoutGlobalScopes()->updateOrCreate(
+                ['slug' => $data['slug']],
+                [
+                    ...$data,
+                    'church_id' => $goiania->id,
+                    'user_id' => $representative->id,
+                    'description' => $this->content($data['title'], 2),
+                    'city' => 'Goiânia',
+                    'started_at' => now()->subMonth()->startOfMonth(),
+                    'ended_at' => null,
+                    'published_at' => null,
+                    'is_featured' => false,
+                ],
+            );
+        }
     }
 
     private function church(string $city): ?Church

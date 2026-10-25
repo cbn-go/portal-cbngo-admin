@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Database;
 
+use App\Enums\ProjectCategory;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\Article;
@@ -12,6 +13,7 @@ use App\Models\Church;
 use App\Models\Document;
 use App\Models\News;
 use App\Models\Notice;
+use App\Models\SocialProject;
 use App\Models\User;
 use Database\Seeders\ChurchSeeder;
 use Database\Seeders\DevelopmentContentSeeder;
@@ -106,6 +108,14 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame(1, Banner::query()->scheduled()->count());
         $this->assertSame(1, Banner::query()->expired()->count());
 
+        foreach (ProjectCategory::cases() as $category) {
+            $published = SocialProject::query()->published()->where('category', $category);
+            $this->assertGreaterThanOrEqual(2, $published->count(), $category->value);
+            $this->assertGreaterThanOrEqual(2, $published->distinct()->count('church_id'), $category->value);
+        }
+        $this->assertSame(1, SocialProject::query()->pendingReview()->count());
+        $this->assertTrue(SocialProject::query()->where('status', PublishStatus::DRAFT)->whereNotNull('review_notes')->exists());
+
         foreach (Banner::query()->pluck('image') as $image) {
             Storage::disk('media')->assertExists($image);
             $info = getimagesizefromstring((string) Storage::disk('media')->get($image));
@@ -127,5 +137,6 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame(14, BoardMember::query()->count());
         $this->assertSame(3, Document::query()->count());
         $this->assertSame(4, Banner::query()->count());
+        $this->assertSame(10, SocialProject::query()->count());
     }
 }
