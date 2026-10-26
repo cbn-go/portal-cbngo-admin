@@ -1,0 +1,19 @@
+Options -Indexes
+
+<IfModule mod_authz_core.c>
+    <FilesMatch "\.(?i:php|phtml|phar|pl|py|cgi|shtml)$">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    <FilesMatch "\.(?i:php|phtml|phar|pl|py|cgi|shtml)$">
+        Order deny,allow
+        Deny from all
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(?i:ico|gif|jpe?g|png|webp|svg|avif|pdf|mp4|webm)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>

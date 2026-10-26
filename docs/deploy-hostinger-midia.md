@@ -1,41 +1,60 @@
 # Deploy da mídia compartilhada (Hostinger)
 
-O painel e o portal público rodam na mesma conta Hostinger, no domínio `cbngo.org.br`. Os uploads do painel ficam numa pasta servida pelo subdomínio `midia.cbngo.org.br`, que o portal público usa para montar as URLs. Não é necessário serviço externo nem cópia manual de arquivos.
+O painel e o portal público rodam na mesma conta Hostinger. Os uploads do painel ficam numa pasta servida pelo site de mídia, que o portal público usa para montar as URLs. Não é necessário serviço externo nem cópia manual de arquivos.
 
-## 1. Domínio e subdomínio
+**Não altere** o WordPress vivo em `~/domains/cbngo.com.br`.
 
-1. No hPanel, adicione `cbngo.org.br` à conta (depois da compra do domínio).
-2. Crie o subdomínio `midia.cbngo.org.br`. A Hostinger cria a pasta `~/domains/midia.cbngo.org.br/public_html`.
-3. Ative SSL para o subdomínio.
+## URLs atuais (temporárias)
 
-## 2. Configuração do painel
+A primeira publicação usa os sites Hostinger já criados, sem DNS customizado:
+
+| Papel | URL | Pasta no servidor |
+|---|---|---|
+| Painel | https://indigo-owl-926716.hostingersite.com | `/home/u579305537/domains/indigo-owl-926716.hostingersite.com` |
+| Mídia | https://peachpuff-ant-612575.hostingersite.com | `/home/u579305537/domains/peachpuff-ant-612575.hostingersite.com/public_html` |
+| Portal público | https://honeydew-wolverine-903854.hostingersite.com | reservado |
 
 No `.env` de produção do painel:
 
 ```dotenv
-MEDIA_ROOT=/home/<usuario>/domains/midia.cbngo.org.br/public_html
-MEDIA_URL=https://midia.cbngo.org.br
+MEDIA_ROOT=/home/u579305537/domains/peachpuff-ant-612575.hostingersite.com/public_html
+MEDIA_URL=https://peachpuff-ant-612575.hostingersite.com
 ```
 
-O usuário que executa o PHP do painel precisa ter permissão de escrita em `MEDIA_ROOT`. Como tudo roda na mesma conta, isso já vale por padrão.
+O `public_html` da mídia tem um `.htaccess` que desliga listagem de diretório, recusa execução de PHP e cacheia imagens. O usuário PHP do painel já tem escrita nessa pasta (mesma conta).
 
-## 3. PHP
+## Quando o subdomínio customizado existir
 
-O projeto exige PHP 8.2 ou superior. Na conta, o `php` padrão da linha de comando é 8.1, mas há versões mais novas instaladas em `/opt/alt` (8.4+). Selecione a versão do domínio no hPanel e use o binário correspondente nos comandos `artisan` e no cron.
+1. No hPanel, crie `midia.cbngo.com.br` (ou aponte o domínio para a pasta peachpuff).
+2. Ative SSL Let's Encrypt.
+3. Atualize o `.env` do painel:
 
-## 4. Primeira publicação
+```dotenv
+MEDIA_ROOT=/home/u579305537/domains/midia.cbngo.com.br/public_html
+MEDIA_URL=https://midia.cbngo.com.br
+```
+
+Se a pasta do subdomínio for outra, mova (ou sirva) o conteúdo atual de `peachpuff-ant-612575.hostingersite.com/public_html` para lá antes de trocar `MEDIA_ROOT`.
+
+A documentação antiga citava `midia.cbngo.org.br`; o domínio oficial em produção hoje é `cbngo.com.br`. Os dois hosts continuam tratados como internos em `config/portal.php`.
+
+## PHP
+
+O projeto exige PHP 8.2 ou superior. O site do painel está em 8.3 no hPanel. O `php` padrão do SSH é 8.1; use `/opt/alt/php83/usr/bin/php` nos comandos `artisan` e no cron. Detalhes em [deploy-producao.md](deploy-producao.md).
+
+## Primeira publicação / migração de arquivos
 
 ```bash
-php artisan migrate --force
-php artisan media:migrate-public --dry-run
-php artisan media:migrate-public
-php artisan media:variants
+/opt/alt/php83/usr/bin/php artisan migrate --force
+/opt/alt/php83/usr/bin/php artisan media:migrate-public --dry-run
+/opt/alt/php83/usr/bin/php artisan media:migrate-public
+/opt/alt/php83/usr/bin/php artisan media:variants
 ```
 
 - `media:migrate-public` copia para `MEDIA_ROOT` os arquivos que estavam no disco `public` do painel (`storage/app/public`). Ele é idempotente: arquivos que já existem no destino são ignorados.
 - `media:variants` gera as versões WebP (`thumb`, `card`, `cover`) que ainda não existem. Use `--force` para regerar todas.
 
-## 5. Funcionamento no dia a dia
+## Funcionamento no dia a dia
 
 - As versões WebP são geradas logo após a resposta da requisição que salvou o registro (`dispatchAfterResponse`), sem worker de fila.
 - Se alguma versão faltar (por exemplo, por timeout num upload muito grande), rode `php artisan media:variants` de novo.

@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   quality:
@@ -109,3 +110,75 @@ jobs:
 
       - name: Run tests on MySQL
         run: composer test
+
+  deploy:
+    needs: [quality, tests-mysql]
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_HOST: 82.180.153.107
+      DEPLOY_PORT: "65002"
+      DEPLOY_USER: u579305537
+      DEPLOY_PATH: /home/u579305537/domains/indigo-owl-926716.hostingersite.com
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql
+          coverage: none
+          tools: composer
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-prod-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-prod-
+
+      - name: Install PHP dependencies
+        run: |
+          cp .env.example .env
+          composer install --no-dev --optimize-autoloader --prefer-dist --no-progress --no-interaction --no-scripts
+          php artisan key:generate --force
+          php artisan package:discover --ansi
+          php artisan filament:upgrade
+
+      - name: Build frontend assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.HOSTINGER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "$DEPLOY_PORT" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+
+      - name: Sync application
+        run: |
+          SSH="ssh -p $DEPLOY_PORT -i $HOME/.ssh/id_ed25519 -o IdentitiesOnly=yes"
+          rsync -az --delete -e "$SSH" \
+            --exclude-from=deploy/rsync-exclude.txt \
+            ./ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/"
+          rsync -az --delete -e "$SSH" \
+            --exclude=hot \
+            --exclude=storage \
+            public/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/public_html/"
+
+      - name: Run post-deploy
+        run: |
+          ssh -p "$DEPLOY_PORT" -i "$HOME/.ssh/id_ed25519" -o IdentitiesOnly=yes \
+            "${DEPLOY_USER}@${DEPLOY_HOST}" \
+            "chmod +x '${DEPLOY_PATH}/scripts/post-deploy.sh' '${DEPLOY_PATH}/scripts/backup-producao.sh' && '${DEPLOY_PATH}/scripts/post-deploy.sh'"
