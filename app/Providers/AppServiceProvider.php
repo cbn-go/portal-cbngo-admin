@@ -30,7 +30,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $publicHtml = base_path('public_html');
+
+        if (is_dir($publicHtml)) {
+            $this->app->usePublicPath($publicHtml);
+        }
     }
 
     /**
