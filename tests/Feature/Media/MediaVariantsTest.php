@@ -35,6 +35,7 @@ class MediaVariantsTest extends TestCase
                 'thumb' => 'news/featured/abc-thumb.webp',
                 'card' => 'news/featured/abc-card.webp',
                 'cover' => 'news/featured/abc-cover.webp',
+                'full' => 'news/featured/abc-full.webp',
             ],
             MediaVariants::pathsFor('news/featured/abc.jpg'),
         );
@@ -44,12 +45,12 @@ class MediaVariantsTest extends TestCase
 
     public function test_generates_webp_variants_with_expected_widths(): void
     {
-        $this->putImage('news/featured/abc.jpg', 2000, 1000);
+        $this->putImage('board/photos/abc.jpg', 3000, 1500);
 
-        $this->assertSame(3, MediaVariants::generate('news/featured/abc.jpg'));
+        $this->assertSame(4, MediaVariants::generate('board/photos/abc.jpg'));
 
-        foreach (['thumb' => 400, 'card' => 800, 'cover' => 1600] as $variant => $width) {
-            $path = "news/featured/abc-{$variant}.webp";
+        foreach (['thumb' => 400, 'card' => 800, 'cover' => 1600, 'full' => 2400] as $variant => $width) {
+            $path = "board/photos/abc-{$variant}.webp";
             Storage::disk('media')->assertExists($path);
 
             $info = getimagesizefromstring((string) Storage::disk('media')->get($path));
@@ -59,7 +60,43 @@ class MediaVariantsTest extends TestCase
             $this->assertSame($width / 2, $info[1]);
         }
 
-        Storage::disk('media')->assertExists('news/featured/abc.jpg');
+        Storage::disk('media')->assertExists('board/photos/abc.jpg');
+    }
+
+    public function test_cover_images_are_cropped_to_16_9_on_the_server_keeping_the_original(): void
+    {
+        $this->putImage('news/featured/foto.jpg', 4000, 3000);
+
+        $this->assertSame(4, MediaVariants::generate('news/featured/foto.jpg'));
+
+        foreach (['thumb' => [400, 225], 'card' => [800, 450], 'cover' => [1600, 900], 'full' => [2400, 1350]] as $variant => $size) {
+            $info = getimagesizefromstring((string) Storage::disk('media')->get("news/featured/foto-{$variant}.webp"));
+            $this->assertIsArray($info);
+            $this->assertSame($size, [$info[0], $info[1]]);
+        }
+
+        $original = getimagesizefromstring((string) Storage::disk('media')->get('news/featured/foto.jpg'));
+        $this->assertIsArray($original);
+        $this->assertSame([4000, 3000], [$original[0], $original[1]]);
+    }
+
+    public function test_portrait_cover_is_cropped_without_upscaling(): void
+    {
+        $this->putImage('articles/covers/retrato.jpg', 1080, 1350);
+
+        MediaVariants::generate('articles/covers/retrato.jpg');
+
+        $info = getimagesizefromstring((string) Storage::disk('media')->get('articles/covers/retrato-full.webp'));
+        $this->assertIsArray($info);
+        $this->assertSame([1080, 608], [$info[0], $info[1]]);
+    }
+
+    public function test_crop_box_fits_the_ratio_inside_the_image(): void
+    {
+        $this->assertSame([4000, 2250], MediaVariants::cropBox(4000, 3000, [16, 9]));
+        $this->assertSame([1778, 1000], MediaVariants::cropBox(2000, 1000, [16, 9]));
+        $this->assertNull(MediaVariants::aspectRatioFor('board/photos/a.jpg'));
+        $this->assertSame([16, 9], MediaVariants::aspectRatioFor('projects/covers/a.jpg'));
     }
 
     public function test_small_images_are_not_upscaled(): void
@@ -75,16 +112,16 @@ class MediaVariantsTest extends TestCase
             $widths[$variant] = $info[0];
         }
 
-        $this->assertSame(['thumb' => 400, 'card' => 600, 'cover' => 600], $widths);
+        $this->assertSame(['thumb' => 400, 'card' => 600, 'cover' => 600, 'full' => 600], $widths);
     }
 
     public function test_existing_variants_are_kept_unless_forced(): void
     {
         $this->putImage('churches/logos/logo.png', 900, 900);
 
-        $this->assertSame(3, MediaVariants::generate('churches/logos/logo.png'));
+        $this->assertSame(4, MediaVariants::generate('churches/logos/logo.png'));
         $this->assertSame(0, MediaVariants::generate('churches/logos/logo.png'));
-        $this->assertSame(3, MediaVariants::generate('churches/logos/logo.png', force: true));
+        $this->assertSame(4, MediaVariants::generate('churches/logos/logo.png', force: true));
     }
 
     public function test_missing_or_invalid_files_are_ignored(): void
