@@ -72,7 +72,14 @@ class DashboardOverviewTest extends TestCase
             ->assertSuccessful()
             ->assertSee('Bom dia, Pastor')
             ->assertSee('Sexta-feira, 30 de outubro de 2026')
-            ->assertSee('Nova notícia');
+            ->assertSee('Nova notícia')
+            ->assertSee('Registrar contribuição')
+            ->assertSee('Igrejas ativas')
+            ->assertSee('Pastores no rol')
+            ->assertSee('Contribuições em')
+            ->assertSee('Aguardando revisão')
+            ->assertSee('Contribuições das igrejas')
+            ->assertSee('Igrejas sem contribuição');
 
         $this->actingAs($this->conventionEditor)
             ->get('/admin')

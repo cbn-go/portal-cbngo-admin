@@ -31,6 +31,11 @@ class AdminPanelProvider extends PanelProvider
                 'Sistema',
             ])
             ->databaseNotifications()
+            ->font('Plus Jakarta Sans')
+            ->renderHook(
+                PanelsRenderHook::HEAD_START,
+                fn (): View => view('filament.components.fonts-head')
+            )
             ->renderHook(
                 PanelsRenderHook::GLOBAL_SEARCH_AFTER,
                 fn (): View => view('filament.components.view-site-link')
