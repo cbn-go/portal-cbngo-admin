@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             SuperAdminSeeder::class,
             StatuteSeeder::class,
             InstitutionalSettingSeeder::class,
+            BoardTerm20262029Seeder::class,
         ]);
 
         if (app()->environment('local', 'testing')) {
