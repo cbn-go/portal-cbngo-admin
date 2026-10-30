@@ -1,0 +1,249 @@
+[
+    {
+        "id": "93",
+        "variavel": "População residente",
+        "unidade": "Pessoas",
+        "resultados": [
+            {
+                "classificacoes": [
+                    {
+                        "id": "287",
+                        "nome": "Idade",
+                        "categoria": {
+                            "93089": "30 a 34 anos"
+                        }
+                    },
+                    {
+                        "id": "2",
+                        "nome": "Sexo",
+                        "categoria": {
+                            "6794": "Total"
+                        }
+                    },
+                    {
+                        "id": "286",
+                        "nome": "Forma de declaração da idade",
+                        "categoria": {
+                            "113635": "Total"
+                        }
+                    }
+                ],
+                "series": [
+                    {
+                        "localidade": {
+                            "id": "52",
+                            "nivel": {
+                                "id": "N3",
+                                "nome": "Unidade da Federação"
+                            },
+                            "nome": "Goiás"
+                        },
+                        "serie": {
+                            "2022": "563473"
+                        }
+                    }
+                ]
+            },
+            {
+                "classificacoes": [
+                    {
+                        "id": "287",
+                        "nome": "Idade",
+                        "categoria": {
+                            "93090": "35 a 39 anos"
+                        }
+                    },
+                    {
+                        "id": "2",
+                        "nome": "Sexo",
+                        "categoria": {
+                            "6794": "Total"
+                        }
+                    },
+                    {
+                        "id": "286",
+                        "nome": "Forma de declaração da idade",
+                        "categoria": {
+                            "113635": "Total"
+                        }
+                    }
+                ],
+                "series": [
+                    {
+                        "localidade": {
+                            "id": "52",
+                            "nivel": {
+                                "id": "N3",
+                                "nome": "Unidade da Federação"
+                            },
+                            "nome": "Goiás"
+                        },
+                        "serie": {
+                            "2022": "580094"
+                        }
+                    }
+                ]
+            },
+            {
+                "classificacoes": [
+                    {
+                        "id": "287",
+                        "nome": "Idade",
+                        "categoria": {
+                            "93091": "40 a 44 anos"
+                        }
+                    },
+                    {
+                        "id": "2",
+                        "nome": "Sexo",
+                        "categoria": {
+                            "6794": "Total"
+                        }
+                    },
+                    {
+                        "id": "286",
+                        "nome": "Forma de declaração da idade",
+                        "categoria": {
+                            "113635": "Total"
+                        }
+                    }
+                ],
+                "series": [
+                    {
+                        "localidade": {
+                            "id": "52",
+                            "nivel": {
+                                "id": "N3",
+                                "nome": "Unidade da Federação"
+                            },
+                            "nome": "Goiás"
+                        },
+                        "serie": {
+                            "2022": "574101"
+                        }
+                    }
+                ]
+            },
+            {
+                "classificacoes": [
+                    {
+                        "id": "287",
+                        "nome": "Idade",
+                        "categoria": {
+                            "93092": "45 a 49 anos"
+                        }
+                    },
+                    {
+                        "id": "2",
+                        "nome": "Sexo",
+                        "categoria": {
+                            "6794": "Total"
+                        }
+                    },
+                    {
+                        "id": "286",
+                        "nome": "Forma de declaração da idade",
+                        "categoria": {
+                            "113635": "Total"
+                        }
+                    }
+                ],
+                "series": [
+                    {
+                        "localidade": {
+                            "id": "52",
+                            "nivel": {
+                                "id": "N3",
+                                "nome": "Unidade da Federação"
+                            },
+                            "nome": "Goiás"
+                        },
+                        "serie": {
+                            "2022": "491737"
+                        }
+                    }
+                ]
+            },
+            {
+                "classificacoes": [
+                    {
+                        "id": "287",
+                        "nome": "Idade",
+                        "categoria": {
+                            "93093": "50 a 54 anos"
+                        }
+                    },
+                    {
+                        "id": "2",
+                        "nome": "Sexo",
+                        "categoria": {
+                            "6794": "Total"
+                        }
+                    },
+                    {
+                        "id": "286",
+                        "nome": "Forma de declaração da idade",
+                        "categoria": {
+                            "113635": "Total"
+                        }
+                    }
+                ],
+                "series": [
+                    {
+                        "localidade": {
+                            "id": "52",
+                            "nivel": {
+                                "id": "N3",
+                                "nome": "Unidade da Federação"
+                            },
+                            "nome": "Goiás"
+                        },
+                        "serie": {
+                            "2022": "441531"
+                        }
+                    }
+                ]
+            },
+            {
+                "classificacoes": [
+                    {
+                        "id": "287",
+                        "nome": "Idade",
+                        "categoria": {
+                            "93094": "55 a 59 anos"
+                        }
+                    },
+                    {
+                        "id": "2",
+                        "nome": "Sexo",
+                        "categoria": {
+                            "6794": "Total"
+                        }
+                    },
+                    {
+                        "id": "286",
+                        "nome": "Forma de declaração da idade",
+                        "categoria": {
+                            "113635": "Total"
+                        }
+                    }
+                ],
+                "series": [
+                    {
+                        "localidade": {
+                            "id": "52",
+                            "nivel": {
+                                "id": "N3",
+                                "nome": "Unidade da Federação"
+                            },
+                            "nome": "Goiás"
+                        },
+                        "serie": {
+                            "2022": "382264"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]
