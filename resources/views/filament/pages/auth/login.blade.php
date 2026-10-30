@@ -170,8 +170,20 @@
             <x-filament-panels::form id="form" wire:submit="authenticate">
                 {{ $this->form }}
 
-                @if (filament()->hasPasswordReset())
-                    <div class="-mt-3 mb-2 flex justify-end">
+                {{-- Linha com Checkbox 'Manter conectado' e Link 'Esqueci minha senha' alinhados na mesma linha --}}
+                <div class="flex items-center justify-between text-sm mt-3 mb-1">
+                    <label for="data.remember" class="inline-flex items-center gap-2 cursor-pointer select-none">
+                        <input
+                            id="data.remember"
+                            type="checkbox"
+                            wire:model="data.remember"
+                            tabindex="3"
+                            class="h-4 w-4 rounded border-2 border-gray-300 text-[#E81828] focus:ring-[#E81828] focus:ring-offset-0 cursor-pointer accent-[#E81828]"
+                        />
+                        <span class="text-sm font-medium text-gray-700">Manter conectado</span>
+                    </label>
+
+                    @if (filament()->hasPasswordReset())
                         <a
                             href="{{ filament()->getRequestPasswordResetUrl() }}"
                             tabindex="4"
@@ -179,10 +191,10 @@
                         >
                             Esqueci minha senha
                         </a>
-                    </div>
-                @endif
+                    @endif
+                </div>
 
-                <div class="mt-2">
+                <div class="mt-4">
                     <x-filament-panels::form.actions
                         :actions="$this->getCachedFormActions()"
                         :full-width="$this->hasFullWidthFormActions()"

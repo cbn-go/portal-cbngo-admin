@@ -29,6 +29,8 @@ class Login extends BaseLogin
     {
         parent::mount();
 
+        $this->data['remember'] = false;
+
         $key = $this->getRateLimitKey('authenticate', static::class);
         $this->attemptsRemaining = max(0, RateLimiter::remaining($key, 5));
     }
@@ -44,8 +46,9 @@ class Login extends BaseLogin
         }
 
         $data = $this->form->getState();
+        $remember = (bool) ($this->data['remember'] ?? false);
 
-        if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
+        if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $remember)) {
             $key = $this->getRateLimitKey('authenticate', static::class);
             $this->attemptsRemaining = max(0, RateLimiter::remaining($key, 5));
             $this->hasAuthFailed = true;
@@ -95,7 +98,6 @@ class Login extends BaseLogin
             ->schema([
                 $this->getEmailFormComponent(),
                 $this->getPasswordFormComponent(),
-                $this->getRememberFormComponent(),
             ])
             ->statePath('data');
     }
