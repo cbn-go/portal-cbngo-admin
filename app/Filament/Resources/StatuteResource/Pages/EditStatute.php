@@ -51,7 +51,7 @@ class EditStatute extends EditRecord
             if (! $validator->isValid($xml)) {
                 $errors = implode('; ', array_slice($validator->getErrors($xml), 0, 5));
                 throw ValidationException::withMessages([
-                    'chapters' => 'A estrutura gerou um XML inválido perante o schema Akoma Ntoso: '.$errors,
+                    'chapters' => 'A estrutura gerou inconsistências de validação: '.$errors,
                 ]);
             }
 

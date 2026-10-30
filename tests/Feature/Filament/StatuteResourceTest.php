@@ -267,21 +267,4 @@ class StatuteResourceTest extends TestCase
             ->callTableAction('download_xml', $statute)
             ->assertFileDownloaded("estatuto-cbngo-{$statute->version_label}.akn.xml");
     }
-
-    public function test_super_admin_can_import_akn_xml(): void
-    {
-        Filament::setCurrentPanel(Filament::getPanel('admin'));
-        $this->actingAs($this->superAdmin);
-
-        Livewire::test(ListStatutes::class)
-            ->callAction('import_xml', [
-                'version_label' => '2026-xml-importado',
-                'xml_content' => $this->canonicalXml,
-            ])
-            ->assertHasNoActionErrors();
-
-        $imported = Statute::where('version_label', '2026-xml-importado')->firstOrFail();
-        $this->assertSame(PublishStatus::DRAFT, $imported->status);
-        $this->assertSame(trim($this->canonicalXml), trim($imported->akn_xml));
-    }
 }

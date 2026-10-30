@@ -107,8 +107,8 @@ class StatuteResource extends Resource
                             ->icon('heroicon-o-document-text')
                             ->schema([
                                 Forms\Components\Placeholder::make('structured_intro')
-                                    ->label('Editor Estruturado do Estatuto (Akoma Ntoso 3.0)')
-                                    ->content('Organize os capítulos, seções e artigos abaixo. O sistema compilará automaticamente para o formato canônico Akoma Ntoso 3.0.'),
+                                    ->label('Editor Estruturado do Estatuto')
+                                    ->content('Organize os capítulos, seções e artigos abaixo. O documento será versionado e formatado automaticamente.'),
 
                                 Forms\Components\Repeater::make('chapters')
                                     ->label('Capítulos do Estatuto')
@@ -161,17 +161,6 @@ class StatuteResource extends Resource
                                                     ->schema(self::getArticleFormSchema()),
                                             ]),
                                     ]),
-                            ]),
-
-                        Forms\Components\Tabs\Tab::make('Modo Avançado (XML)')
-                            ->icon('heroicon-o-code-bracket')
-                            ->visible(fn (): bool => auth()->user()?->role->isSuperAdmin() ?? false)
-                            ->schema([
-                                Forms\Components\Textarea::make('akn_xml')
-                                    ->label('XML Akoma Ntoso 3.0')
-                                    ->rows(25)
-                                    ->helperText('Atenção: A edição direta do XML deve seguir estritamente o schema oficial Akoma Ntoso 3.0. A validação será executada antes de salvar.')
-                                    ->extraAttributes(['class' => 'font-mono text-xs']),
                             ]),
                     ])
                     ->columnSpanFull(),
