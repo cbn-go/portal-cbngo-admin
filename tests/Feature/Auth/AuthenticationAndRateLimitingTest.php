@@ -205,4 +205,53 @@ class AuthenticationAndRateLimitingTest extends TestCase
         ])->call('authenticate')
             ->assertNotified();
     }
+
+    public function test_login_page_renders_custom_management_system_layout_and_elements_on_both_panels(): void
+    {
+        config(['portal.contact_email' => 'contato@cbngo.org.br']);
+        config(['portal.site_url' => 'https://cbngo.org.br']);
+
+        foreach (['/admin/login', '/portal/login'] as $url) {
+            $response = $this->get($url);
+
+            $response->assertSuccessful();
+            $response->assertSee('Sistema de gestão da convenção');
+            $response->assertSee('A administração da CBN Goiás em um só lugar.');
+            $response->assertSee('Secretaria');
+            $response->assertSee('Financeiro');
+            $response->assertSee('Dados e relatórios');
+            $response->assertSee('Portal e comunicação');
+            $response->assertSee('Cada pessoa vê apenas os módulos liberados para a sua função.');
+            $response->assertSee('Ambiente restrito a pessoas autorizadas pela CBN-GO.');
+            $response->assertSee('Entrar no sistema');
+            $response->assertSee('Use o e-mail e a senha cadastrados pela secretaria da CBN-GO.');
+            $response->assertSee('Voltar ao site');
+            $response->assertSee('https://cbngo.org.br');
+            $response->assertSee('Manter conectado');
+            $response->assertSee('Esqueci minha senha');
+            $response->assertSee('Após 5 tentativas sem sucesso, o acesso fica bloqueado por alguns minutos.');
+            $response->assertSee('Ainda não tem acesso? Peça o cadastro à secretaria pelo e-mail');
+            $response->assertSee('contato@cbngo.org.br');
+        }
+    }
+
+    public function test_invalid_credentials_shows_error_alert_and_remaining_attempts(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        $component = Livewire::test(Login::class);
+
+        try {
+            $component->fillForm([
+                'email' => 'wrong@email.com',
+                'password' => 'wrongpassword',
+            ])->call('authenticate');
+        } catch (ValidationException) {
+            // Expected validation failure
+        }
+
+        $component->assertHasErrors(['data.email'])
+            ->assertSee('Não foi possível entrar. Confira o e-mail e a senha.')
+            ->assertSee('tentativas restantes');
+    }
 }
