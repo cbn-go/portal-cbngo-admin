@@ -30,6 +30,12 @@ return [
         'cover' => 1600,
     ],
 
+    'banner_variants' => [
+        'thumb' => 160,
+        'card' => 800,
+        'cover' => 1080,
+    ],
+
     'webp_quality' => 80,
 
 ];

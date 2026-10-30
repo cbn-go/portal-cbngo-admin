@@ -108,4 +108,31 @@ class MediaVariantsTest extends TestCase
             Storage::disk('media')->assertMissing($path);
         }
     }
+
+    public function test_banner_images_generate_square_variants_with_160_800_1080_widths(): void
+    {
+        $this->putImage('banners/hero.jpg', 1080, 1080);
+
+        $this->assertSame(
+            [
+                'thumb' => 'banners/hero-thumb.webp',
+                'card' => 'banners/hero-card.webp',
+                'cover' => 'banners/hero-cover.webp',
+            ],
+            MediaVariants::pathsFor('banners/hero.jpg'),
+        );
+
+        $this->assertSame(3, MediaVariants::generate('banners/hero.jpg'));
+
+        foreach (['thumb' => 160, 'card' => 800, 'cover' => 1080] as $variant => $dimension) {
+            $path = "banners/hero-{$variant}.webp";
+            Storage::disk('media')->assertExists($path);
+
+            $info = getimagesizefromstring((string) Storage::disk('media')->get($path));
+            $this->assertIsArray($info);
+            $this->assertSame('image/webp', $info['mime']);
+            $this->assertSame($dimension, $info[0]);
+            $this->assertSame($dimension, $info[1]);
+        }
+    }
 }

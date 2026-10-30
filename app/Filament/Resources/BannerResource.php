@@ -26,11 +26,11 @@ class BannerResource extends Resource
 
     protected static ?string $navigationGroup = 'Portal';
 
-    protected static ?string $navigationLabel = 'Banners da Home';
+    protected static ?string $navigationLabel = 'Avisos da Home';
 
-    protected static ?string $modelLabel = 'Banner';
+    protected static ?string $modelLabel = 'Aviso da Home';
 
-    protected static ?string $pluralModelLabel = 'Banners da Home';
+    protected static ?string $pluralModelLabel = 'Avisos da Home';
 
     protected static ?int $navigationSort = 1;
 
@@ -40,24 +40,18 @@ class BannerResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['title', 'alt_text'];
+        return ['title', 'subtitle', 'tag', 'alt_text'];
     }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Arte do banner')
-                    ->description('O banner é a arte completa, já com textos e logos. O site exibe a imagem inteira, sem cortes e sem escrever nada por cima.')
+                Forms\Components\Section::make('Foto do Aviso')
+                    ->description('Foto quadrada em estilo post de rede social. O texto é exibido ao lado da imagem no site.')
                     ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->label('Nome do banner (uso interno)')
-                            ->required()
-                            ->maxLength(120)
-                            ->helperText('Aparece só na listagem do painel e nos controles do carrossel para leitores de tela. Não é exibido sobre a imagem.'),
-
                         Forms\Components\FileUpload::make('image')
-                            ->label('Arte')
+                            ->label('Foto (proporção 1:1)')
                             ->image()
                             ->required()
                             ->disk(MediaVariants::diskName())
@@ -65,30 +59,75 @@ class BannerResource extends Resource
                             ->visibility('public')
                             ->maxSize(5120)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                            ->rules(['dimensions:min_width='.Banner::MIN_WIDTH.',min_height='.Banner::MIN_HEIGHT])
+                            ->rules([
+                                'dimensions:min_width='.Banner::MIN_WIDTH.',min_height='.Banner::MIN_HEIGHT,
+                                fn (): \Closure => function (string $attribute, mixed $value, \Closure $fail): void {
+                                    $dimensions = BannerResource::imageDimensions($value);
+                                    if ($dimensions !== null) {
+                                        [$width, $height] = $dimensions;
+                                        if (! AspectRatio::isSquare($width, $height)) {
+                                            $fail('A imagem deve ser quadrada (proporção 1:1, recomendado '.Banner::RECOMMENDED_WIDTH.'×'.Banner::RECOMMENDED_HEIGHT.', mínimo '.Banner::MIN_WIDTH.'×'.Banner::MIN_HEIGHT.'). Use o editor para recortar em 1:1 antes de salvar.');
+                                        }
+                                    }
+                                },
+                            ])
                             ->imageEditor()
-                            ->imageEditorAspectRatios(['16:9', null])
+                            ->imageCropAspectRatio('1:1')
+                            ->imageEditorAspectRatios(['1:1', null])
                             ->live()
-                            ->helperText('Envie a arte final do banner, já com textos e logos, em 16:9 ('.Banner::RECOMMENDED_WIDTH.'×'.Banner::RECOMMENDED_HEIGHT.'). A imagem é exibida inteira no site. Mínimo '.Banner::MIN_WIDTH.'×'.Banner::MIN_HEIGHT.', JPG, PNG ou WEBP até 5MB. Se a arte fugir do padrão, use o editor (ícone de lápis) para recortar em 16:9.'),
-
-                        Forms\Components\Placeholder::make('aspect_ratio_warning')
-                            ->hiddenLabel()
-                            ->content(fn (Get $get): ?string => self::aspectRatioWarning($get('image')))
-                            ->visible(fn (Get $get): bool => self::aspectRatioWarning($get('image')) !== null),
+                            ->helperText('Foto sem texto, quadrada ('.Banner::RECOMMENDED_WIDTH.'×'.Banner::RECOMMENDED_HEIGHT.', mínimo '.Banner::MIN_WIDTH.'×'.Banner::MIN_HEIGHT.'). O título, o subtítulo e o botão são exibidos ao lado da imagem no site. Use o editor (ícone de lápis) para recortar em 1:1.'),
 
                         Forms\Components\Textarea::make('alt_text')
-                            ->label('Texto alternativo (transcrição da arte)')
+                            ->label('Texto alternativo (acessibilidade)')
                             ->required()
-                            ->rows(3)
+                            ->rows(2)
                             ->maxLength(500)
-                            ->helperText('Transcreva as informações da arte (nome do evento, datas, local e chamada), porque o texto da imagem não é lido por leitores de tela nem por buscadores.'),
+                            ->helperText('Descreva a imagem para leitores de tela e buscadores (ex.: pastores reunidos no auditório, jovens em culto ao ar livre).'),
                     ]),
 
-                Forms\Components\Section::make('Link (opcional)')
-                    ->description('Com link, a arte inteira fica clicável no site. Sem link, a imagem não é clicável.')
+                Forms\Components\Section::make('Texto em Destaque')
+                    ->description('Textos principais exibidos ao lado da foto no carrossel da home.')
                     ->schema([
+                        Forms\Components\TextInput::make('tag')
+                            ->label('Selo de categoria')
+                            ->maxLength(30)
+                            ->datalist(['Assembleia', 'Juventude', 'Ação social', 'SETEBAN-GO', 'Mulheres', 'Missões', 'Família'])
+                            ->placeholder('Ex.: Assembleia, Juventude, Ação social')
+                            ->live(onBlur: true)
+                            ->helperText('Selo exibido no topo da foto e acima do título (opcional, até 30 caracteres).'),
+
+                        Forms\Components\TextInput::make('title')
+                            ->label('Título do aviso')
+                            ->required()
+                            ->maxLength(70)
+                            ->live(onBlur: true)
+                            ->placeholder('Ex.: Assembleia Geral Ordinária 2026')
+                            ->helperText('Título principal em destaque ao lado da foto (até 70 caracteres).'),
+
+                        Forms\Components\Textarea::make('subtitle')
+                            ->label('Subtítulo')
+                            ->maxLength(160)
+                            ->rows(2)
+                            ->live(onBlur: true)
+                            ->placeholder('Ex.: Dias 14 e 15 de março, em Anápolis. Inscreva os mensageiros da sua igreja até 28 de fevereiro.')
+                            ->helperText('Texto explicativo complementar exibido abaixo do título (até 160 caracteres).')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
+
+                Forms\Components\Section::make('Ação (Botão)')
+                    ->description('Botão de ação do carrossel direcionando para link interno ou externo.')
+                    ->schema([
+                        Forms\Components\TextInput::make('link_label')
+                            ->label('Texto do botão')
+                            ->default(Banner::DEFAULT_LINK_LABEL)
+                            ->placeholder('Saiba mais')
+                            ->maxLength(60)
+                            ->live(onBlur: true)
+                            ->helperText('Rótulo da ação. Se vazio, exibe "Saiba mais".'),
+
                         Forms\Components\TextInput::make('link_url')
-                            ->label('Link')
+                            ->label('Link de destino')
                             ->maxLength(255)
                             ->placeholder('/eventos/assembleia ou https://...')
                             ->live(onBlur: true)
@@ -108,12 +147,20 @@ class BannerResource extends Resource
                             ->label('Abrir em nova aba')
                             ->default(false)
                             ->inline(false)
+                            ->live()
                             ->visible(fn (Get $get): bool => filled($get('link_url'))),
                     ])
-                    ->columns(2),
+                    ->columns(3),
 
-                Forms\Components\Section::make('Exibição')
+                Forms\Components\Section::make('Exibição & Vigência')
                     ->schema([
+                        Forms\Components\TextInput::make('meta')
+                            ->label('Linha de apoio (data e local)')
+                            ->maxLength(60)
+                            ->placeholder('Ex.: 14–15 mar · Anápolis ou Até 30 de junho')
+                            ->live(onBlur: true)
+                            ->helperText('Informação curta de data, período ou local exibida ao lado do botão.'),
+
                         Forms\Components\DateTimePicker::make('starts_at')
                             ->label('Início da exibição')
                             ->native(false)
@@ -134,14 +181,23 @@ class BannerResource extends Resource
                                     }
                                 },
                             ])
-                            ->helperText('Deixe vazio para não expirar. O banner some sozinho depois desta data.'),
+                            ->helperText('Deixe vazio para não expirar. O aviso sai do carrossel após esta data.'),
 
                         Forms\Components\Toggle::make('is_active')
                             ->label('Ativo')
                             ->default(true)
                             ->inline(false),
                     ])
-                    ->columns(3),
+                    ->columns(4),
+
+                Forms\Components\Section::make('Pré-visualização do aviso na Home')
+                    ->description('Simulação de como o aviso será apresentado no carrossel da nova home do site.')
+                    ->schema([
+                        Forms\Components\ViewField::make('preview')
+                            ->view('filament.resources.banner-resource.preview')
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible(),
             ]);
     }
 
@@ -150,42 +206,36 @@ class BannerResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Imagem')
+                    ->label('Foto')
                     ->disk(MediaVariants::diskName())
-                    ->height(54)
-                    ->width(96),
+                    ->square()
+                    ->height(56)
+                    ->width(56),
+
+                Tables\Columns\TextColumn::make('tag')
+                    ->label('Selo')
+                    ->badge()
+                    ->placeholder('Sem selo')
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Nome')
+                    ->label('Título do aviso')
                     ->searchable()
                     ->limit(40)
-                    ->tooltip(fn (Banner $record): string => $record->alt_text),
+                    ->tooltip(fn (Banner $record): string => $record->title),
 
                 Tables\Columns\TextColumn::make('validity_status')
-                    ->label('Status')
+                    ->label('Vigência')
                     ->badge(),
 
-                Tables\Columns\TextColumn::make('link_url')
-                    ->label('Link')
-                    ->limit(30)
-                    ->icon(fn (Banner $record): ?string => $record->opens_in_new_tab ? 'heroicon-m-arrow-top-right-on-square' : null)
-                    ->placeholder('Sem link')
-                    ->toggleable(),
-
-                Tables\Columns\TextColumn::make('starts_at')
-                    ->label('Início')
-                    ->dateTime('d/m/Y H:i')
-                    ->placeholder('Imediato')
-                    ->toggleable(),
-
-                Tables\Columns\TextColumn::make('ends_at')
-                    ->label('Fim')
-                    ->dateTime('d/m/Y H:i')
-                    ->placeholder('Sem prazo')
-                    ->toggleable(),
+                Tables\Columns\TextColumn::make('position')
+                    ->label('Ordem')
+                    ->sortable(),
 
                 Tables\Columns\ToggleColumn::make('is_active')
-                    ->label('Ativo'),
+                    ->label('Ativo')
+                    ->disabled(fn (Banner $record): bool => ! $record->is_square)
+                    ->tooltip(fn (Banner $record): ?string => ! $record->is_square ? 'Aviso com foto 16:9 antiga. Edite o aviso e envie uma foto 1:1 para ativar.' : null),
             ])
             ->reorderable('position')
             ->defaultSort('position')
@@ -220,33 +270,6 @@ class BannerResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    /**
-     * Aviso (sem bloquear o salvamento) quando a arte foge de 16:9 em mais de 5%.
-     */
-    public static function aspectRatioWarning(mixed $state): ?string
-    {
-        $dimensions = self::imageDimensions($state);
-
-        if ($dimensions === null) {
-            return null;
-        }
-
-        [$width, $height] = $dimensions;
-
-        if (AspectRatio::isWithin($width, $height)) {
-            return null;
-        }
-
-        return sprintf(
-            'Atenção: a arte tem %d×%d (proporção %s). O padrão é 16:9 (%d×%d), e fora dele o site exibe faixas nas laterais ou em cima e embaixo. Use o editor para recortar em 16:9 ou envie uma nova arte.',
-            $width,
-            $height,
-            AspectRatio::format($width, $height),
-            Banner::RECOMMENDED_WIDTH,
-            Banner::RECOMMENDED_HEIGHT,
-        );
     }
 
     /**

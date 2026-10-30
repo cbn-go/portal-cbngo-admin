@@ -38,6 +38,25 @@ class MediaVariants
     }
 
     /**
+     * @return array<string, int>
+     */
+    public static function sizesFor(string $path): array
+    {
+        if (str_starts_with($path, 'banners/')) {
+            /** @var array<string, int> $sizes */
+            $sizes = config('media.banner_variants', [
+                'thumb' => 160,
+                'card' => 800,
+                'cover' => 1080,
+            ]);
+
+            return $sizes;
+        }
+
+        return self::sizes();
+    }
+
+    /**
      * Caminho de uma versão: "dir/nome.jpg" + "card" => "dir/nome-card.webp".
      */
     public static function pathFor(string $path, string $variant): string
@@ -55,7 +74,7 @@ class MediaVariants
     {
         $paths = [];
 
-        foreach (array_keys(self::sizes()) as $variant) {
+        foreach (array_keys(self::sizesFor($path)) as $variant) {
             $paths[$variant] = self::pathFor($path, $variant);
         }
 
@@ -86,7 +105,7 @@ class MediaVariants
             $manager = new ImageManager(new Driver);
             $contents = (string) $disk->get($path);
             $quality = (int) config('media.webp_quality', 80);
-            $sizes = self::sizes();
+            $sizes = self::sizesFor($path);
 
             foreach ($pending as $variant => $variantPath) {
                 $encoded = $manager->read($contents)
