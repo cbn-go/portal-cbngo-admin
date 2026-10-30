@@ -18,4 +18,18 @@ return [
         'cbngo.com.br',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | URL do site institucional CBN-GO
+    |--------------------------------------------------------------------------
+    */
+    'site_url' => env('PORTAL_SITE_URL', 'https://cbngo.org.br'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | E-mail da secretaria para solicitação de acesso
+    |--------------------------------------------------------------------------
+    */
+    'contact_email' => env('PORTAL_CONTACT_EMAIL', 'contato@cbngo.org.br'),
+
 ];

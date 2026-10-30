@@ -4,13 +4,37 @@ namespace App\Filament\Pages\Auth;
 
 use App\Models\User;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Component;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Pages\Auth\Login as BaseLogin;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
 class Login extends BaseLogin
 {
+    protected static string $layout = 'filament.layouts.auth';
+
+    protected static string $view = 'filament.pages.auth.login';
+
+    public ?int $attemptsRemaining = null;
+
+    public bool $hasAuthFailed = false;
+
+    public function mount(): void
+    {
+        parent::mount();
+
+        $this->data['remember'] = false;
+
+        $key = $this->getRateLimitKey('authenticate', static::class);
+        $this->attemptsRemaining = max(0, RateLimiter::remaining($key, 5));
+    }
+
     public function authenticate(): ?LoginResponse
     {
         try {
@@ -22,8 +46,13 @@ class Login extends BaseLogin
         }
 
         $data = $this->form->getState();
+        $remember = (bool) ($this->data['remember'] ?? false);
 
-        if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
+        if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $remember)) {
+            $key = $this->getRateLimitKey('authenticate', static::class);
+            $this->attemptsRemaining = max(0, RateLimiter::remaining($key, 5));
+            $this->hasAuthFailed = true;
+
             $this->throwFailureValidationException();
         }
 
@@ -42,6 +71,8 @@ class Login extends BaseLogin
             ]);
         }
 
+        $this->clearRateLimiter('authenticate', static::class);
+
         session()->regenerate();
 
         if (! $user->canAccessPanel(Filament::getCurrentPanel())) {
@@ -59,5 +90,58 @@ class Login extends BaseLogin
         }
 
         return app(LoginResponse::class);
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                $this->getEmailFormComponent(),
+                $this->getPasswordFormComponent(),
+            ])
+            ->statePath('data');
+    }
+
+    protected function getEmailFormComponent(): Component
+    {
+        return TextInput::make('email')
+            ->label('E-mail')
+            ->email()
+            ->required()
+            ->autocomplete('username')
+            ->autofocus()
+            ->extraInputAttributes([
+                'tabindex' => 1,
+                'aria-invalid' => ($this->hasAuthFailed || $this->getErrorBag()->has('data.email')) ? 'true' : 'false',
+            ]);
+    }
+
+    protected function getPasswordFormComponent(): Component
+    {
+        return TextInput::make('password')
+            ->label('Senha')
+            ->password()
+            ->revealable(true)
+            ->autocomplete('current-password')
+            ->required()
+            ->extraInputAttributes(['tabindex' => 2]);
+    }
+
+    protected function getRememberFormComponent(): Component
+    {
+        return Checkbox::make('remember')
+            ->label('Manter conectado')
+            ->extraInputAttributes(['tabindex' => 3]);
+    }
+
+    protected function getAuthenticateFormAction(): Action
+    {
+        return Action::make('authenticate')
+            ->label('Entrar')
+            ->submit('authenticate')
+            ->extraAttributes([
+                'tabindex' => 5,
+                'class' => 'w-full min-h-[44px] text-base font-semibold text-white bg-[#E81828] hover:bg-[#c51422] focus:ring-2 focus:ring-[#E81828] focus:ring-offset-2 transition-colors duration-150 rounded-lg shadow-sm',
+            ]);
     }
 }
