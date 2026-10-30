@@ -189,6 +189,43 @@ Categorias e o Pacto de Lausanne (`ProjectCategory::description()` e `lausanneRe
 | Educação | Art. 11: Educação e liderança |
 | Liderança | Art. 11: Educação e liderança |
 
+## `statutes` (site: `/estatuto`)
+
+O estatuto vigente e seu histórico de versões são armazenados na tabela `statutes`. A fonte da verdade do texto da lei é o campo `akn_xml`, estruturado no padrão **Akoma Ntoso 3.0 (OASIS LegalDocML)**.
+
+| Painel | Site | Observação |
+|---|---|---|
+| `title` | título exibido | Ex: "Estatuto da Convenção Batista Nacional do Estado de Goiás" |
+| `version_label` | versão | Ex: `2025-10-18` (único) |
+| `approved_at` | data de aprovação | Data da Assembleia Geral (`2025-10-18`) |
+| `approved_place` | local de aprovação | Ex: "Anápolis, GO" |
+| `approval_body` | órgão deliberativo | Ex: "Assembleia Geral" |
+| `minutes_reference` | referência da ata | Ex: "Ata da Assembleia Geral Extraordinária de 18 de outubro de 2025" |
+| `registry_info` | dados cartorários | Cartório de Pessoas Jurídicas, averbação à margem do registro nº 806 |
+| `effective_at` | início da vigência | Data (`2025-10-18`) |
+| `status` | status da versão | `published`, `archived`, `draft`, `pending_review` (`App\Enums\PublishStatus`) |
+| `akn_xml` | XML do estatuto | XML Akoma Ntoso 3.0 canônico validado contra o XSD oficial |
+| `original_pdf` | PDF digitalizado | Caminho no disco `media` com o documento físico registrado |
+| `published_at` | data de publicação | Preenchido automaticamente ao publicar |
+
+### Regra de exibição da versão vigente
+O portal público consulta a versão vigente com:
+```sql
+SELECT * FROM statutes WHERE status = 'published' LIMIT 1;
+```
+Apenas uma versão pode ter `status = 'published'` simultaneamente. Quando uma nova versão é publicada, a anterior é automaticamente arquivada (`status = 'archived'`).
+
+### Estrutura e Âncoras do Akoma Ntoso (`eId`)
+O portal público pode renderizar a página `/estatuto` navegável por capítulos, seções e artigos, gerando âncoras diretas usando os atributos `eId`:
+- Capítulos: `chp_1` a `chp_6` (ex: `/estatuto#chp_3`)
+- Seções: `chp_3__sec_1` a `chp_3__sec_5`
+- Artigos: `art_1` a `art_21` (ex: `/estatuto#art_8`)
+- Parágrafos: `art_8__para_1`, `art_5__para_uniq`, `art_12__para_4_a`
+- Incisos e Alíneas: `art_8__point_I`, `art_8__point_I__point_a`
+
+### Privacidade do PDF Original
+O arquivo apontado por `original_pdf` contém carimbos com CPFs, números de OAB e assinaturas físicas dos membros da diretoria. Seu download público no portal só deve ser exibido caso autorizado expressamente pela secretaria da convenção ou após disponibilização de versão com dados pessoais anonimizados.
+
 ## Mídia compartilhada
 
 Todos os uploads do painel vão para o disco `media`, servido em produção pelo subdomínio `media.cbngo.org.br` (veja `docs/deploy-hostinger-midia.md`).
