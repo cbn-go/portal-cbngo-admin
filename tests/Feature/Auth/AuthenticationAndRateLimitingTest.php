@@ -46,6 +46,11 @@ class AuthenticationAndRateLimitingTest extends TestCase
         $this->get('/login')->assertRedirect('/admin/login');
     }
 
+    public function test_root_route_redirects_unauthenticated_users_to_admin_login(): void
+    {
+        $this->get('/')->assertRedirect('/admin/login');
+    }
+
     public function test_login_route_redirects_authenticated_users_to_their_respective_panel(): void
     {
         $admin = User::factory()->create([
