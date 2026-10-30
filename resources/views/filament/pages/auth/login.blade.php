@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col md:flex-row bg-white dark:bg-[#1b141b]">
+<div class="min-h-screen flex flex-col md:flex-row bg-white">
     {{-- Coluna Institucional Esquerda (Desktop) / Cabeçalho Superior Compacto (Mobile) --}}
     <aside class="relative flex flex-col justify-between bg-[#201820] text-white border-t-[6px] border-[#E81828] md:w-5/12 lg:w-5/12 xl:w-[480px] p-6 sm:p-10 shrink-0">
         <div>
@@ -90,13 +90,13 @@
         </div>
     </aside>
 
-    {{-- Coluna Direita (Formulário) --}}
-    <main class="flex-1 flex flex-col justify-between p-6 sm:p-10 lg:p-12 overflow-y-auto">
+    {{-- Coluna Direita (Formulário) - Fundo Branco Puro conforme Mockup --}}
+    <main class="flex-1 flex flex-col justify-between bg-white text-gray-900 p-6 sm:p-10 lg:p-12 overflow-y-auto">
         {{-- Link Voltar ao site (Desktop: topo direito; Mobile: também acessível no topo) --}}
         <div class="flex justify-end mb-4 sm:mb-6">
             <a
                 href="{{ config('portal.site_url', 'https://cbngo.org.br') }}"
-                class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-[#E81828] dark:text-gray-300 dark:hover:text-[#ee5864] transition-colors py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E81828]"
+                class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-[#E81828] transition-colors py-2 px-3 rounded-lg hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E81828]"
             >
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -108,10 +108,10 @@
         {{-- Container Centralizado do Formulário (~400px de largura) --}}
         <div class="w-full max-w-[420px] mx-auto my-auto py-2">
             <header class="mb-6">
-                <h1 class="font-brand-title text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+                <h1 class="font-brand-title text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
                     Entrar no sistema
                 </h1>
-                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                <p class="mt-2 text-sm text-gray-600">
                     Use o e-mail e a senha cadastrados pela secretaria da CBN-GO.
                 </p>
             </header>
@@ -127,18 +127,18 @@
                 <div
                     role="alert"
                     aria-live="assertive"
-                    class="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-red-900 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-200 shadow-sm"
+                    class="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-red-900 shadow-sm"
                 >
                     <div class="flex items-start gap-3">
                         <svg class="h-5 w-5 flex-shrink-0 text-[#E81828] mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
                         </svg>
                         <div class="text-sm">
-                            <p class="font-semibold text-[#c51422] dark:text-red-400">
+                            <p class="font-semibold text-[#c51422]">
                                 Não foi possível entrar. Confira o e-mail e a senha.
                             </p>
                             @if ($attemptsRemaining !== null && $attemptsRemaining > 0)
-                                <p class="mt-1 text-xs text-red-700 dark:text-red-300">
+                                <p class="mt-1 text-xs text-red-700">
                                     Você tem {{ $attemptsRemaining }} {{ $attemptsRemaining === 1 ? 'tentativa restante' : 'tentativas restantes' }} antes do bloqueio temporário.
                                 </p>
                             @endif
@@ -151,14 +151,14 @@
                 <div
                     role="alert"
                     aria-live="assertive"
-                    class="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200 shadow-sm"
+                    class="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-900 shadow-sm"
                 >
                     <div class="flex items-start gap-3">
-                        <svg class="h-5 w-5 flex-shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <svg class="h-5 w-5 flex-shrink-0 text-amber-600 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
                         </svg>
                         <div class="text-sm">
-                            <p class="font-semibold text-amber-800 dark:text-amber-300">
+                            <p class="font-semibold text-amber-800">
                                 Sua conta está desativada. Entre em contato com a administração.
                             </p>
                         </div>
@@ -191,7 +191,7 @@
             </x-filament-panels::form>
 
             {{-- Aviso de Limite de Tentativas --}}
-            <div class="mt-5 rounded-lg bg-gray-50 p-3 text-xs text-gray-500 dark:bg-[#201820]/40 dark:text-gray-400 border border-gray-200 dark:border-gray-800">
+            <div class="mt-5 rounded-lg bg-gray-50 p-3 text-xs text-gray-500 border border-gray-200">
                 <div class="flex items-center gap-2">
                     <svg class="h-4 w-4 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
@@ -201,7 +201,7 @@
             </div>
 
             {{-- Rodapé do Formulário: Solicitação de Cadastro à Secretaria --}}
-            <div class="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+            <div class="mt-6 text-center text-sm text-gray-600">
                 Ainda não tem acesso? Peça o cadastro à secretaria pelo e-mail
                 <a
                     href="mailto:{{ config('portal.contact_email', 'contato@cbngo.org.br') }}"
@@ -213,7 +213,7 @@
         </div>
 
         {{-- Rodapé Mobile (<= 768px): Ambiente restrito --}}
-        <div class="md:hidden mt-8 pt-4 border-t border-gray-200 dark:border-gray-800 text-center text-xs text-gray-500 dark:text-gray-400">
+        <div class="md:hidden mt-8 pt-4 border-t border-gray-200 text-center text-xs text-gray-500">
             Ambiente restrito a pessoas autorizadas pela CBN-GO.
         </div>
     </main>

@@ -18,7 +18,11 @@
         </style>
     @endpush
 
-    <div class="font-brand-body min-h-screen text-gray-900 antialiased dark:text-gray-100">
+    <script>
+        document.documentElement.classList.remove('dark');
+    </script>
+
+    <div class="font-brand-body min-h-screen bg-white text-gray-900 antialiased">
         {{ $slot }}
     </div>
 </x-filament-panels::layout.base>
