@@ -15,7 +15,6 @@ use App\Models\Church;
 use App\Models\News;
 use App\Models\Notice;
 use App\Models\SocialProject;
-use Filament\Actions\Action;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Carbon;
@@ -58,21 +57,7 @@ class Dashboard extends BaseDashboard
 
     protected function getHeaderActions(): array
     {
-        return [
-            Action::make('new_news')
-                ->label('Nova notícia')
-                ->icon('heroicon-o-plus')
-                ->color('gray')
-                ->url(fn (): string => NewsResource::getUrl('create'))
-                ->visible(fn (): bool => auth()->user()?->hasAdminPanelAccess() ?? false),
-
-            Action::make('new_contribution')
-                ->label('Registrar contribuição')
-                ->icon('heroicon-o-plus')
-                ->color('primary')
-                ->url(fn (): string => '#')
-                ->visible(fn (): bool => auth()->user()?->hasAdminPanelAccess() ?? false),
-        ];
+        return [];
     }
 
     public function getWidgets(): array
