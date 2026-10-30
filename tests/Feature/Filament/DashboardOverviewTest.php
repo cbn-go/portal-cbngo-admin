@@ -4,6 +4,7 @@ namespace Tests\Feature\Filament;
 
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
+use App\Filament\Pages\Dashboard;
 use App\Filament\Resources\ArticleResource;
 use App\Filament\Resources\BannerResource;
 use App\Filament\Resources\BoardMemberResource;
@@ -26,6 +27,7 @@ use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -188,6 +190,66 @@ class DashboardOverviewTest extends TestCase
             ->assertSee('2 cidades no estado de Goiás')
             ->assertSee('Publicações Pendentes')
             ->assertSee('No Ar no Portal');
+    }
+
+    public function test_active_churches_kpi_displays_zero_when_no_churches(): void
+    {
+        Church::query()->delete();
+
+        $this->actingAs($this->superAdmin)
+            ->get('/admin')
+            ->assertSuccessful()
+            ->assertSee('Igrejas ativas')
+            ->assertSee('nenhuma igreja ativa cadastrada');
+    }
+
+    public function test_active_churches_kpi_counts_real_active_churches_and_distinct_cities(): void
+    {
+        Church::query()->delete();
+
+        // 3 igrejas ativas em 2 cidades diferentes e 1 inativa
+        Church::factory()->create(['city' => 'Goiânia', 'is_active' => true]);
+        Church::factory()->create(['city' => 'Goiânia', 'is_active' => true]);
+        Church::factory()->create(['city' => 'Anápolis', 'is_active' => true]);
+        Church::factory()->create(['city' => 'Rio Verde', 'is_active' => false]);
+
+        $this->actingAs($this->superAdmin)
+            ->get('/admin')
+            ->assertSuccessful()
+            ->assertSee('Igrejas ativas')
+            ->assertSee('em 2 cidades de Goiás')
+            ->assertSee('3 de 3 igrejas já contribuíram');
+    }
+
+    public function test_active_churches_cache_is_invalidated_when_church_is_saved_or_deleted(): void
+    {
+        Church::query()->delete();
+
+        $church = Church::factory()->create(['city' => 'Goiânia', 'is_active' => true]);
+
+        // Carrega o dashboard e aquece o cache
+        $this->actingAs($this->superAdmin)
+            ->get('/admin')
+            ->assertSuccessful()
+            ->assertSee('em 1 cidade de Goiás');
+
+        $this->assertTrue(Cache::has(Dashboard::STATS_CACHE_KEY));
+
+        // Criar uma nova igreja deve invalidar o cache
+        $newChurch = Church::factory()->create(['city' => 'Anápolis', 'is_active' => true]);
+
+        $this->assertFalse(Cache::has(Dashboard::STATS_CACHE_KEY));
+
+        // Próximo carregamento reflete o novo valor
+        $this->actingAs($this->superAdmin)
+            ->get('/admin')
+            ->assertSuccessful()
+            ->assertSee('em 2 cidades de Goiás');
+
+        // Desativar ou deletar a igreja também invalida o cache
+        $newChurch->delete();
+
+        $this->assertFalse(Cache::has(Dashboard::STATS_CACHE_KEY));
     }
 
     public function test_pending_review_widget_shows_empty_state_when_no_pendencies(): void
