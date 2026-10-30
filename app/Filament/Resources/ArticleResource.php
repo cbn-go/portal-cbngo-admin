@@ -154,14 +154,10 @@ class ArticleResource extends Resource
                             ->disk(config('media.disk'))
                             ->directory('articles/covers')
                             ->visibility('public')
-                            ->maxSize(5120)
+                            ->maxSize(10240)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth('1200')
-                            ->imageResizeTargetHeight('675')
                             ->columnSpanFull()
-                            ->helperText('Formatos: JPG, PNG, WEBP (máx. 5MB). Proporção recomendada 16:9 (1200x675).'),
+                            ->helperText('Envie a foto original, sem reduzir: JPG, PNG ou WEBP até 10MB. O site recorta em 16:9 a partir do centro e gera as versões otimizadas.'),
                     ])
                     ->columns(2),
             ]);

@@ -12,7 +12,7 @@ use Throwable;
 /**
  * Versões WebP otimizadas das imagens enviadas pelo painel. Para
  * "news/featured/abc.jpg" grava "news/featured/abc-thumb.webp",
- * "abc-card.webp" e "abc-cover.webp" no disco de mídia, ao lado do original.
+ * "abc-card.webp", "abc-cover.webp" e "abc-full.webp" no disco de mídia, ao lado do original.
  */
 class MediaVariants
 {
@@ -101,18 +101,28 @@ class MediaVariants
             return 0;
         }
 
+        self::raiseMemoryLimit();
+
         try {
-            $manager = new ImageManager(new Driver);
-            $contents = (string) $disk->get($path);
-            $quality = (int) config('media.webp_quality', 80);
+            $image = (new ImageManager(new Driver))->read((string) $disk->get($path));
+            $quality = (int) config('media.webp_quality', 85);
             $sizes = self::sizesFor($path);
 
-            foreach ($pending as $variant => $variantPath) {
-                $encoded = $manager->read($contents)
-                    ->scaleDown(width: $sizes[$variant])
-                    ->toWebp(quality: $quality);
+            if ($ratio = self::aspectRatioFor($path)) {
+                [$width, $height] = self::cropBox($image->width(), $image->height(), $ratio);
+                $image->cover($width, $height);
+            }
 
-                $disk->put($variantPath, $encoded->toString(), 'public');
+            // Da maior para a menor: a imagem é aberta uma vez só e reduzida
+            // a cada passo, o que mantém o consumo de memória baixo.
+            arsort($sizes);
+
+            foreach ($sizes as $variant => $width) {
+                $image->scaleDown(width: $width);
+
+                if (isset($pending[$variant])) {
+                    $disk->put($pending[$variant], $image->toWebp(quality: $quality)->toString(), 'public');
+                }
             }
         } catch (Throwable $exception) {
             Log::warning('Falha ao gerar versões WebP da imagem.', [
@@ -124,6 +134,62 @@ class MediaVariants
         }
 
         return count($pending);
+    }
+
+    /**
+     * @return array{int, int}|null [largura, altura] da proporção, ou null para manter a do original
+     */
+    public static function aspectRatioFor(string $path): ?array
+    {
+        /** @var array<string, array{int, int}> $ratios */
+        $ratios = config('media.aspect_ratios', []);
+
+        foreach ($ratios as $prefix => $ratio) {
+            if (str_starts_with($path, $prefix)) {
+                return $ratio;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Maior área com a proporção pedida que cabe na imagem, sem ampliar.
+     *
+     * @param  array{int, int}  $ratio
+     * @return array{int, int}
+     */
+    public static function cropBox(int $width, int $height, array $ratio): array
+    {
+        [$ratioWidth, $ratioHeight] = $ratio;
+
+        if ($width * $ratioHeight > $height * $ratioWidth) {
+            return [(int) round($height * $ratioWidth / $ratioHeight), $height];
+        }
+
+        return [$width, (int) round($width * $ratioHeight / $ratioWidth)];
+    }
+
+    private static function raiseMemoryLimit(): void
+    {
+        $target = (string) config('media.memory_limit', '512M');
+        $current = (string) ini_get('memory_limit');
+
+        if ($current !== '-1' && self::bytes($current) < self::bytes($target)) {
+            @ini_set('memory_limit', $target);
+        }
+    }
+
+    private static function bytes(string $value): int
+    {
+        $number = (int) $value;
+
+        return match (strtoupper(substr(trim($value), -1))) {
+            'G' => $number * 1024 ** 3,
+            'M' => $number * 1024 ** 2,
+            'K' => $number * 1024,
+            default => $number,
+        };
     }
 
     /**

@@ -77,7 +77,7 @@ class MediaCommandsTest extends TestCase
         Church::factory()->create(['logo' => 'churches/logos/b.png']);
 
         $this->artisan('media:variants')
-            ->expectsOutputToContain('2 imagem(ns) verificada(s); 6 versão(ões) gravada(s).')
+            ->expectsOutputToContain('2 imagem(ns) verificada(s); 8 versão(ões) gravada(s).')
             ->assertSuccessful();
 
         foreach ([...MediaVariants::pathsFor('board/photos/a.jpg'), ...MediaVariants::pathsFor('churches/logos/b.png')] as $path) {

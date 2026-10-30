@@ -11,7 +11,7 @@ class GenerateMediaVariants extends Command
     protected $signature = 'media:variants
         {--force : Regera também as versões que já existem}';
 
-    protected $description = 'Gera as versões WebP (thumb, card, cover) de todas as imagens cadastradas';
+    protected $description = 'Gera as versões WebP (thumb, card, cover, full) de todas as imagens cadastradas';
 
     public function handle(): int
     {

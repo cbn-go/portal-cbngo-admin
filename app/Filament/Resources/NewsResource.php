@@ -118,14 +118,10 @@ class NewsResource extends Resource
                             ->disk(config('media.disk'))
                             ->directory('news/featured')
                             ->visibility('public')
-                            ->maxSize(5120)
+                            ->maxSize(10240)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth('1200')
-                            ->imageResizeTargetHeight('675')
                             ->columnSpanFull()
-                            ->helperText('Formatos: JPG, PNG, WEBP (máx. 5MB). Proporção recomendada 16:9 (1200x675).'),
+                            ->helperText('Envie a foto original, sem reduzir: JPG, PNG ou WEBP até 10MB. O site recorta em 16:9 a partir do centro e gera as versões otimizadas.'),
 
                         Forms\Components\FileUpload::make('gallery')
                             ->label('Galeria de Fotos do Evento')
@@ -135,11 +131,11 @@ class NewsResource extends Resource
                             ->disk(config('media.disk'))
                             ->directory('news/galleries')
                             ->visibility('public')
-                            ->maxSize(5120)
+                            ->maxSize(10240)
                             ->maxFiles(10)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->columnSpanFull()
-                            ->helperText('Upload de até 10 fotos da galeria (JPG, PNG, WEBP até 5MB cada).'),
+                            ->helperText('Upload de até 10 fotos da galeria (JPG, PNG, WEBP até 10MB cada).'),
                     ]),
 
                 Forms\Components\Section::make('Classificação & Publicação')

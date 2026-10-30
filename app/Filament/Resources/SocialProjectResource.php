@@ -181,14 +181,10 @@ class SocialProjectResource extends Resource
                             ->disk(MediaVariants::diskName())
                             ->directory('projects/covers')
                             ->visibility('public')
-                            ->maxSize(5120)
+                            ->maxSize(10240)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth('1600')
-                            ->imageResizeTargetHeight('900')
                             ->columnSpanFull()
-                            ->helperText('JPG, PNG ou WEBP até 5MB, proporção 16:9. Usada nos cards e no topo da página do projeto.'),
+                            ->helperText('Envie a foto original, sem reduzir: JPG, PNG ou WEBP até 10MB. O site recorta em 16:9 a partir do centro e gera as versões otimizadas.'),
 
                         Forms\Components\FileUpload::make('gallery')
                             ->label('Galeria de fotos')
@@ -198,11 +194,11 @@ class SocialProjectResource extends Resource
                             ->disk(MediaVariants::diskName())
                             ->directory('projects/galleries')
                             ->visibility('public')
-                            ->maxSize(5120)
+                            ->maxSize(10240)
                             ->maxFiles(10)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->columnSpanFull()
-                            ->helperText('Até 10 fotos (JPG, PNG, WEBP até 5MB cada).'),
+                            ->helperText('Até 10 fotos (JPG, PNG, WEBP até 10MB cada).'),
                     ]),
 
                 Forms\Components\Section::make('Público e local')
