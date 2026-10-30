@@ -111,15 +111,19 @@ Gerido em **Institucional → Diretoria**, apenas pelo super administrador.
 
 | Painel | Site (antes) | Observação |
 |---|---|---|
-| `name`, `role` | iguais | |
-| `group` | `group` | Mesmas chaves de `BoardMember::GROUPS` do site (`App\Enums\BoardGroup`), na ordem de exibição: `presidencia`, `vice_presidencia`, `secretaria`, `tesouraria`, `conselho_fiscal`, `coordenacao_regional` |
-| `region` | `region` | Preenchido apenas para `coordenacao_regional` |
-| `term_label` | `term_label` | Ex.: "Gestão 2025–2027" |
+| `title` | — (novo) | Título eclesiástico já abreviado (`Pr.`, `Pra.`, `Ev.`, `Miss.`, `Diác.`, `Presb.`); nulo = leigo. Exibir como `{title} {name}` (`App\Enums\ClergyTitle`) |
+| `name`, `role` | iguais | `name` não traz mais o título |
+| `group` | `group` | Mesmas chaves de `BoardMember::GROUPS` do site (`App\Enums\BoardGroup`), na ordem de exibição: `presidencia`, `vice_presidencia`, `secretaria`, `tesouraria`, `conplex` (novo: "Conselho de Planejamento e Execução (CONPLEX)"), `conselho_fiscal`, `coordenacao_regional` (rótulo "Diretorias Regionais (AMIGO)") |
+| `region` | `region` | Só em `coordenacao_regional`. Chaves fixas, na ordem de exibição: `leste`, `oeste`, `norte`, `sudoeste` (rótulo "AMIGO Leste" etc., `App\Enums\AmigoRegion`) |
+| `term_label` | `term_label` | Gerado a partir das datas: "Triênio 2026–2029" |
+| `term_starts_on`, `term_ends_on` | — (novos) | Datas do mandato (`2026-10-01` a `2029-09-30`) |
 | `photo` | `photo_url` | Caminho no disco de mídia (`board/photos/...`); nulo = exibir as iniciais |
 | `position` | `position` | Ordem única da diretoria, definida arrastando as linhas no painel |
 | `is_active` | `is_active` | |
 
-Exibir: `is_active = 1`, agrupado por `group` na ordem acima e ordenado por `position`.
+Exibir: `is_active = 1`, agrupado por `group` na ordem acima e ordenado por `position`. Em `coordenacao_regional`, agrupar também por `region` (Leste, Oeste, Norte, Sudoeste), cada região com seus quatro cargos.
+
+A composição do triênio 2026–2029 é carregada por `Database\Seeders\BoardTerm20262029Seeder`, que desativa os membros de gestões anteriores.
 
 ## `documents` (site: `documents`)
 
@@ -300,7 +304,7 @@ Todos os uploads do painel vão para o disco `media`, servido em produção pelo
 - 3 autores com perfil;
 - artigos e notícias em todas as categorias, incluindo rascunhos e conteúdo pendente de revisão;
 - avisos vigente, agendado e expirado;
-- a diretoria da gestão 2025–2027 e os documentos Estatuto, Regimento Interno e Pacto Renovado (como links);
+- a diretoria real do triênio 2026–2029 (seeder também usado em produção) e os documentos Estatuto, Regimento Interno e Pacto Renovado (como links);
 - banners do hero vigentes (link interno e externo), agendado e expirado, com artes de exemplo em 16:9 criadas no disco de mídia quando ainda não existem;
 - 8 projetos sociais publicados (2 por categoria, em igrejas diferentes), um pendente de revisão e um rascunho devolvido para ajustes da igreja de Goiânia.
 

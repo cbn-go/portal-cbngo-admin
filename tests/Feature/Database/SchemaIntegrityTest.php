@@ -197,10 +197,13 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasColumns('board_members', [
             'id',
             'name',
+            'title',
             'role',
             'group',
             'region',
             'term_label',
+            'term_starts_on',
+            'term_ends_on',
             'photo',
             'position',
             'is_active',

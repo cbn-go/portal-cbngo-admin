@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AmigoRegion;
 use App\Enums\BoardGroup;
+use App\Enums\ClergyTitle;
 use App\Filament\Resources\BoardMemberResource\Pages;
 use App\Models\BoardMember;
 use Filament\Forms;
@@ -11,6 +13,8 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 class BoardMemberResource extends Resource
 {
@@ -32,7 +36,7 @@ class BoardMemberResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['name', 'role', 'church_name'];
+        return ['name', 'role'];
     }
 
     public static function form(Form $form): Form
@@ -42,17 +46,18 @@ class BoardMemberResource extends Resource
                 Forms\Components\Section::make('Identificação')
                     ->description('Nome, cargo e órgão da convenção exibidos na página /diretoria do portal público.')
                     ->schema([
+                        Forms\Components\Select::make('title')
+                            ->label('Título')
+                            ->options(ClergyTitle::class)
+                            ->placeholder('Sem título (leigo)')
+                            ->native(false),
+
                         Forms\Components\TextInput::make('name')
                             ->label('Nome')
                             ->required()
                             ->maxLength(255)
-                            ->placeholder('Ex: Pr. Roberto Silveira'),
-
-                        Forms\Components\TextInput::make('role')
-                            ->label('Cargo')
-                            ->required()
-                            ->maxLength(255)
-                            ->placeholder('Ex: Presidente, 1º Secretário, Vogal'),
+                            ->placeholder('Ex: André Luiz Rodrigues da Silva')
+                            ->helperText('Sem o título, que é escolhido ao lado.'),
 
                         Forms\Components\Select::make('group')
                             ->label('Órgão')
@@ -61,22 +66,43 @@ class BoardMemberResource extends Resource
                             ->native(false)
                             ->live(),
 
-                        Forms\Components\TextInput::make('region')
-                            ->label('Região')
+                        Forms\Components\TextInput::make('role')
+                            ->label('Cargo')
+                            ->required()
                             ->maxLength(255)
-                            ->placeholder('Ex: Região Sudoeste (Rio Verde e Jataí)')
+                            ->placeholder('Ex: Presidente, Relator, Coordenador')
+                            ->datalist(fn (Get $get): array => self::groupFrom($get('group'))?->roleSuggestions() ?? []),
+
+                        Forms\Components\Select::make('region')
+                            ->label('Região')
+                            ->options(AmigoRegion::class)
+                            ->enum(AmigoRegion::class)
+                            ->native(false)
                             ->visible(fn (Get $get): bool => self::isRegionalGroup($get('group')))
                             ->required(fn (Get $get): bool => self::isRegionalGroup($get('group'))),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Gestão')
+                Forms\Components\Section::make('Mandato')
                     ->schema([
-                        Forms\Components\TextInput::make('term_label')
-                            ->label('Gestão')
-                            ->maxLength(60)
-                            ->placeholder('Gestão 2025–2027')
-                            ->datalist(fn (): array => array_values(BoardMember::termLabelOptions())),
+                        Forms\Components\DatePicker::make('term_starts_on')
+                            ->label('Início do mandato')
+                            ->default(fn (): ?string => BoardMember::latestTerm()['term_starts_on'] ?? null)
+                            ->live(),
+
+                        Forms\Components\DatePicker::make('term_ends_on')
+                            ->label('Fim do mandato')
+                            ->default(fn (): ?string => BoardMember::latestTerm()['term_ends_on'] ?? null)
+                            ->afterOrEqual('term_starts_on')
+                            ->required(fn (Get $get): bool => filled($get('term_starts_on')))
+                            ->live(),
+
+                        Forms\Components\Placeholder::make('term_label_preview')
+                            ->label('Rótulo no portal')
+                            ->content(fn (Get $get, ?BoardMember $record): string => BoardMember::termLabelFor(
+                                filled($get('term_starts_on')) ? Carbon::parse($get('term_starts_on')) : null,
+                                filled($get('term_ends_on')) ? Carbon::parse($get('term_ends_on')) : null,
+                            ) ?? $record?->term_label ?? '—'),
 
                         Forms\Components\Toggle::make('is_active')
                             ->label('Exibir no portal')
@@ -113,6 +139,7 @@ class BoardMemberResource extends Resource
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nome')
+                    ->formatStateUsing(fn (BoardMember $record): string => $record->display_name)
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('role')
@@ -125,6 +152,7 @@ class BoardMemberResource extends Resource
 
                 Tables\Columns\TextColumn::make('region')
                     ->label('Região')
+                    ->placeholder('—')
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('term_label')
@@ -141,9 +169,18 @@ class BoardMemberResource extends Resource
                     ->label('Órgão')
                     ->options(BoardGroup::class),
 
+                Tables\Filters\SelectFilter::make('region')
+                    ->label('Região')
+                    ->options(AmigoRegion::class),
+
                 Tables\Filters\SelectFilter::make('term_label')
                     ->label('Gestão')
                     ->options(fn (): array => BoardMember::termLabelOptions()),
+
+                Tables\Filters\Filter::make('current_term')
+                    ->label('Gestão vigente')
+                    ->toggle()
+                    ->query(fn (Builder $query): Builder => $query->whereIn('id', BoardMember::query()->currentTerm()->select('id'))),
 
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Ativo'),
@@ -168,10 +205,13 @@ class BoardMemberResource extends Resource
         ];
     }
 
+    private static function groupFrom(mixed $group): ?BoardGroup
+    {
+        return $group instanceof BoardGroup ? $group : BoardGroup::tryFrom((string) $group);
+    }
+
     private static function isRegionalGroup(mixed $group): bool
     {
-        $group = $group instanceof BoardGroup ? $group : BoardGroup::tryFrom((string) $group);
-
-        return $group === BoardGroup::COORDENACAO_REGIONAL;
+        return self::groupFrom($group) === BoardGroup::COORDENACAO_REGIONAL;
     }
 }

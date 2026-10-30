@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\ArticleCategory;
-use App\Enums\BoardGroup;
 use App\Enums\DocumentCategory;
 use App\Enums\NewsCategory;
 use App\Enums\NoticePriority;
@@ -12,7 +11,6 @@ use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\Article;
 use App\Models\Banner;
-use App\Models\BoardMember;
 use App\Models\Church;
 use App\Models\Document;
 use App\Models\News;
@@ -74,7 +72,6 @@ class DevelopmentContentSeeder extends Seeder
         $this->seedArticles($authors);
         $this->seedNews();
         $this->seedNotices();
-        $this->seedBoardMembers();
         $this->seedDocuments();
         $this->seedBanners();
         $this->seedSocialProjects();
@@ -356,36 +353,6 @@ class DevelopmentContentSeeder extends Seeder
             Notice::query()->updateOrCreate(
                 ['slug' => $data['slug']],
                 [...$data, 'user_id' => $editor->id, 'is_active' => true],
-            );
-        }
-    }
-
-    /**
-     * Diretoria da gestão atual, na mesma composição usada pelo portal público.
-     */
-    private function seedBoardMembers(): void
-    {
-        $members = [
-            ['name' => 'Pr. Roberto Silveira', 'role' => 'Presidente', 'group' => BoardGroup::PRESIDENCIA],
-            ['name' => 'Pr. Carlos Eduardo Mendes', 'role' => '1º Vice-presidente', 'group' => BoardGroup::VICE_PRESIDENCIA],
-            ['name' => 'Pr. André Luiz Barbosa', 'role' => '2º Vice-presidente', 'group' => BoardGroup::VICE_PRESIDENCIA],
-            ['name' => 'Pra. Helena Albuquerque', 'role' => '1ª Secretária', 'group' => BoardGroup::SECRETARIA],
-            ['name' => 'Pr. Daniel Ferreira Costa', 'role' => '2º Secretário', 'group' => BoardGroup::SECRETARIA],
-            ['name' => 'Diác. Márcio Antunes', 'role' => '1º Tesoureiro', 'group' => BoardGroup::TESOURARIA],
-            ['name' => 'Presb. Juliana Rezende', 'role' => '2ª Tesoureira', 'group' => BoardGroup::TESOURARIA],
-            ['name' => 'Pr. Valdir Cunha', 'role' => 'Relator', 'group' => BoardGroup::CONSELHO_FISCAL],
-            ['name' => 'Pr. Samuel Rocha', 'role' => 'Vogal', 'group' => BoardGroup::CONSELHO_FISCAL],
-            ['name' => 'Pr. Elias Moreira', 'role' => 'Vogal', 'group' => BoardGroup::CONSELHO_FISCAL],
-            ['name' => 'Pr. Fernando Lopes', 'role' => 'Coordenador Regional', 'group' => BoardGroup::COORDENACAO_REGIONAL, 'region' => 'Região Metropolitana de Goiânia'],
-            ['name' => 'Pr. Gilberto Nunes', 'role' => 'Coordenador Regional', 'group' => BoardGroup::COORDENACAO_REGIONAL, 'region' => 'Região Centro (Anápolis)'],
-            ['name' => 'Pr. Wesley Prado', 'role' => 'Coordenador Regional', 'group' => BoardGroup::COORDENACAO_REGIONAL, 'region' => 'Região Sudoeste (Rio Verde e Jataí)'],
-            ['name' => 'Pr. Josué Teixeira', 'role' => 'Coordenador Regional', 'group' => BoardGroup::COORDENACAO_REGIONAL, 'region' => 'Região Entorno do DF (Luziânia)'],
-        ];
-
-        foreach ($members as $index => $data) {
-            BoardMember::query()->updateOrCreate(
-                ['name' => $data['name']],
-                [...$data, 'term_label' => 'Gestão 2025–2027', 'position' => $index + 1, 'is_active' => true],
             );
         }
     }

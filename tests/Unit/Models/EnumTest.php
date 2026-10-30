@@ -2,8 +2,10 @@
 
 namespace Tests\Unit\Models;
 
+use App\Enums\AmigoRegion;
 use App\Enums\ArticleCategory;
 use App\Enums\BoardGroup;
+use App\Enums\ClergyTitle;
 use App\Enums\DocumentCategory;
 use App\Enums\NewsCategory;
 use App\Enums\NoticePriority;
@@ -63,9 +65,31 @@ class EnumTest extends TestCase
     public function test_board_group_values_match_public_portal_order(): void
     {
         $this->assertSame(
-            ['presidencia', 'vice_presidencia', 'secretaria', 'tesouraria', 'conselho_fiscal', 'coordenacao_regional'],
+            ['presidencia', 'vice_presidencia', 'secretaria', 'tesouraria', 'conplex', 'conselho_fiscal', 'coordenacao_regional'],
             array_column(BoardGroup::cases(), 'value'),
         );
+    }
+
+    public function test_amigo_regions_are_recognized_in_legacy_text(): void
+    {
+        $this->assertSame(['leste', 'oeste', 'norte', 'sudoeste'], array_column(AmigoRegion::cases(), 'value'));
+        $this->assertSame('AMIGO Sudoeste', AmigoRegion::SUDOESTE->getLabel());
+
+        $this->assertSame(AmigoRegion::SUDOESTE, AmigoRegion::fromText('Região Sudoeste (Rio Verde e Jataí)'));
+        $this->assertSame(AmigoRegion::OESTE, AmigoRegion::fromText('AMIGO Oeste'));
+        $this->assertSame(AmigoRegion::LESTE, AmigoRegion::fromText('leste'));
+        $this->assertNull(AmigoRegion::fromText('Região Metropolitana de Goiânia'));
+        $this->assertNull(AmigoRegion::fromText(null));
+    }
+
+    public function test_clergy_title_is_split_from_the_name(): void
+    {
+        $this->assertSame([ClergyTitle::PASTOR, 'André Luiz Rodrigues da Silva'], ClergyTitle::splitName('Pr. André Luiz Rodrigues da Silva'));
+        $this->assertSame([ClergyTitle::PASTORA, 'Helena Albuquerque'], ClergyTitle::splitName('Pra. Helena Albuquerque'));
+        $this->assertSame([ClergyTitle::EVANGELISTA, 'Fábio Oliveira Nascimento'], ClergyTitle::splitName(' Ev.  Fábio Oliveira Nascimento '));
+        $this->assertSame([ClergyTitle::DIACONO, 'Márcio Antunes'], ClergyTitle::splitName('Diac. Márcio Antunes'));
+        $this->assertSame([null, 'Abílio Rocha Neto'], ClergyTitle::splitName('Abílio Rocha Neto'));
+        $this->assertSame([null, 'Prado Lima'], ClergyTitle::splitName('Prado Lima'));
     }
 
     public function test_document_category_backed_values(): void

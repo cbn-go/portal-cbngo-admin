@@ -16,6 +16,7 @@ use App\Models\News;
 use App\Models\Notice;
 use App\Models\SocialProject;
 use App\Models\User;
+use Database\Seeders\BoardTerm20262029Seeder;
 use Database\Seeders\ChurchSeeder;
 use Database\Seeders\DevelopmentContentSeeder;
 use Database\Seeders\SuperAdminSeeder;
@@ -102,8 +103,8 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame(1, Notice::query()->scheduled()->count());
         $this->assertSame(1, Notice::query()->expired()->count());
 
-        $this->assertSame(14, BoardMember::query()->active()->count());
-        $this->assertSame(4, BoardMember::query()->where('group', 'coordenacao_regional')->whereNotNull('region')->count());
+        $this->assertSame(BoardTerm20262029Seeder::memberCount(), BoardMember::query()->active()->count());
+        $this->assertSame(16, BoardMember::query()->where('group', 'coordenacao_regional')->whereNotNull('region')->count());
         $this->assertSame('PDF', Document::query()->where('slug', 'estatuto-da-cbn')->value('file_format'));
         $this->assertSame('Página', Document::query()->where('slug', 'pacto-renovado')->value('file_format'));
 
@@ -138,7 +139,7 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame(6, Article::query()->count());
         $this->assertSame(6, News::query()->count());
         $this->assertSame(3, Notice::query()->count());
-        $this->assertSame(14, BoardMember::query()->count());
+        $this->assertSame(BoardTerm20262029Seeder::memberCount(), BoardMember::query()->count());
         $this->assertSame(3, Document::query()->count());
         $this->assertSame(4, Banner::query()->count());
         $this->assertSame(10, SocialProject::query()->count());

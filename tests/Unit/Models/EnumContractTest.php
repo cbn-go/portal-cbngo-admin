@@ -119,7 +119,7 @@ class EnumContractTest extends TestCase
             $this->assertNotSame('', $group->getLabel());
         }
 
-        $this->assertSame('Coordenadores de Regiões', BoardGroup::COORDENACAO_REGIONAL->getLabel());
+        $this->assertSame('Diretorias Regionais (AMIGO)', BoardGroup::COORDENACAO_REGIONAL->getLabel());
 
         foreach (DocumentCategory::cases() as $category) {
             $this->assertInstanceOf(HasLabel::class, $category);

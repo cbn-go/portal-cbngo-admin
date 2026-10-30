@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\BoardGroup;
+use App\Enums\ClergyTitle;
 use App\Models\BoardMember;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,9 +18,10 @@ class BoardMemberFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Pr. '.fake()->name(),
+            'title' => ClergyTitle::PASTOR,
+            'name' => fake()->name(),
             'role' => fake()->randomElement(['Presidente', '1º Secretário', 'Tesoureiro', 'Vogal']),
-            'group' => fake()->randomElement(BoardGroup::cases()),
+            'group' => fake()->randomElement(array_filter(BoardGroup::cases(), fn (BoardGroup $group): bool => $group !== BoardGroup::COORDENACAO_REGIONAL)),
             'region' => null,
             'term_label' => 'Gestão 2025–2027',
             'photo' => null,
