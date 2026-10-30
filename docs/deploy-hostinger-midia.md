@@ -4,15 +4,15 @@ O painel e o portal público rodam na mesma conta Hostinger. Os uploads do paine
 
 **Não altere** o WordPress vivo em `~/domains/cbngo.com.br`.
 
-## URLs atuais (temporárias)
+## URLs atuais
 
-A primeira publicação usa os sites Hostinger já criados, sem DNS customizado:
+O painel e o portal já usam os domínios definitivos; a mídia ainda está no site temporário:
 
 | Papel | URL | Pasta no servidor |
 |---|---|---|
-| Painel | https://indigo-owl-926716.hostingersite.com | `/home/u579305537/domains/indigo-owl-926716.hostingersite.com` |
+| Painel | https://painel.cbngo.org.br | `/home/u579305537/domains/painel.cbngo.org.br` |
 | Mídia | https://peachpuff-ant-612575.hostingersite.com | `/home/u579305537/domains/peachpuff-ant-612575.hostingersite.com/public_html` |
-| Portal público | https://honeydew-wolverine-903854.hostingersite.com | reservado |
+| Portal público | https://cbngo.org.br | `/home/u579305537/domains/cbngo.org.br` |
 
 No `.env` de produção do painel:
 
@@ -25,18 +25,20 @@ O `public_html` da mídia tem um `.htaccess` que desliga listagem de diretório,
 
 ## Quando o subdomínio customizado existir
 
-1. No hPanel, crie `midia.cbngo.com.br` (ou aponte o domínio para a pasta peachpuff).
+1. No hPanel, conecte `midia.cbngo.org.br` ao site peachpuff. A Hostinger renomeia a pasta para `~/domains/midia.cbngo.org.br`.
 2. Ative SSL Let's Encrypt.
-3. Atualize o `.env` do painel:
+3. Atualize o `.env` do painel e recrie os caches (`optimize:clear` + `scripts/post-deploy.sh`):
 
 ```dotenv
-MEDIA_ROOT=/home/u579305537/domains/midia.cbngo.com.br/public_html
-MEDIA_URL=https://midia.cbngo.com.br
+MEDIA_ROOT=/home/u579305537/domains/midia.cbngo.org.br/public_html
+MEDIA_URL=https://midia.cbngo.org.br
 ```
+
+4. Atualize o `MEDIA_URL` do portal público (`~/domains/cbngo.org.br/.env`) e recrie os caches dele.
 
 Se a pasta do subdomínio for outra, mova (ou sirva) o conteúdo atual de `peachpuff-ant-612575.hostingersite.com/public_html` para lá antes de trocar `MEDIA_ROOT`.
 
-A documentação antiga citava `midia.cbngo.org.br`; o domínio oficial em produção hoje é `cbngo.com.br`. Os dois hosts continuam tratados como internos em `config/portal.php`.
+O domínio da convenção é `cbngo.org.br`; `cbngo.com.br` continua sendo o WordPress antigo. Os dois hosts são tratados como internos em `config/portal.php`.
 
 ## PHP
 

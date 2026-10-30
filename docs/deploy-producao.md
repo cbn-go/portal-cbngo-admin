@@ -8,9 +8,9 @@ Conta compartilhada Hostinger (LiteSpeed + CloudLinux). Equivale ao critério 10
 
 | Papel | URL atual | Pasta |
 |---|---|---|
-| Painel (este repo) | https://indigo-owl-926716.hostingersite.com | `~/domains/indigo-owl-926716.hostingersite.com` |
+| Painel (este repo) | https://painel.cbngo.org.br | `~/domains/painel.cbngo.org.br` |
 | Mídia (uploads) | https://peachpuff-ant-612575.hostingersite.com | `~/domains/peachpuff-ant-612575.hostingersite.com/public_html` |
-| Portal público | https://honeydew-wolverine-903854.hostingersite.com | reservado; fora desta issue |
+| Portal público | https://cbngo.org.br | `~/domains/cbngo.org.br` (repo `portal-cbngo-site`) |
 
 SSH: host `cbn-go` em `~/.ssh/config` (`82.180.153.107:65002`, user `u579305537`).
 
@@ -18,7 +18,7 @@ O document root do painel é `public_html/`. O Laravel usa essa pasta como `publ
 
 ## PHP
 
-O site indigo-owl está em **PHP 8.3** (hPanel). Artisan e cron usam o mesmo major:
+O site do painel está em **PHP 8.3** (hPanel). Artisan e cron usam o mesmo major:
 
 ```bash
 /opt/alt/php83/usr/bin/php artisan …
@@ -55,7 +55,7 @@ Secret necessário: `HOSTINGER_SSH_KEY` (chave privada ed25519 de deploy, cuja p
 Cron no hPanel (03:00 America/Sao_Paulo; o servidor pode estar em UTC — ajuste se o horário real sair diferente):
 
 ```cron
-0 3 * * * /bin/bash /home/u579305537/domains/indigo-owl-926716.hostingersite.com/scripts/backup-producao.sh
+0 3 * * * /bin/bash /home/u579305537/domains/painel.cbngo.org.br/scripts/backup-producao.sh
 ```
 
 Não há binário `crontab` no SSH desta conta.
@@ -68,19 +68,32 @@ Não rode `DatabaseSeeder` nem `SuperAdminSeeder` em produção (senha `password
 /opt/alt/php83/usr/bin/php artisan tinker --execute="App\Models\User::query()->updateOrCreate(['email' => 'superadmin@cbngo.org.br'], ['name' => 'Super Admin', 'password' => 'SENHA_FORTE', 'role' => App\Enums\UserRole::SUPER_ADMIN, 'church_id' => null, 'is_active' => true, 'email_verified_at' => now()]);"
 ```
 
-Painel: `https://indigo-owl-926716.hostingersite.com/admin/login`
+Painel: `https://painel.cbngo.org.br/admin/login`
 
-## Subdomínio customizado (depois)
+## Domínios definitivos
 
-1. No hPanel, crie `painel.cbngo.com.br` apontando para a pasta do indigo-owl (ou recrie o addon e migre arquivos).
-2. Crie `midia.cbngo.com.br` apontando para a pasta peachpuff.
-3. Ative SSL Let's Encrypt nos dois.
-4. Atualize `APP_URL`, `MEDIA_ROOT` e `MEDIA_URL` no `.env` e rode `scripts/post-deploy.sh`.
+O domínio da convenção é `cbngo.org.br`. Ao conectar um domínio a um site da Hostinger, **o hPanel renomeia a pasta do site** (`~/domains/<site-temporario>` vira `~/domains/<domínio>`). Foi o que aconteceu com o painel (`indigo-owl-926716.hostingersite.com` → `painel.cbngo.org.br`) e com o portal (`honeydew-wolverine-903854.hostingersite.com` → `cbngo.org.br`).
+
+Depois de conectar (ou trocar) o domínio de um site:
+
+1. Atualize `DEPLOY_PATH` no job `deploy` de `.github/workflows/ci.yml` (o rsync usa `--delete` e publicaria na pasta antiga).
+2. No servidor, ajuste o `.env` (`APP_URL` e, se for a mídia, `MEDIA_ROOT`/`MEDIA_URL`) e **recrie os caches**, porque o `config:cache` guarda os caminhos absolutos da pasta antiga:
+
+   ```bash
+   cd ~/domains/painel.cbngo.org.br
+   /opt/alt/php83/usr/bin/php artisan optimize:clear
+   bash scripts/post-deploy.sh
+   ```
+
+3. Atualize o caminho do cron de backup no hPanel.
+4. Confira o SSL do domínio no hPanel.
+
+Pendente: a mídia ainda está no site temporário `peachpuff-ant-612575.hostingersite.com`. Ao conectar `midia.cbngo.org.br`, siga [deploy-hostinger-midia.md](deploy-hostinger-midia.md) e atualize também o `MEDIA_URL` do portal público.
 
 ## Checagens
 
 ```bash
-curl -I https://indigo-owl-926716.hostingersite.com/up
-curl -o /dev/null -s -w '%{time_total}\n' https://indigo-owl-926716.hostingersite.com/up
-curl -o /dev/null -s -w '%{time_total}\n' https://indigo-owl-926716.hostingersite.com/admin/login
+curl -I https://painel.cbngo.org.br/up
+curl -o /dev/null -s -w '%{time_total}\n' https://painel.cbngo.org.br/up
+curl -o /dev/null -s -w '%{time_total}\n' https://painel.cbngo.org.br/admin/login
 ```
