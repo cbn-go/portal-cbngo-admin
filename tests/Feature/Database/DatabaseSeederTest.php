@@ -11,6 +11,7 @@ use App\Models\Banner;
 use App\Models\BoardMember;
 use App\Models\Church;
 use App\Models\Document;
+use App\Models\Municipality;
 use App\Models\News;
 use App\Models\Notice;
 use App\Models\SocialProject;
@@ -65,6 +66,8 @@ class DatabaseSeederTest extends TestCase
             ]);
         }
 
+        $this->assertSame(246, Municipality::query()->count());
+        $this->assertSame(count($cities), Church::query()->whereNotNull('municipality_id')->whereIn('city', $cities)->count());
         $this->assertSame(count($cities), Church::query()->whereIn('city', $cities)->count());
     }
 
@@ -130,6 +133,7 @@ class DatabaseSeederTest extends TestCase
         $this->seed();
 
         $this->assertSame(count(ChurchSeeder::POLO_CITIES), Church::query()->count());
+        $this->assertSame(246, Municipality::query()->count());
         $this->assertSame(count(DevelopmentContentSeeder::AUTHORS), AuthorProfile::query()->count());
         $this->assertSame(6, Article::query()->count());
         $this->assertSame(6, News::query()->count());

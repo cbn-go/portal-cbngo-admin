@@ -8,6 +8,7 @@ use Database\Factories\ChurchFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -20,6 +21,7 @@ use Illuminate\Support\Str;
  * @property string|null $cnpj
  * @property string|null $registration_number
  * @property string|null $pastor_name
+ * @property int|null $municipality_id
  * @property string $city
  * @property string $state
  * @property string|null $neighborhood
@@ -55,6 +57,7 @@ class Church extends Model
         'cnpj',
         'registration_number',
         'pastor_name',
+        'municipality_id',
         'city',
         'state',
         'neighborhood',
@@ -95,6 +98,19 @@ class Church extends Model
             }
         });
 
+        static::saving(function (Church $church): void {
+            if (filled($church->municipality_id)) {
+                if ($church->isDirty('municipality_id') || blank($church->city)) {
+                    $municipality = $church->municipality ?? Municipality::find($church->municipality_id);
+                    if ($municipality) {
+                        $church->city = $municipality->name;
+                    }
+                }
+            } elseif (filled($church->city) && blank($church->municipality_id)) {
+                $church->municipality_id = Municipality::findByNormalizedName($church->city)?->id;
+            }
+        });
+
         static::saved(function (): void {
             Cache::forget(Dashboard::STATS_CACHE_KEY);
             Cache::forget('cbngo:dashboard:stats:overview');
@@ -129,6 +145,14 @@ class Church extends Model
         }
 
         return $slug;
+    }
+
+    /**
+     * @return BelongsTo<Municipality, $this>
+     */
+    public function municipality(): BelongsTo
+    {
+        return $this->belongsTo(Municipality::class);
     }
 
     /**

@@ -7,7 +7,9 @@ use App\Filament\Resources\ChurchResource\Pages\CreateChurch;
 use App\Filament\Resources\ChurchResource\Pages\EditChurch;
 use App\Filament\Resources\ChurchResource\Pages\ListChurches;
 use App\Models\Church;
+use App\Models\Municipality;
 use App\Models\User;
+use Database\Seeders\MunicipalitySeeder;
 use Filament\Actions\DeleteAction;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,6 +33,8 @@ class ChurchResourceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->seed(MunicipalitySeeder::class);
 
         $this->superAdmin = User::factory()->create([
             'role' => UserRole::SUPER_ADMIN,
@@ -366,5 +370,28 @@ class ChurchResourceTest extends TestCase
             "service_times.{$key}.day" => 'required',
             "service_times.{$key}.time" => 'regex',
         ]);
+    }
+
+    public function test_super_admin_can_create_church_with_searchable_municipality_select(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        $municipality = Municipality::where('name', 'Goianésia')->firstOrFail();
+
+        Livewire::test(CreateChurch::class)
+            ->fillForm([
+                'name' => 'Igreja Batista Nacional de Goianésia',
+                'municipality_id' => $municipality->id,
+                'state' => 'GO',
+                'is_active' => true,
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $church = Church::where('name', 'Igreja Batista Nacional de Goianésia')->first();
+        $this->assertNotNull($church);
+        $this->assertSame($municipality->id, $church->municipality_id);
+        $this->assertSame('Goianésia', $church->city);
     }
 }
