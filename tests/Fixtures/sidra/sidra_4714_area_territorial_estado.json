@@ -1,0 +1,27 @@
+[
+    {
+        "id": "6318",
+        "variavel": "Área da unidade territorial",
+        "unidade": "Quilômetros quadrados",
+        "resultados": [
+            {
+                "classificacoes": [],
+                "series": [
+                    {
+                        "localidade": {
+                            "id": "52",
+                            "nivel": {
+                                "id": "N3",
+                                "nome": "Unidade da Federação"
+                            },
+                            "nome": "Goiás"
+                        },
+                        "serie": {
+                            "2022": "340242.859"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]

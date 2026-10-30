@@ -1,0 +1,27 @@
+[
+    {
+        "id": "9324",
+        "variavel": "População residente estimada",
+        "unidade": "Pessoas",
+        "resultados": [
+            {
+                "classificacoes": [],
+                "series": [
+                    {
+                        "localidade": {
+                            "id": "52",
+                            "nivel": {
+                                "id": "N3",
+                                "nome": "Unidade da Federação"
+                            },
+                            "nome": "Goiás"
+                        },
+                        "serie": {
+                            "2026": "7495033"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]
