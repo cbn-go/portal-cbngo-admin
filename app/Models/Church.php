@@ -172,6 +172,14 @@ class Church extends Model
     }
 
     /**
+     * @return HasMany<SocialProject, $this>
+     */
+    public function socialProjects(): HasMany
+    {
+        return $this->hasMany(SocialProject::class);
+    }
+
+    /**
      * Atributos com imagens no disco de mídia que ganham versões WebP.
      *
      * @return list<string>
