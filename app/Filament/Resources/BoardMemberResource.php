@@ -18,7 +18,7 @@ class BoardMemberResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationGroup = 'Institucional';
+    protected static ?string $navigationGroup = 'Secretaria';
 
     protected static ?string $navigationLabel = 'Diretoria';
 
@@ -26,7 +26,14 @@ class BoardMemberResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Diretoria';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'role', 'church_name'];
+    }
 
     public static function form(Form $form): Form
     {

@@ -31,7 +31,7 @@ class SocialProjectResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-heart';
 
-    protected static ?string $navigationGroup = 'Conteúdo';
+    protected static ?string $navigationGroup = 'Portal';
 
     protected static ?string $navigationLabel = 'Projetos Sociais';
 
@@ -39,9 +39,16 @@ class SocialProjectResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Projetos Sociais';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 5;
 
     protected static bool $hasTitleCaseModelLabel = false;
+
+    protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'summary', 'description'];
+    }
 
     public static function isAdmin(): bool
     {
@@ -469,7 +476,7 @@ class SocialProjectResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        if (! self::isAdmin()) {
+        if (Auth::check() && ! self::isAdmin()) {
             return null;
         }
 

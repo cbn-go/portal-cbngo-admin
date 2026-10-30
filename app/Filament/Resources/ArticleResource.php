@@ -21,7 +21,7 @@ class ArticleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Conteúdo';
+    protected static ?string $navigationGroup = 'Portal';
 
     protected static ?string $navigationLabel = 'Artigos';
 
@@ -29,7 +29,26 @@ class ArticleResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Artigos';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'summary', 'content'];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Article::query()->where('status', PublishStatus::PENDING_REVIEW)->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
+    }
 
     public static function form(Form $form): Form
     {

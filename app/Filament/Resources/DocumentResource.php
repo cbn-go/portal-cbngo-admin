@@ -21,7 +21,7 @@ class DocumentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Institucional';
+    protected static ?string $navigationGroup = 'Secretaria';
 
     protected static ?string $navigationLabel = 'Documentos';
 
@@ -29,7 +29,14 @@ class DocumentResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Documentos';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'description'];
+    }
 
     /**
      * Tipos MIME aceitos no upload: PDF, DOC e DOCX.

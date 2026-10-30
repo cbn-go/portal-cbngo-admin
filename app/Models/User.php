@@ -113,6 +113,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Notice::class);
     }
 
+    public function hasAdminPanelAccess(): bool
+    {
+        return $this->is_active && $this->role->hasAdminPanelAccess();
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         if (! $this->is_active) {
@@ -120,7 +125,7 @@ class User extends Authenticatable implements FilamentUser
         }
 
         return match ($panel->getId()) {
-            'admin' => $this->role->hasAdminPanelAccess(),
+            'admin' => $this->hasAdminPanelAccess(),
             'portal' => $this->role->hasPortalPanelAccess(),
             default => false,
         };
