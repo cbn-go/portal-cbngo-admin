@@ -21,7 +21,7 @@ class NewsResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
-    protected static ?string $navigationGroup = 'Comunicação';
+    protected static ?string $navigationGroup = 'Portal';
 
     protected static ?string $navigationLabel = 'Notícias';
 
@@ -29,7 +29,26 @@ class NewsResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Notícias';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'summary', 'content'];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = News::query()->where('status', PublishStatus::PENDING_REVIEW)->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
+    }
 
     public static function form(Form $form): Form
     {

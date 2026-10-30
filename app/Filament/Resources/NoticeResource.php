@@ -22,7 +22,7 @@ class NoticeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-megaphone';
 
-    protected static ?string $navigationGroup = 'Comunicação';
+    protected static ?string $navigationGroup = 'Portal';
 
     protected static ?string $navigationLabel = 'Avisos e Comunicados';
 
@@ -30,7 +30,14 @@ class NoticeResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Avisos';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'content'];
+    }
 
     public static function form(Form $form): Form
     {

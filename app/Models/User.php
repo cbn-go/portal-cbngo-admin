@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -113,6 +114,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Notice::class);
     }
 
+    public function hasAdminPanelAccess(): bool
+    {
+        return $this->is_active && $this->role->hasAdminPanelAccess();
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         if (! $this->is_active) {
@@ -120,7 +126,7 @@ class User extends Authenticatable implements FilamentUser
         }
 
         return match ($panel->getId()) {
-            'admin' => $this->role->hasAdminPanelAccess(),
+            'admin' => $this->hasAdminPanelAccess(),
             'portal' => $this->role->hasPortalPanelAccess(),
             default => false,
         };
@@ -131,6 +137,13 @@ class User extends Authenticatable implements FilamentUser
         $panelId = $this->role->hasAdminPanelAccess() ? 'admin' : 'portal';
 
         return url(filament()->getPanel($panelId)->getPath());
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        $name = urlencode($this->name);
+
+        return "https://ui-avatars.com/api/?name={$name}&color=FFFFFF&background=201820&bold=true";
     }
 
     /**

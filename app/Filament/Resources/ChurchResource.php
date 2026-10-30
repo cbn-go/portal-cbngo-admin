@@ -18,7 +18,7 @@ class ChurchResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
-    protected static ?string $navigationGroup = 'Administração';
+    protected static ?string $navigationGroup = 'Secretaria';
 
     protected static ?string $navigationLabel = 'Igrejas';
 
@@ -27,6 +27,13 @@ class ChurchResource extends Resource
     protected static ?string $pluralModelLabel = 'Igrejas';
 
     protected static ?int $navigationSort = 1;
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'city', 'pastor_name'];
+    }
 
     /**
      * Dias da semana no formato exibido pelo portal público.

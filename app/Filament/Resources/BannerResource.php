@@ -24,7 +24,7 @@ class BannerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
-    protected static ?string $navigationGroup = 'Comunicação';
+    protected static ?string $navigationGroup = 'Portal';
 
     protected static ?string $navigationLabel = 'Banners da Home';
 
@@ -32,9 +32,16 @@ class BannerResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Banners da Home';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static bool $hasTitleCaseModelLabel = false;
+
+    protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'alt_text'];
+    }
 
     public static function form(Form $form): Form
     {
