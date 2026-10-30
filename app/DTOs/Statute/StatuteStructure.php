@@ -36,6 +36,11 @@ class StatuteStructure
         return $articles;
     }
 
+    public function articleCount(): int
+    {
+        return count($this->allArticles());
+    }
+
     /**
      * @return array<string, mixed>
      */
