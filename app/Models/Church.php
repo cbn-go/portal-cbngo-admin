@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Filament\Pages\Dashboard;
 use App\Models\Concerns\HasImageVariants;
 use Database\Factories\ChurchFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
@@ -91,6 +93,16 @@ class Church extends Model
             if (blank($church->slug) && filled($church->name)) {
                 $church->slug = static::generateUniqueSlug($church->name);
             }
+        });
+
+        static::saved(function (): void {
+            Cache::forget(Dashboard::STATS_CACHE_KEY);
+            Cache::forget('cbngo:dashboard:stats:overview');
+        });
+
+        static::deleted(function (): void {
+            Cache::forget(Dashboard::STATS_CACHE_KEY);
+            Cache::forget('cbngo:dashboard:stats:overview');
         });
     }
 

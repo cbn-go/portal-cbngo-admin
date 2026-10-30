@@ -69,6 +69,8 @@ class Dashboard extends BaseDashboard
         ];
     }
 
+    public const STATS_CACHE_KEY = 'cbngo:dashboard:overview:stats';
+
     /**
      * @return array<string, mixed>
      */
@@ -76,7 +78,19 @@ class Dashboard extends BaseDashboard
     {
         $fetchStats = function (): array {
             $activeChurches = Church::query()->where('is_active', true)->count();
-            $citiesCount = Church::query()->where('is_active', true)->distinct('city')->count('city');
+            $citiesCount = (int) Church::query()->where('is_active', true)->distinct('city')->count('city');
+
+            $citiesSubtitle = match ($citiesCount) {
+                0 => 'nenhuma igreja ativa cadastrada',
+                1 => 'em 1 cidade de Goiás',
+                default => "em {$citiesCount} cidades de Goiás",
+            };
+
+            $contributionsSubtitle = match ($activeChurches) {
+                0 => 'nenhuma igreja ativa cadastrada',
+                1 => '1 de 1 igreja já contribuiu',
+                default => min(6, $activeChurches).' de '.$activeChurches.' igrejas já contribuíram',
+            };
 
             $pendingNews = News::query()->where('status', PublishStatus::PENDING_REVIEW)->count();
             $pendingArticles = Article::query()->where('status', PublishStatus::PENDING_REVIEW)->count();
@@ -84,20 +98,19 @@ class Dashboard extends BaseDashboard
             $totalPending = $pendingNews + $pendingArticles + $pendingProjects;
 
             return [
-                'active_churches' => $activeChurches ?: 8,
-                'cities_count' => $citiesCount ?: 8,
+                'active_churches' => $activeChurches,
+                'cities_count' => $citiesCount,
+                'cities_subtitle' => $citiesSubtitle,
                 'pastors_count' => 23,
                 'pastors_subtitle' => '2 com credencial vencendo em novembro',
                 'contributions_month' => 'R$ 48.250',
-                'contributions_subtitle' => ($activeChurches > 0 ? min(6, $activeChurches) : 6).' de '.($activeChurches ?: 8).' igrejas já contribuíram',
+                'contributions_subtitle' => $contributionsSubtitle,
                 'total_pending' => $totalPending,
                 'pending_subtitle' => 'publicações enviadas por igrejas e autores',
             ];
         };
 
-        return app()->environment('testing')
-            ? $fetchStats()
-            : Cache::remember('cbngo:dashboard:overview:stats', 300, $fetchStats);
+        return Cache::remember(self::STATS_CACHE_KEY, 300, $fetchStats);
     }
 
     /**

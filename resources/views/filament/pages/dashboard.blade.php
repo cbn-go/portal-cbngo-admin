@@ -51,7 +51,7 @@
                 <p style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.02em; color: #201820; line-height: 1.1;">
                     {{ $stats['active_churches'] }}
                 </p>
-                <p style="margin: 0; font-size: 13px; color: #5E585E;">em {{ $stats['cities_count'] }} cidades de Goiás</p>
+                <p style="margin: 0; font-size: 13px; color: #5E585E;">{{ $stats['cities_subtitle'] }}</p>
             </div>
 
             <div style="padding: 20px; border: 1px solid #E8E7E8; border-radius: 14px; background: #FFFFFF; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
