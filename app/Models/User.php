@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -136,6 +137,13 @@ class User extends Authenticatable implements FilamentUser
         $panelId = $this->role->hasAdminPanelAccess() ? 'admin' : 'portal';
 
         return url(filament()->getPanel($panelId)->getPath());
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        $name = urlencode($this->name);
+
+        return "https://ui-avatars.com/api/?name={$name}&color=FFFFFF&background=201820&bold=true";
     }
 
     /**
