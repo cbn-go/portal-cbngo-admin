@@ -91,7 +91,7 @@
     </aside>
 
     {{-- Coluna Direita (Formulário) - Fundo Branco Puro conforme Mockup --}}
-    <main class="flex-1 flex flex-col justify-between bg-white text-gray-900 p-6 sm:p-10 lg:p-12 overflow-y-auto">
+    <main class="auth-form-column flex-1 flex flex-col justify-between bg-white text-gray-900 p-6 sm:p-10 lg:p-12 overflow-y-auto">
         {{-- Link Voltar ao site (Desktop: topo direito; Mobile: também acessível no topo) --}}
         <div class="flex justify-end mb-4 sm:mb-6">
             <a
