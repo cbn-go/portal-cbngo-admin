@@ -7,6 +7,7 @@ PHP_BIN="${PHP_BIN:-/opt/alt/php83/usr/bin/php}"
 cd "$APP_DIR"
 
 mkdir -p \
+    resources/views \
     storage/app/public \
     storage/app/private \
     storage/framework/sessions \
