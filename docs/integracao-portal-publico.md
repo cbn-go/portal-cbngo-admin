@@ -226,6 +226,33 @@ O portal público pode renderizar a página `/estatuto` navegável por capítulo
 ### Privacidade do PDF Original
 O arquivo apontado por `original_pdf` contém carimbos com CPFs, números de OAB e assinaturas físicas dos membros da diretoria. Seu download público no portal só deve ser exibido caso autorizado expressamente pela secretaria da convenção ou após disponibilização de versão com dados pessoais anonimizados.
 
+## `institutional_settings` (site: dados de contato, redes e rodapé)
+
+Tabela singleton (registro único) gerida em **Sistema → Dados Institucionais** por `super_admin` e `convention_editor`. Substitui os dados anteriormente fixos em `config/cbngo.php` (issue cbn-go/portal-cbngo-site#37).
+
+| Coluna | Descrição | Observação |
+|---|---|---|
+| `email` | E-mail geral de atendimento | Ex: `contato@cbngo.org.br` |
+| `phone` | Telefone fixo oficial | Ex: `(62) 3223-0000`, opcional |
+| `whatsapp` | WhatsApp para suporte / secretaria | Ex: `(62) 98100-0000`, opcional |
+| `office_hours` | Horário de atendimento | Ex: `Segunda a Sexta, das 08h às 17h` |
+| `street`, `number`, `complement` | Logradouro, número e complemento | Endereço oficial do Art. 2º do Estatuto |
+| `district`, `city`, `state`, `postal_code` | Bairro, cidade, UF e CEP | Ex: `Setor Central`, `Goiânia`, `GO`, `74020-045` |
+| `maps_url` | Link do Google Maps | Usado no botão "Como chegar" no rodapé e página `/contato` |
+| `instagram_url` | Perfil no Instagram | Ex: `https://www.instagram.com/cbngoias/` |
+| `facebook_url` | Página no Facebook | Ex: `https://www.facebook.com/cbngoias/` |
+| `youtube_url` | Canal no YouTube | Ex: `https://www.youtube.com/@cbngoias` |
+| `tiktok_url`, `spotify_url`, `linkedin_url` | Outras redes sociais | Opcionais |
+| `updated_at` | Data/hora da última alteração | Usar como chave para invalidação de cache no site |
+
+### Regra de consumo e cache no portal público
+O portal público consulta as configurações com:
+```sql
+SELECT * FROM institutional_settings LIMIT 1;
+```
+- **Campos vazios de redes sociais:** quando a URL for nula ou vazia, o respectivo ícone **não deve ser exibido** no rodapé ou cabeçalho do portal público.
+- **Cache:** o site pode cachear esse registro por tempo indeterminado e invalidar o cache sempre que o `updated_at` mudar.
+
 ## Mídia compartilhada
 
 Todos os uploads do painel vão para o disco `media`, servido em produção pelo subdomínio `media.cbngo.org.br` (veja `docs/deploy-hostinger-midia.md`).

@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             ChurchSeeder::class,
             SuperAdminSeeder::class,
             StatuteSeeder::class,
+            InstitutionalSettingSeeder::class,
         ]);
 
         if (app()->environment('local', 'testing')) {
