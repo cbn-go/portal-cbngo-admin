@@ -6,6 +6,7 @@ use App\Enums\StrategyIndicator;
 use App\Models\Municipality;
 use App\Models\MunicipalityIndicator;
 use App\Support\Ibge\SidraClient;
+use Carbon\CarbonInterface;
 use Illuminate\Console\Command;
 
 class SyncStrategyIndicators extends Command
@@ -181,8 +182,44 @@ class SyncStrategyIndicators extends Command
 
         $growthCount = 0;
         $densityCount = 0;
+        $rel2022Count = 0;
+        $rel2010Count = 0;
+        $varCount = 0;
+        $naoEvCount = 0;
         $latestEstPeriod = '2026';
         $fetchedAt = now();
+
+        $pop10Plus = MunicipalityIndicator::query()
+            ->where('indicator', StrategyIndicator::POPULATION_10_PLUS_2022)
+            ->pluck('value', 'municipality_id');
+
+        $relCatolicos = MunicipalityIndicator::query()
+            ->where('indicator', StrategyIndicator::RELIGION_CATHOLIC_2022)
+            ->pluck('value', 'municipality_id');
+
+        $relEvangelicos2022 = MunicipalityIndicator::query()
+            ->where('indicator', StrategyIndicator::RELIGION_EVANGELICAL_2022)
+            ->pluck('value', 'municipality_id');
+
+        $relSemReligiao = MunicipalityIndicator::query()
+            ->where('indicator', StrategyIndicator::RELIGION_NONE_2022)
+            ->pluck('value', 'municipality_id');
+
+        $relOutras = MunicipalityIndicator::query()
+            ->where('indicator', StrategyIndicator::RELIGION_OTHER_2022)
+            ->pluck('value', 'municipality_id');
+
+        $pop2010 = MunicipalityIndicator::query()
+            ->where('indicator', StrategyIndicator::POPULATION_2010)
+            ->pluck('value', 'municipality_id');
+
+        $relEvangelicos2010 = MunicipalityIndicator::query()
+            ->where('indicator', StrategyIndicator::RELIGION_EVANGELICAL_2010)
+            ->pluck('value', 'municipality_id');
+
+        $relBatistas2010 = MunicipalityIndicator::query()
+            ->where('indicator', StrategyIndicator::RELIGION_BAPTIST_2010)
+            ->pluck('value', 'municipality_id');
 
         foreach ($municipalitiesMap as $muniId) {
             $pop2022 = $censusPop->get($muniId);
@@ -195,18 +232,7 @@ class SyncStrategyIndicators extends Command
                 $growthValue = round((((float) $estRow->value - (float) $pop2022) / (float) $pop2022) * 100, 2);
 
                 if (! $isDryRun) {
-                    MunicipalityIndicator::query()->updateOrCreate(
-                        [
-                            'municipality_id' => $muniId,
-                            'indicator' => StrategyIndicator::POPULATION_GROWTH,
-                            'period' => $latestEstPeriod,
-                        ],
-                        [
-                            'value' => $growthValue,
-                            'source' => StrategyIndicator::POPULATION_GROWTH->source(),
-                            'fetched_at' => $fetchedAt,
-                        ]
-                    );
+                    $this->saveIndicator($muniId, StrategyIndicator::POPULATION_GROWTH, $latestEstPeriod, $growthValue, $fetchedAt);
                 }
                 $growthCount++;
             }
@@ -216,20 +242,69 @@ class SyncStrategyIndicators extends Command
                 $densityValue = round((float) $pop2022 / (float) $area, 2);
 
                 if (! $isDryRun) {
-                    MunicipalityIndicator::query()->updateOrCreate(
-                        [
-                            'municipality_id' => $muniId,
-                            'indicator' => StrategyIndicator::DEMOGRAPHIC_DENSITY,
-                            'period' => '2022',
-                        ],
-                        [
-                            'value' => $densityValue,
-                            'source' => StrategyIndicator::DEMOGRAPHIC_DENSITY->source(),
-                            'fetched_at' => $fetchedAt,
-                        ]
-                    );
+                    $this->saveIndicator($muniId, StrategyIndicator::DEMOGRAPHIC_DENSITY, '2022', $densityValue, $fetchedAt);
                 }
                 $densityCount++;
+            }
+
+            // 3. Percentuais Censo 2022 (Pessoas de 10 anos ou mais)
+            $p10 = $pop10Plus->get($muniId);
+            $evPct2022 = null;
+            if ($p10 !== null && (float) $p10 > 0) {
+                $p10Val = (float) $p10;
+                $cat = (float) ($relCatolicos->get($muniId) ?? 0);
+                $ev22 = (float) ($relEvangelicos2022->get($muniId) ?? 0);
+                $sr = (float) ($relSemReligiao->get($muniId) ?? 0);
+                $out = (float) ($relOutras->get($muniId) ?? 0);
+
+                $catPct = round(($cat / $p10Val) * 100, 2);
+                $evPct2022 = round(($ev22 / $p10Val) * 100, 2);
+                $srPct = round(($sr / $p10Val) * 100, 2);
+                $outPct = round(($out / $p10Val) * 100, 2);
+
+                if (! $isDryRun) {
+                    $this->saveIndicator($muniId, StrategyIndicator::RELIGION_CATHOLIC_PCT_2022, '2022', $catPct, $fetchedAt);
+                    $this->saveIndicator($muniId, StrategyIndicator::RELIGION_EVANGELICAL_PCT_2022, '2022', $evPct2022, $fetchedAt);
+                    $this->saveIndicator($muniId, StrategyIndicator::RELIGION_NONE_PCT_2022, '2022', $srPct, $fetchedAt);
+                    $this->saveIndicator($muniId, StrategyIndicator::RELIGION_OTHER_PCT_2022, '2022', $outPct, $fetchedAt);
+                }
+                $rel2022Count++;
+            }
+
+            // 4. Percentuais Censo 2010 (População Residente Total)
+            $pTotal2010 = $pop2010->get($muniId);
+            $evPct2010 = null;
+            if ($pTotal2010 !== null && (float) $pTotal2010 > 0) {
+                $pTotalVal = (float) $pTotal2010;
+                $ev10 = (float) ($relEvangelicos2010->get($muniId) ?? 0);
+                $bat10 = (float) ($relBatistas2010->get($muniId) ?? 0);
+
+                $evPct2010 = round(($ev10 / $pTotalVal) * 100, 2);
+                $batPct2010 = round(($bat10 / $pTotalVal) * 100, 2);
+
+                if (! $isDryRun) {
+                    $this->saveIndicator($muniId, StrategyIndicator::RELIGION_EVANGELICAL_PCT_2010, '2010', $evPct2010, $fetchedAt);
+                    $this->saveIndicator($muniId, StrategyIndicator::RELIGION_BAPTIST_PCT_2010, '2010', $batPct2010, $fetchedAt);
+                }
+                $rel2010Count++;
+            }
+
+            // 5. Variação de Evangélicos 2010 -> 2022 (p.p.)
+            if ($evPct2022 !== null && $evPct2010 !== null) {
+                $varEv = round($evPct2022 - $evPct2010, 2);
+                if (! $isDryRun) {
+                    $this->saveIndicator($muniId, StrategyIndicator::RELIGION_EVANGELICAL_VARIATION, '2022', $varEv, $fetchedAt);
+                }
+                $varCount++;
+            }
+
+            // 6. População Não Evangélica Estimada (habitantes)
+            if ($estRow !== null && $evPct2022 !== null) {
+                $naoEv = round((float) $estRow->value * (1 - ($evPct2022 / 100)), 2);
+                if (! $isDryRun) {
+                    $this->saveIndicator($muniId, StrategyIndicator::NON_EVANGELICAL_POPULATION_ESTIMATE, $latestEstPeriod, $naoEv, $fetchedAt);
+                }
+                $naoEvCount++;
             }
         }
 
@@ -254,6 +329,67 @@ class SyncStrategyIndicators extends Command
             ];
             $this->info('✓ ['.StrategyIndicator::DEMOGRAPHIC_DENSITY->label()."]: {$densityCount} municípios calculados.");
         }
+
+        if ($rel2022Count > 0) {
+            $summary[] = [
+                'indicator' => 'Perfil Religioso 2022 (% Católicos, Evangélicos, Sem Religião, Outras)',
+                'period' => '2022',
+                'synced' => $rel2022Count,
+                'status' => $status,
+            ];
+            $this->info("✓ [Perfil Religioso 2022 (%)]: {$rel2022Count} municípios calculados.");
+        }
+
+        if ($rel2010Count > 0) {
+            $summary[] = [
+                'indicator' => 'Perfil Religioso 2010 (% Evangélicos, Batistas)',
+                'period' => '2010',
+                'synced' => $rel2010Count,
+                'status' => $status,
+            ];
+            $this->info("✓ [Perfil Religioso 2010 (%)]: {$rel2010Count} municípios calculados.");
+        }
+
+        if ($varCount > 0) {
+            $summary[] = [
+                'indicator' => StrategyIndicator::RELIGION_EVANGELICAL_VARIATION->label(),
+                'period' => '2022',
+                'synced' => $varCount,
+                'status' => $status,
+            ];
+            $this->info('✓ ['.StrategyIndicator::RELIGION_EVANGELICAL_VARIATION->label()."]: {$varCount} municípios calculados.");
+        }
+
+        if ($naoEvCount > 0) {
+            $summary[] = [
+                'indicator' => StrategyIndicator::NON_EVANGELICAL_POPULATION_ESTIMATE->label(),
+                'period' => $latestEstPeriod,
+                'synced' => $naoEvCount,
+                'status' => $status,
+            ];
+            $this->info('✓ ['.StrategyIndicator::NON_EVANGELICAL_POPULATION_ESTIMATE->label()."]: {$naoEvCount} municípios calculados.");
+        }
+    }
+
+    protected function saveIndicator(
+        int $municipalityId,
+        StrategyIndicator $indicator,
+        string $period,
+        float $value,
+        CarbonInterface $fetchedAt
+    ): void {
+        MunicipalityIndicator::query()->updateOrCreate(
+            [
+                'municipality_id' => $municipalityId,
+                'indicator' => $indicator,
+                'period' => $period,
+            ],
+            [
+                'value' => $value,
+                'source' => $indicator->source(),
+                'fetched_at' => $fetchedAt,
+            ]
+        );
     }
 
     /**
@@ -355,6 +491,14 @@ class SyncStrategyIndicators extends Command
             StrategyIndicator::RACE_INDIGENOUS,
             StrategyIndicator::TERRITORIAL_AREA,
             StrategyIndicator::PIB_PER_CAPITA,
+            StrategyIndicator::POPULATION_10_PLUS_2022,
+            StrategyIndicator::RELIGION_CATHOLIC_2022,
+            StrategyIndicator::RELIGION_EVANGELICAL_2022,
+            StrategyIndicator::RELIGION_NONE_2022,
+            StrategyIndicator::RELIGION_OTHER_2022,
+            StrategyIndicator::POPULATION_2010,
+            StrategyIndicator::RELIGION_EVANGELICAL_2010,
+            StrategyIndicator::RELIGION_BAPTIST_2010,
         ];
     }
 }
