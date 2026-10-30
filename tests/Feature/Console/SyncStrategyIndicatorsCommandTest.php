@@ -205,6 +205,26 @@ class SyncStrategyIndicatorsCommandTest extends TestCase
         // Sum of all 246 municipalities for TERRITORIAL_AREA is 340242.86 km² (rounding tolerance <= 0.001%)
         $sumArea = MunicipalityIndicator::where('indicator', StrategyIndicator::TERRITORIAL_AREA)->sum('value');
         $this->assertEqualsWithDelta(340242.86, $sumArea, 1.0);
+
+        // Sum of all 246 municipalities for POPULATION_10_PLUS_2022 is 6101470 (published state: 6101472, delta: 2)
+        $sumPop10Plus = MunicipalityIndicator::where('indicator', StrategyIndicator::POPULATION_10_PLUS_2022)->sum('value');
+        $this->assertEqualsWithDelta(6101472, $sumPop10Plus, 5);
+
+        // Sum of all 246 municipalities for RELIGION_EVANGELICAL_2022 is 1987366 (published state: 1987368, delta: 2)
+        $sumEv22 = MunicipalityIndicator::where('indicator', StrategyIndicator::RELIGION_EVANGELICAL_2022)->sum('value');
+        $this->assertEqualsWithDelta(1987368, $sumEv22, 5);
+
+        // Sum of all 246 municipalities for POPULATION_2010 is 6003788 (published state: 6003788, exact)
+        $sumPop2010 = MunicipalityIndicator::where('indicator', StrategyIndicator::POPULATION_2010)->sum('value');
+        $this->assertEquals(6003788, (int) $sumPop2010);
+
+        // Sum of all 246 municipalities for RELIGION_EVANGELICAL_2010 is 1685680 (published state: 1685680, exact)
+        $sumEv10 = MunicipalityIndicator::where('indicator', StrategyIndicator::RELIGION_EVANGELICAL_2010)->sum('value');
+        $this->assertEquals(1685680, (int) $sumEv10);
+
+        // Sum of all 246 municipalities for RELIGION_BAPTIST_2010 is 69272 (published state: 69273, delta: 1)
+        $sumBat10 = MunicipalityIndicator::where('indicator', StrategyIndicator::RELIGION_BAPTIST_2010)->sum('value');
+        $this->assertEqualsWithDelta(69273, $sumBat10, 2);
     }
 
     public function test_handles_zero_area_or_population_gracefully_in_calculated_indicators(): void
@@ -229,6 +249,105 @@ class SyncStrategyIndicatorsCommandTest extends TestCase
         // Command should succeed and not throw DivisionByZeroError
         $this->artisan('strategy:sync-indicators')
             ->assertSuccessful();
+    }
+
+    public function test_sync_indicators_command_persists_religious_indicators_for_goiania_with_exact_percentages(): void
+    {
+        $this->fakeAllIbgeEndpoints();
+
+        $this->artisan('strategy:sync-indicators')
+            ->assertSuccessful();
+
+        $goiania = Municipality::where('ibge_code', '5208707')->firstOrFail();
+
+        // 1. Censo 2022 (Pessoas de 10 anos ou mais)
+        $pop10Plus = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::POPULATION_10_PLUS_2022)
+            ->firstOrFail();
+        $this->assertSame('1265266.00', (string) $pop10Plus->value);
+
+        $catolicos = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_CATHOLIC_2022)
+            ->firstOrFail();
+        $this->assertSame('591911.00', (string) $catolicos->value);
+
+        $catolicosPct = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_CATHOLIC_PCT_2022)
+            ->firstOrFail();
+        $this->assertSame('46.78', (string) $catolicosPct->value);
+
+        $evangelicos = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_EVANGELICAL_2022)
+            ->firstOrFail();
+        $this->assertSame('429165.00', (string) $evangelicos->value);
+
+        $evangelicosPct = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_EVANGELICAL_PCT_2022)
+            ->firstOrFail();
+        $this->assertSame('33.92', (string) $evangelicosPct->value);
+
+        $semReligiao = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_NONE_2022)
+            ->firstOrFail();
+        $this->assertSame('116651.00', (string) $semReligiao->value);
+
+        $semReligiaoPct = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_NONE_PCT_2022)
+            ->firstOrFail();
+        $this->assertSame('9.22', (string) $semReligiaoPct->value);
+
+        $outras = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_OTHER_2022)
+            ->firstOrFail();
+        $this->assertSame('127539.00', (string) $outras->value);
+
+        $outrasPct = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_OTHER_PCT_2022)
+            ->firstOrFail();
+        $this->assertSame('10.08', (string) $outrasPct->value);
+
+        // Sum of percentages equals 100.00%
+        $sumPct2022 = (float) $catolicosPct->value + (float) $evangelicosPct->value + (float) $semReligiaoPct->value + (float) $outrasPct->value;
+        $this->assertEqualsWithDelta(100.00, $sumPct2022, 0.01);
+
+        // 2. Censo 2010 (População Residente Total)
+        $pop2010 = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::POPULATION_2010)
+            ->firstOrFail();
+        $this->assertSame('1302001.00', (string) $pop2010->value);
+
+        $evangelicos2010 = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_EVANGELICAL_2010)
+            ->firstOrFail();
+        $this->assertSame('422455.00', (string) $evangelicos2010->value);
+
+        $evangelicosPct2010 = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_EVANGELICAL_PCT_2010)
+            ->firstOrFail();
+        $this->assertSame('32.45', (string) $evangelicosPct2010->value);
+
+        $batistas2010 = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_BAPTIST_2010)
+            ->firstOrFail();
+        $this->assertSame('17446.00', (string) $batistas2010->value);
+
+        $batistasPct2010 = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_BAPTIST_PCT_2010)
+            ->firstOrFail();
+        $this->assertSame('1.34', (string) $batistasPct2010->value);
+
+        // 3. Indicadores Estratégicos Derivados
+        // Variação de Evangélicos 2010 -> 2022 (+1.47 p.p.)
+        $variacaoEvangelicos = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::RELIGION_EVANGELICAL_VARIATION)
+            ->firstOrFail();
+        $this->assertSame('1.47', (string) $variacaoEvangelicos->value);
+
+        // Estimativa de População Não Evangélica: 1511709 * (1 - 0.3392) = 998937.31
+        $naoEvangelicos = MunicipalityIndicator::where('municipality_id', $goiania->id)
+            ->where('indicator', StrategyIndicator::NON_EVANGELICAL_POPULATION_ESTIMATE)
+            ->firstOrFail();
+        $this->assertSame('998937.31', (string) $naoEvangelicos->value);
     }
 
     protected function fakeAllIbgeEndpoints(): void
@@ -262,6 +381,26 @@ class SyncStrategyIndicatorsCommandTest extends TestCase
 
         $fPibPerCapita = json_decode((string) file_get_contents(base_path('tests/Fixtures/ibge/ibge_cidades_pib_per_capita.json')), true);
 
+        // Table 9537 (Censo 2022 - 10 anos ou mais)
+        $f9537Pop10Plus = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_populacao_10_mais.json')), true);
+        $f9537Pop10PlusState = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_populacao_10_mais_estado.json')), true);
+        $f9537Catolica = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_religiao_catolica.json')), true);
+        $f9537CatolicaState = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_religiao_catolica_estado.json')), true);
+        $f9537Evangelica = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_religiao_evangelica.json')), true);
+        $f9537EvangelicaState = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_religiao_evangelica_estado.json')), true);
+        $f9537SemReligiao = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_religiao_sem_religiao.json')), true);
+        $f9537SemReligiaoState = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_religiao_sem_religiao_estado.json')), true);
+        $f9537Outras = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_religiao_outras.json')), true);
+        $f9537OutrasState = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_religiao_outras_estado.json')), true);
+
+        // Table 137 (Censo 2010 - População residente)
+        $f137Pop2010 = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_137_populacao_2010.json')), true);
+        $f137Pop2010State = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_137_populacao_2010_estado.json')), true);
+        $f137Evangelica = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_137_religiao_evangelica.json')), true);
+        $f137EvangelicaState = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_137_religiao_evangelica_estado.json')), true);
+        $f137Batista = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_137_religiao_batista.json')), true);
+        $f137BatistaState = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_137_religiao_batista_estado.json')), true);
+
         Http::fake(function ($request) use (
             $f4714Pop, $f4714PopState, $f4714Area, $f4714AreaState,
             $f6579, $f6579State,
@@ -270,7 +409,15 @@ class SyncStrategyIndicatorsCommandTest extends TestCase
             $fRacaBranca, $fRacaBrancaState, $fRacaPreta, $fRacaPretaState,
             $fRacaAmarela, $fRacaAmarelaState, $fRacaParda, $fRacaPardaState,
             $fRacaIndigena, $fRacaIndigenaState,
-            $fPibPerCapita
+            $fPibPerCapita,
+            $f9537Pop10Plus, $f9537Pop10PlusState,
+            $f9537Catolica, $f9537CatolicaState,
+            $f9537Evangelica, $f9537EvangelicaState,
+            $f9537SemReligiao, $f9537SemReligiaoState,
+            $f9537Outras, $f9537OutrasState,
+            $f137Pop2010, $f137Pop2010State,
+            $f137Evangelica, $f137EvangelicaState,
+            $f137Batista, $f137BatistaState
         ) {
             $url = $request->url();
 
@@ -323,6 +470,36 @@ class SyncStrategyIndicatorsCommandTest extends TestCase
                 }
                 if (str_contains($url, '2780')) {
                     return Http::response($isState ? $fRacaIndigenaState : $fRacaIndigena, 200);
+                }
+            }
+
+            if (str_contains($url, 'agregados/9537')) {
+                if (str_contains($url, '95278')) {
+                    return Http::response($isState ? $f9537Pop10PlusState : $f9537Pop10Plus, 200);
+                }
+                if (str_contains($url, '95263')) {
+                    return Http::response($isState ? $f9537CatolicaState : $f9537Catolica, 200);
+                }
+                if (str_contains($url, '95277')) {
+                    return Http::response($isState ? $f9537EvangelicaState : $f9537Evangelica, 200);
+                }
+                if (str_contains($url, '2836')) {
+                    return Http::response($isState ? $f9537SemReligiaoState : $f9537SemReligiao, 200);
+                }
+                if (str_contains($url, '2826') || str_contains($url, '95275')) {
+                    return Http::response($isState ? $f9537OutrasState : $f9537Outras, 200);
+                }
+            }
+
+            if (str_contains($url, 'agregados/137')) {
+                if (str_contains($url, '133%5B0%5D') || str_contains($url, '133[0]')) {
+                    return Http::response($isState ? $f137Pop2010State : $f137Pop2010, 200);
+                }
+                if (str_contains($url, '95277')) {
+                    return Http::response($isState ? $f137EvangelicaState : $f137Evangelica, 200);
+                }
+                if (str_contains($url, '99741')) {
+                    return Http::response($isState ? $f137BatistaState : $f137Batista, 200);
                 }
             }
 

@@ -174,4 +174,54 @@ class SidraClientTest extends TestCase
         $this->assertSame('2023', $abadia['period']);
         $this->assertSame(24988.67, $abadia['value']);
     }
+
+    public function test_fetches_religious_profile_from_sidra_9537_with_multi_classification(): void
+    {
+        $fixture = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_9537_religiao_evangelica.json')), true);
+
+        Http::fake([
+            'https://servicodados.ibge.gov.br/api/v3/agregados/9537/periodos/2022/variaveis/140*' => Http::response($fixture, 200),
+        ]);
+
+        $client = new SidraClient;
+        $results = $client->fetchMunicipalityValues(
+            table: 9537,
+            period: '2022',
+            variable: 140,
+            classification: '133[95277]|2[6794]|58[95253]'
+        );
+
+        $this->assertCount(246, $results);
+
+        // Goiânia (5208707): 429165 evangélicos
+        $goiania = collect($results)->firstWhere('ibge_code', '5208707');
+        $this->assertNotNull($goiania);
+        $this->assertSame('2022', $goiania['period']);
+        $this->assertSame(429165.0, $goiania['value']);
+    }
+
+    public function test_fetches_religious_profile_from_sidra_137_censo_2010(): void
+    {
+        $fixture = json_decode((string) file_get_contents(base_path('tests/Fixtures/sidra/sidra_137_religiao_batista.json')), true);
+
+        Http::fake([
+            'https://servicodados.ibge.gov.br/api/v3/agregados/137/periodos/2010/variaveis/93*' => Http::response($fixture, 200),
+        ]);
+
+        $client = new SidraClient;
+        $results = $client->fetchMunicipalityValues(
+            table: 137,
+            period: '2010',
+            variable: 93,
+            classification: '133[99741]'
+        );
+
+        $this->assertCount(246, $results);
+
+        // Goiânia (5208707): 17446 batistas em 2010
+        $goiania = collect($results)->firstWhere('ibge_code', '5208707');
+        $this->assertNotNull($goiania);
+        $this->assertSame('2010', $goiania['period']);
+        $this->assertSame(17446.0, $goiania['value']);
+    }
 }

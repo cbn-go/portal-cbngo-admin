@@ -27,11 +27,33 @@ enum StrategyIndicator: string
     case TERRITORIAL_AREA = 'territorial_area';
     case DEMOGRAPHIC_DENSITY = 'demographic_density';
 
-    // Religiosos (Censo 2022 e 2010 - Issue #53)
-    case RELIGION_EVANGELICAL_2022 = 'religion_evangelical_2022';
+    // Populações Base para Percentuais
+    case POPULATION_10_PLUS_2022 = 'population_10_plus_2022';
+    case POPULATION_2010 = 'population_2010';
+
+    // Perfil Religioso Censo 2022 (Pessoas de 10 anos ou mais - Absoluto)
     case RELIGION_CATHOLIC_2022 = 'religion_catholic_2022';
+    case RELIGION_EVANGELICAL_2022 = 'religion_evangelical_2022';
     case RELIGION_NONE_2022 = 'religion_none_2022';
+    case RELIGION_OTHER_2022 = 'religion_other_2022';
+
+    // Perfil Religioso Censo 2022 (% Calculado)
+    case RELIGION_CATHOLIC_PCT_2022 = 'religion_catholic_pct_2022';
+    case RELIGION_EVANGELICAL_PCT_2022 = 'religion_evangelical_pct_2022';
+    case RELIGION_NONE_PCT_2022 = 'religion_none_pct_2022';
+    case RELIGION_OTHER_PCT_2022 = 'religion_other_pct_2022';
+
+    // Perfil Religioso Censo 2010 (População Residente - Absoluto)
+    case RELIGION_EVANGELICAL_2010 = 'religion_evangelical_2010';
     case RELIGION_BAPTIST_2010 = 'religion_baptist_2010';
+
+    // Perfil Religioso Censo 2010 (% Calculado)
+    case RELIGION_EVANGELICAL_PCT_2010 = 'religion_evangelical_pct_2010';
+    case RELIGION_BAPTIST_PCT_2010 = 'religion_baptist_pct_2010';
+
+    // Indicadores Estratégicos Derivados
+    case RELIGION_EVANGELICAL_VARIATION = 'religion_evangelical_variation';
+    case NON_EVANGELICAL_POPULATION_ESTIMATE = 'non_evangelical_population_estimate';
 
     public function label(): string
     {
@@ -51,10 +73,22 @@ enum StrategyIndicator: string
             self::PIB_PER_CAPITA => 'PIB per capita',
             self::TERRITORIAL_AREA => 'Área Territorial',
             self::DEMOGRAPHIC_DENSITY => 'Densidade Demográfica',
-            self::RELIGION_EVANGELICAL_2022 => 'Evangélicos (Censo 2022)',
+            self::POPULATION_10_PLUS_2022 => 'População de 10 anos ou mais (Censo 2022)',
+            self::POPULATION_2010 => 'População Residente (Censo 2010)',
             self::RELIGION_CATHOLIC_2022 => 'Católicos (Censo 2022)',
+            self::RELIGION_EVANGELICAL_2022 => 'Evangélicos (Censo 2022)',
             self::RELIGION_NONE_2022 => 'Sem Religião (Censo 2022)',
+            self::RELIGION_OTHER_2022 => 'Outras Religiões (Censo 2022)',
+            self::RELIGION_CATHOLIC_PCT_2022 => '% Católicos (Censo 2022)',
+            self::RELIGION_EVANGELICAL_PCT_2022 => '% Evangélicos (Censo 2022)',
+            self::RELIGION_NONE_PCT_2022 => '% Sem Religião (Censo 2022)',
+            self::RELIGION_OTHER_PCT_2022 => '% Outras Religiões (Censo 2022)',
+            self::RELIGION_EVANGELICAL_2010 => 'Evangélicos (Censo 2010)',
             self::RELIGION_BAPTIST_2010 => 'Batistas (Censo 2010)',
+            self::RELIGION_EVANGELICAL_PCT_2010 => '% Evangélicos (Censo 2010)',
+            self::RELIGION_BAPTIST_PCT_2010 => '% Batistas (Censo 2010)',
+            self::RELIGION_EVANGELICAL_VARIATION => 'Variação de Evangélicos (2010 → 2022)',
+            self::NON_EVANGELICAL_POPULATION_ESTIMATE => 'População Não Evangélica Estimada',
         };
     }
 
@@ -72,11 +106,23 @@ enum StrategyIndicator: string
             self::RACE_YELLOW,
             self::RACE_BROWN,
             self::RACE_INDIGENOUS,
-            self::RELIGION_EVANGELICAL_2022,
+            self::POPULATION_10_PLUS_2022,
+            self::POPULATION_2010,
             self::RELIGION_CATHOLIC_2022,
+            self::RELIGION_EVANGELICAL_2022,
             self::RELIGION_NONE_2022,
-            self::RELIGION_BAPTIST_2010 => 'habitantes',
-            self::POPULATION_GROWTH => '%',
+            self::RELIGION_OTHER_2022,
+            self::RELIGION_EVANGELICAL_2010,
+            self::RELIGION_BAPTIST_2010,
+            self::NON_EVANGELICAL_POPULATION_ESTIMATE => 'habitantes',
+            self::POPULATION_GROWTH,
+            self::RELIGION_CATHOLIC_PCT_2022,
+            self::RELIGION_EVANGELICAL_PCT_2022,
+            self::RELIGION_NONE_PCT_2022,
+            self::RELIGION_OTHER_PCT_2022,
+            self::RELIGION_EVANGELICAL_PCT_2010,
+            self::RELIGION_BAPTIST_PCT_2010 => '%',
+            self::RELIGION_EVANGELICAL_VARIATION => 'p.p.',
             self::PIB_PER_CAPITA => 'R$',
             self::TERRITORIAL_AREA => 'km²',
             self::DEMOGRAPHIC_DENSITY => 'hab/km²',
@@ -101,10 +147,22 @@ enum StrategyIndicator: string
             self::PIB_PER_CAPITA => 'IBGE Cidades (Pesquisa 38 - PIB dos Municípios)',
             self::TERRITORIAL_AREA => 'IBGE/SIDRA 4714 (Área Territorial Oficial)',
             self::DEMOGRAPHIC_DENSITY => 'Calculado (População / Área)',
-            self::RELIGION_EVANGELICAL_2022,
+            self::POPULATION_10_PLUS_2022,
             self::RELIGION_CATHOLIC_2022,
-            self::RELIGION_NONE_2022 => 'IBGE/SIDRA 9537 (Censo 2022 - Pessoas de 10 anos ou mais)',
+            self::RELIGION_EVANGELICAL_2022,
+            self::RELIGION_NONE_2022,
+            self::RELIGION_OTHER_2022 => 'IBGE/SIDRA 9537 (Censo 2022 - Pessoas de 10 anos ou mais)',
+            self::POPULATION_2010,
+            self::RELIGION_EVANGELICAL_2010,
             self::RELIGION_BAPTIST_2010 => 'IBGE/SIDRA 137 (Censo Demográfico 2010)',
+            self::RELIGION_CATHOLIC_PCT_2022,
+            self::RELIGION_EVANGELICAL_PCT_2022,
+            self::RELIGION_NONE_PCT_2022,
+            self::RELIGION_OTHER_PCT_2022 => 'Calculado (% sobre População de 10 anos ou mais do Censo 2022)',
+            self::RELIGION_EVANGELICAL_PCT_2010,
+            self::RELIGION_BAPTIST_PCT_2010 => 'Calculado (% sobre População Residente Total do Censo 2010)',
+            self::RELIGION_EVANGELICAL_VARIATION => 'Calculado (Diferença % Evangélicos 2022 - 2010 em p.p.)',
+            self::NON_EVANGELICAL_POPULATION_ESTIMATE => 'Calculado (População Estimada × (1 - % Evangélicos 2022))',
         };
     }
 
@@ -126,10 +184,31 @@ enum StrategyIndicator: string
             self::PIB_PER_CAPITA => 'Produto Interno Bruto municipal a preços correntes dividido pela população residente.',
             self::TERRITORIAL_AREA => 'Área da unidade territorial oficial em quilômetros quadrados.',
             self::DEMOGRAPHIC_DENSITY => 'Relação entre o número de habitantes e a área territorial do município.',
-            self::RELIGION_EVANGELICAL_2022 => 'Pessoas de 10 anos ou mais que se declaram evangélicas no Censo 2022.',
+            self::POPULATION_10_PLUS_2022 => 'Pessoas residentes com 10 anos ou mais de idade recenseadas no Censo 2022.',
+            self::POPULATION_2010 => 'Total oficial de pessoas residentes recenseadas no Censo Demográfico 2010.',
             self::RELIGION_CATHOLIC_2022 => 'Pessoas de 10 anos ou mais que se declaram católicas apostólicas romanas no Censo 2022.',
+            self::RELIGION_EVANGELICAL_2022 => 'Pessoas de 10 anos ou mais que se declaram evangélicas no Censo 2022.',
             self::RELIGION_NONE_2022 => 'Pessoas de 10 anos ou mais sem declaração de religião no Censo 2022.',
+            self::RELIGION_OTHER_2022 => 'Pessoas de 10 anos ou mais declaradas em outras religiosidades, tradições ou espiritualidades no Censo 2022.',
+            self::RELIGION_CATHOLIC_PCT_2022 => 'Percentual de pessoas de 10 anos ou mais católicas apostólicas romanas no Censo 2022.',
+            self::RELIGION_EVANGELICAL_PCT_2022 => 'Percentual de pessoas de 10 anos ou mais evangélicas no Censo 2022.',
+            self::RELIGION_NONE_PCT_2022 => 'Percentual de pessoas de 10 anos ou mais sem religião no Censo 2022.',
+            self::RELIGION_OTHER_PCT_2022 => 'Percentual de pessoas de 10 anos ou mais declaradas em outras religiões no Censo 2022.',
+            self::RELIGION_EVANGELICAL_2010 => 'Total de pessoas residentes declaradas evangélicas no Censo 2010.',
             self::RELIGION_BAPTIST_2010 => 'Número de pessoas que se declararam da Igreja Evangélica Batista no Censo 2010.',
+            self::RELIGION_EVANGELICAL_PCT_2010 => 'Percentual de pessoas residentes declaradas evangélicas no Censo 2010.',
+            self::RELIGION_BAPTIST_PCT_2010 => 'Percentual de pessoas residentes declaradas da Igreja Evangélica Batista no Censo 2010.',
+            self::RELIGION_EVANGELICAL_VARIATION => 'Variação percentual de evangélicos entre o Censo 2010 e o Censo 2022 em pontos percentuais.',
+            self::NON_EVANGELICAL_POPULATION_ESTIMATE => 'Estimativa de contingente populacional não evangélico usada como base para planejamento evangelístico.',
+        };
+    }
+
+    public function methodologicalNote(): ?string
+    {
+        return match ($this) {
+            self::RELIGION_EVANGELICAL_VARIATION => 'A base de cálculo difere entre os censos: no Censo 2010 o recorte religioso cobriu a população residente total, enquanto no Censo 2022 o IBGE investigou religião apenas para pessoas de 10 anos ou mais de idade.',
+            self::NON_EVANGELICAL_POPULATION_ESTIMATE => 'Calculada aplicando a proporção de não evangélicos do Censo 2022 (pessoas de 10 anos ou mais) sobre a estimativa anual de população mais recente divulgada pelo IBGE.',
+            default => null,
         };
     }
 
@@ -218,6 +297,55 @@ enum StrategyIndicator: string
                 'variable' => 6318,
                 'classification' => null,
             ],
+            self::POPULATION_10_PLUS_2022 => [
+                'table' => 9537,
+                'period' => '2022',
+                'variable' => 140,
+                'classification' => '133[95278]|2[6794]|58[95253]',
+            ],
+            self::RELIGION_CATHOLIC_2022 => [
+                'table' => 9537,
+                'period' => '2022',
+                'variable' => 140,
+                'classification' => '133[95263]|2[6794]|58[95253]',
+            ],
+            self::RELIGION_EVANGELICAL_2022 => [
+                'table' => 9537,
+                'period' => '2022',
+                'variable' => 140,
+                'classification' => '133[95277]|2[6794]|58[95253]',
+            ],
+            self::RELIGION_NONE_2022 => [
+                'table' => 9537,
+                'period' => '2022',
+                'variable' => 140,
+                'classification' => '133[2836]|2[6794]|58[95253]',
+            ],
+            self::RELIGION_OTHER_2022 => [
+                'table' => 9537,
+                'period' => '2022',
+                'variable' => 140,
+                'classification' => '133[2826,2827,95274,95275,12890,2837]|2[6794]|58[95253]',
+                'aggregate_sum' => true,
+            ],
+            self::POPULATION_2010 => [
+                'table' => 137,
+                'period' => '2010',
+                'variable' => 93,
+                'classification' => '133[0]',
+            ],
+            self::RELIGION_EVANGELICAL_2010 => [
+                'table' => 137,
+                'period' => '2010',
+                'variable' => 93,
+                'classification' => '133[95277]',
+            ],
+            self::RELIGION_BAPTIST_2010 => [
+                'table' => 137,
+                'period' => '2010',
+                'variable' => 93,
+                'classification' => '133[99741]',
+            ],
             default => null,
         };
     }
@@ -225,6 +353,14 @@ enum StrategyIndicator: string
     public function isCalculated(): bool
     {
         return $this === self::POPULATION_GROWTH
-            || $this === self::DEMOGRAPHIC_DENSITY;
+            || $this === self::DEMOGRAPHIC_DENSITY
+            || $this === self::RELIGION_CATHOLIC_PCT_2022
+            || $this === self::RELIGION_EVANGELICAL_PCT_2022
+            || $this === self::RELIGION_NONE_PCT_2022
+            || $this === self::RELIGION_OTHER_PCT_2022
+            || $this === self::RELIGION_EVANGELICAL_PCT_2010
+            || $this === self::RELIGION_BAPTIST_PCT_2010
+            || $this === self::RELIGION_EVANGELICAL_VARIATION
+            || $this === self::NON_EVANGELICAL_POPULATION_ESTIMATE;
     }
 }
