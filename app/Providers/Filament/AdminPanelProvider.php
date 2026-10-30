@@ -31,6 +31,9 @@ class AdminPanelProvider extends PanelProvider
                 'Sistema',
             ])
             ->databaseNotifications()
+            // O layout do mockup (#34) é só claro; o modo escuro deixava a topbar escura com a sidebar branca.
+            ->darkMode(false)
+            ->sidebarWidth('16rem')
             ->font('Plus Jakarta Sans')
             ->renderHook(
                 PanelsRenderHook::HEAD_START,
@@ -39,10 +42,6 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::GLOBAL_SEARCH_AFTER,
                 fn (): View => view('filament.components.view-site-link')
-            )
-            ->renderHook(
-                PanelsRenderHook::USER_MENU_BEFORE,
-                fn (): View => view('filament.components.user-menu-info')
             )
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets');
 

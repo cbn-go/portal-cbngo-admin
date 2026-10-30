@@ -14,54 +14,150 @@
         color: #201820;
     }
 
-    /* Topbar institucional CBN-GO */
-    .fi-topbar {
+    /* Topbar institucional CBN-GO (mockup #34): branca, busca larga à esquerda, ações à direita */
+    .fi-topbar nav {
+        height: 64px !important;
+        padding: 0 24px !important;
+        gap: 16px 24px !important;
         background-color: #FFFFFF !important;
         border-bottom: 1px solid #E8E7E8 !important;
         box-shadow: none !important;
-        min-height: 64px !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
     }
 
-    .fi-topbar nav {
-        min-height: 64px !important;
-        padding-left: 20px !important;
-        padding-right: 24px !important;
+    /* Cabeçalho da sidebar com o logo: mesma altura e borda da topbar, formando uma faixa contínua */
+    .fi-sidebar-header {
+        height: 64px !important;
+        padding: 0 24px !important;
+        background-color: #FFFFFF !important;
+        border-bottom: 1px solid #E8E7E8 !important;
+        box-shadow: none !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
     }
 
-    /* Barra de busca global do topo */
-    .fi-global-search-field-input,
-    .fi-global-search-field input[type="search"] {
+    .fi-sidebar-header .fi-logo {
+        height: 40px !important;
+    }
+
+    /* O grupo de ações ocupa a largura toda; a busca cresce até 560px e empurra o resto para a direita */
+    .fi-topbar nav > div.ms-auto {
+        flex: 1 1 auto;
+        min-width: 0;
+        margin-inline-start: 0 !important;
+        gap: 8px !important;
+    }
+
+    .fi-topbar .fi-global-search {
+        flex: 1 1 320px;
+        max-width: 560px;
+        margin-inline-end: auto;
+    }
+
+    .fi-topbar .fi-global-search > div,
+    .fi-topbar .fi-global-search-field {
+        width: 100%;
+    }
+
+    .fi-topbar .fi-global-search-field .fi-input-wrp {
+        height: 44px;
+        align-items: center;
         background-color: #F6F5F6 !important;
-        border: 1px solid #D2D0D2 !important;
         border-radius: 10px !important;
-        height: 44px !important;
+        box-shadow: none !important;
+        --tw-ring-color: #D2D0D2 !important;
+    }
+
+    .fi-topbar .fi-global-search-field .fi-input-wrp-prefix {
+        padding-inline-start: 14px !important;
+        color: #746F74 !important;
+    }
+
+    .fi-topbar .fi-global-search-field input {
         font-size: 14px !important;
         color: #201820 !important;
-        box-shadow: none !important;
-        padding-left: 42px !important;
     }
 
-    .fi-global-search-field-input::placeholder,
-    .fi-global-search-field input::placeholder {
+    .fi-topbar .fi-global-search-field input::placeholder {
         color: #746F74 !important;
     }
 
-    .fi-global-search-field-icon {
-        color: #746F74 !important;
+    /* Sino de notificações: alvo de 44px e contador vermelho */
+    .fi-topbar .fi-topbar-database-notifications-btn {
+        width: 44px !important;
+        height: 44px !important;
+        margin: 0 !important;
+        border-radius: 10px;
+        color: #484148 !important;
     }
 
-    /* Botão de notificações e avatar */
-    .fi-topbar-database-notifications-btn .fi-badge {
+    .fi-topbar .fi-topbar-database-notifications-btn .fi-badge,
+    .fi-topbar .fi-topbar-database-notifications-btn .fi-icon-btn-badge-ctn .fi-badge {
         background-color: #C51422 !important;
         color: #FFFFFF !important;
         font-weight: 700 !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
     }
 
-    .fi-user-menu-trigger .fi-avatar {
-        background-color: #201820 !important;
-        color: #FFFFFF !important;
-        font-weight: 700 !important;
-        border-radius: 16px !important;
+    /* Menu do usuário: iniciais, nome, perfil e seta */
+    .cbn-user-menu-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 44px;
+        padding: 0 8px 0 4px;
+        border-radius: 10px;
+        color: #201820;
+        text-align: start;
+    }
+
+    .cbn-user-menu-trigger:hover {
+        background-color: #F6F5F6;
+    }
+
+    .cbn-user-menu-avatar {
+        width: 32px;
+        height: 32px;
+        flex: none;
+        border-radius: 16px;
+        background-color: #201820;
+        color: #FFFFFF;
+        font-size: 13px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cbn-user-menu-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.25;
+    }
+
+    .cbn-user-menu-name {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .cbn-user-menu-role {
+        font-size: 12px;
+        color: #5E585E;
+    }
+
+    @media (max-width: 767px) {
+        .fi-topbar nav {
+            padding: 0 16px !important;
+            gap: 8px !important;
+        }
+
+        .fi-topbar .fi-global-search {
+            flex-basis: 0;
+        }
+
+        .cbn-user-menu-text,
+        .cbn-view-site-label {
+            display: none;
+        }
     }
 
     /* Sidebar institucional CBN-GO */
@@ -130,8 +226,8 @@
 
     /* Ajustar espaçamento do container do Dashboard */
     .cbn-mockup-dashboard > section {
-        padding-top: 0 !important;
-        padding-bottom: 2rem !important;
+        padding-top: 32px !important;
+        padding-bottom: 48px !important;
     }
 
     .cbn-mockup-dashboard {
