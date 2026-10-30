@@ -9,7 +9,7 @@ Conta compartilhada Hostinger (LiteSpeed + CloudLinux). Equivale ao critério 10
 | Papel | URL atual | Pasta |
 |---|---|---|
 | Painel (este repo) | https://painel.cbngo.org.br | `~/domains/painel.cbngo.org.br` |
-| Mídia (uploads) | https://peachpuff-ant-612575.hostingersite.com | `~/domains/peachpuff-ant-612575.hostingersite.com/public_html` |
+| Mídia (uploads) | https://media.cbngo.org.br | `~/domains/media.cbngo.org.br/public_html` |
 | Portal público | https://cbngo.org.br | `~/domains/cbngo.org.br` (repo `portal-cbngo-site`) |
 
 SSH: host `cbn-go` em `~/.ssh/config` (`82.180.153.107:65002`, user `u579305537`).
@@ -88,7 +88,7 @@ Depois de conectar (ou trocar) o domínio de um site:
 3. Atualize o caminho do cron de backup no hPanel.
 4. Confira o SSL do domínio no hPanel.
 
-Pendente: a mídia ainda está no site temporário `peachpuff-ant-612575.hostingersite.com`. Ao conectar `midia.cbngo.org.br`, siga [deploy-hostinger-midia.md](deploy-hostinger-midia.md) e atualize também o `MEDIA_URL` do portal público.
+A mídia está em `media.cbngo.org.br`; para trocar o domínio dela, siga [deploy-hostinger-midia.md](deploy-hostinger-midia.md#ao-trocar-o-domínio-da-mídia) (o portal público também usa o `MEDIA_URL`).
 
 ## Checagens
 

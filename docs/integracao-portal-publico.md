@@ -10,7 +10,7 @@ O painel administrativo (`cbn-go/portal-cbngo-admin`) e o portal público (`cbn-
   GRANT SELECT ON cbngo.* TO 'cbngo_site'@'%';
   ```
 
-- **Arquivos** (`featured_image`, `gallery`, `cover_image`, `avatar`, `logo`, `board_members.photo`, `documents.file`) são caminhos relativos no disco de mídia compartilhado (`media`), por exemplo `news/featured/abc.jpg`. O portal monta a URL final como `MEDIA_URL/{caminho}`, com `MEDIA_URL=https://midia.cbngo.org.br` em produção. Veja [Mídia compartilhada](#mídia-compartilhada).
+- **Arquivos** (`featured_image`, `gallery`, `cover_image`, `avatar`, `logo`, `board_members.photo`, `documents.file`) são caminhos relativos no disco de mídia compartilhado (`media`), por exemplo `news/featured/abc.jpg`. O portal monta a URL final como `MEDIA_URL/{caminho}`, com `MEDIA_URL=https://media.cbngo.org.br` em produção. Veja [Mídia compartilhada](#mídia-compartilhada).
 - **Conteúdo** (`content`) é HTML gerado pelo RichEditor. Em `articles` e `news` o HTML é sanitizado pelo painel ao salvar (`HtmlSanitizerService`). Em `notices` ele **não** é sanitizado no servidor, então o portal deve tratá-lo como HTML não confiável.
 
 ## Regra de publicação (`news` e `articles`)
@@ -191,7 +191,7 @@ Categorias e o Pacto de Lausanne (`ProjectCategory::description()` e `lausanneRe
 
 ## Mídia compartilhada
 
-Todos os uploads do painel vão para o disco `media`, servido em produção pelo subdomínio `midia.cbngo.org.br` (veja `docs/deploy-hostinger-midia.md`).
+Todos os uploads do painel vão para o disco `media`, servido em produção pelo subdomínio `media.cbngo.org.br` (veja `docs/deploy-hostinger-midia.md`).
 
 - **URL final:** `MEDIA_URL` + `/` + caminho salvo no banco. Nunca há URL absoluta no banco para esses campos.
 - **Versões WebP:** toda imagem (`featured_image`, itens de `gallery`, `cover_image`, `avatar`, `logo`, `photo`, `banners.image`, `social_projects.cover_image` e itens de `social_projects.gallery`) ganha três versões ao lado do original, geradas logo após o salvamento:

@@ -4,41 +4,56 @@ O painel e o portal público rodam na mesma conta Hostinger. Os uploads do paine
 
 **Não altere** o WordPress vivo em `~/domains/cbngo.com.br`.
 
-## URLs atuais
-
-O painel e o portal já usam os domínios definitivos; a mídia ainda está no site temporário:
+## URLs
 
 | Papel | URL | Pasta no servidor |
 |---|---|---|
 | Painel | https://painel.cbngo.org.br | `/home/u579305537/domains/painel.cbngo.org.br` |
-| Mídia | https://peachpuff-ant-612575.hostingersite.com | `/home/u579305537/domains/peachpuff-ant-612575.hostingersite.com/public_html` |
+| Mídia | https://media.cbngo.org.br | `/home/u579305537/domains/media.cbngo.org.br/public_html` |
 | Portal público | https://cbngo.org.br | `/home/u579305537/domains/cbngo.org.br` |
 
 No `.env` de produção do painel:
 
 ```dotenv
-MEDIA_ROOT=/home/u579305537/domains/peachpuff-ant-612575.hostingersite.com/public_html
-MEDIA_URL=https://peachpuff-ant-612575.hostingersite.com
+MEDIA_ROOT=/home/u579305537/domains/media.cbngo.org.br/public_html
+MEDIA_URL=https://media.cbngo.org.br
+```
+
+No `.env` do portal público (`~/domains/cbngo.org.br/.env`):
+
+```dotenv
+MEDIA_URL=https://media.cbngo.org.br
 ```
 
 O `public_html` da mídia tem um `.htaccess` que desliga listagem de diretório, recusa execução de PHP e cacheia imagens. O usuário PHP do painel já tem escrita nessa pasta (mesma conta).
 
-## Quando o subdomínio customizado existir
-
-1. No hPanel, conecte `midia.cbngo.org.br` ao site peachpuff. A Hostinger renomeia a pasta para `~/domains/midia.cbngo.org.br`.
-2. Ative SSL Let's Encrypt.
-3. Atualize o `.env` do painel e recrie os caches (`optimize:clear` + `scripts/post-deploy.sh`):
-
-```dotenv
-MEDIA_ROOT=/home/u579305537/domains/midia.cbngo.org.br/public_html
-MEDIA_URL=https://midia.cbngo.org.br
-```
-
-4. Atualize o `MEDIA_URL` do portal público (`~/domains/cbngo.org.br/.env`) e recrie os caches dele.
-
-Se a pasta do subdomínio for outra, mova (ou sirva) o conteúdo atual de `peachpuff-ant-612575.hostingersite.com/public_html` para lá antes de trocar `MEDIA_ROOT`.
-
 O domínio da convenção é `cbngo.org.br`; `cbngo.com.br` continua sendo o WordPress antigo. Os dois hosts são tratados como internos em `config/portal.php`.
+
+## Ao trocar o domínio da mídia
+
+Conectar um domínio a um site no hPanel **renomeia a pasta do site**. Foi o que aconteceu em 30/10/2026: `peachpuff-ant-612575.hostingersite.com` virou `media.cbngo.org.br`, e o endereço temporário passou a mostrar uma página de domínio estacionado. Enquanto o painel ainda apontava para a pasta antiga, um upload recriou essa pasta (que nenhum domínio serve) e o logotipo não apareceu no portal.
+
+Sempre que o domínio ou a pasta da mídia mudar:
+
+1. Ative o SSL do domínio no hPanel.
+2. Copie para a pasta nova os arquivos que tenham sido gravados na pasta antiga depois da troca.
+3. Atualize `MEDIA_ROOT` e `MEDIA_URL` no `.env` do painel e recrie os caches:
+
+   ```bash
+   cd ~/domains/painel.cbngo.org.br
+   /opt/alt/php83/usr/bin/php artisan optimize:clear
+   bash scripts/post-deploy.sh
+   ```
+
+4. Atualize o `MEDIA_URL` do portal público e recrie os caches dele:
+
+   ```bash
+   cd ~/domains/cbngo.org.br
+   /opt/alt/php83/usr/bin/php artisan optimize:clear
+   /opt/alt/php83/usr/bin/php artisan optimize
+   ```
+
+5. Confira uma imagem: `curl -I https://media.cbngo.org.br/<caminho>` deve responder `200` com `Content-Type: image/...`.
 
 ## PHP
 
