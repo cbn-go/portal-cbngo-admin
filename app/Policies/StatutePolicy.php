@@ -68,10 +68,22 @@ class StatutePolicy
     }
 
     /**
+     * Determine whether the user can fork the statute into a new draft.
+     */
+    public function fork(User $user, Statute $statute): bool
+    {
+        return $user->role->hasAdminPanelAccess();
+    }
+
+    /**
      * Determine whether the user can delete the statute.
      */
     public function delete(User $user, Statute $statute): bool
     {
+        if ($statute->isPublished()) {
+            return false;
+        }
+
         return $user->role->isSuperAdmin();
     }
 
