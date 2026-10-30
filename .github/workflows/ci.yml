@@ -119,7 +119,7 @@ jobs:
       DEPLOY_HOST: 82.180.153.107
       DEPLOY_PORT: "65002"
       DEPLOY_USER: u579305537
-      DEPLOY_PATH: /home/u579305537/domains/indigo-owl-926716.hostingersite.com
+      DEPLOY_PATH: /home/u579305537/domains/painel.cbngo.org.br
 
     steps:
       - name: Checkout
