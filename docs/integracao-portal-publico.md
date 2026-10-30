@@ -67,12 +67,28 @@ O perfil é criado quando o autor salva **Meu Perfil de Autor** no portal (`/por
 | `name`, `slug`, `pastor_name` | iguais | `slug` é único |
 | `logo` | `logo_url` | Caminho no disco de mídia |
 | `address`, `number`, `complement` | `address` | Montar como `address, number – complement` |
-| `neighborhood`, `city`, `state`, `zip_code` | iguais | |
+| `neighborhood`, `city`, `state`, `zip_code` | iguais | `city` é mantido canônico e sincronizado com o município oficial |
+| `municipality_id` → `municipalities.id` | — | Vínculo relacional com a base territorial do IBGE (`municipalities`). Nulo apenas se cidade externa |
 | `latitude`, `longitude` | iguais | `decimal(10,7)`, opcionais |
 | `phone`, `cellphone`, `email` | `phone`, `email` | |
 | `social_links` (JSON objeto) | `social_links` | Chave = canal, valor = URL |
 | `service_times` (JSON lista) | `service_times` | `[{"day": "Domingo", "time": "19h00", "label": "Culto de Celebração"}]` |
 | `is_active` | `is_active` | Exibir apenas igrejas ativas |
+
+## `municipalities` (Base Territorial de Goiás - IBGE)
+
+Base canônica com os 246 municípios do estado de Goiás e suas respectivas regiões imediatas, intermediárias, microrregiões e mesorregiões do IBGE (utilizada no Painel de Estratégia e no vínculo das igrejas).
+
+| Coluna | Tipo | Observação |
+|---|---|---|
+| `ibge_code` | `string(7)` | Código do município no IBGE de 7 dígitos único (ex.: `5208707` para Goiânia) |
+| `name` | `string(100)` | Nome oficial do município |
+| `slug` | `string(120)` | Slug único (ex.: `goiania`) |
+| `normalized_name` | `string(100)` | Nome normalizado sem acento/pontuação em minúsculas para buscas rápidas |
+| `immediate_region_code` / `immediate_region_name` | `string` | Região Geográfica Imediata (ex.: `520001` - Goiânia) |
+| `intermediate_region_code` / `intermediate_region_name` | `string` | Região Geográfica Intermediária (ex.: `5201` - Goiânia) |
+| `micro_region_name` / `meso_region_name` | `string` | Divisão tradicional do IBGE |
+
 
 ## `notices` (site: `urgent_notices`)
 

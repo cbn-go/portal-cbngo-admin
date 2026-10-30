@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ChurchResource\Pages;
 use App\Models\Church;
+use App\Models\Municipality;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
@@ -115,11 +116,30 @@ class ChurchResource extends Resource
                             ->mask('99999-999')
                             ->placeholder('74000-000'),
 
-                        Forms\Components\TextInput::make('city')
-                            ->label('Cidade')
-                            ->required()
-                            ->maxLength(100)
-                            ->default('Goiânia'),
+                        Forms\Components\Select::make('municipality_id')
+                            ->label('Cidade / Município (Goiás - IBGE)')
+                            ->relationship('municipality', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required(fn (Forms\Get $get): bool => blank($get('city')))
+                            ->live()
+                            ->afterStateHydrated(function (Forms\Components\Select $component, ?int $state, ?Church $record, Set $set): void {
+                                if (! $state && $record && filled($record->city)) {
+                                    $m = Municipality::findByNormalizedName($record->city);
+                                    if ($m) {
+                                        $component->state($m->id);
+                                        $set('city', $m->name);
+                                    }
+                                }
+                            })
+                            ->afterStateUpdated(function (?int $state, Set $set): void {
+                                if ($state && ($municipality = Municipality::find($state))) {
+                                    $set('city', $municipality->name);
+                                }
+                            }),
+
+                        Forms\Components\Hidden::make('city')
+                            ->required(fn (Forms\Get $get): bool => blank($get('municipality_id'))),
 
                         Forms\Components\TextInput::make('state')
                             ->label('Estado (UF)')
@@ -280,6 +300,11 @@ class ChurchResource extends Resource
             ])
             ->defaultSort('name', 'asc')
             ->filters([
+                Tables\Filters\SelectFilter::make('municipality_id')
+                    ->label('Município')
+                    ->relationship('municipality', 'name')
+                    ->searchable()
+                    ->preload(),
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Status Ativo'),
             ])

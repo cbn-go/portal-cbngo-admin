@@ -22,6 +22,7 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasTable('documents'));
         $this->assertTrue(Schema::hasTable('banners'));
         $this->assertTrue(Schema::hasTable('social_projects'));
+        $this->assertTrue(Schema::hasTable('municipalities'));
     }
 
     public function test_churches_columns_and_indexes(): void
@@ -33,6 +34,7 @@ class SchemaIntegrityTest extends TestCase
             'cnpj',
             'registration_number',
             'pastor_name',
+            'municipality_id',
             'city',
             'state',
             'neighborhood',
@@ -277,6 +279,33 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasIndex('social_projects', ['is_featured']));
         $this->assertForeignKeyOnDelete('social_projects', 'church_id', 'churches', 'cascade');
         $this->assertForeignKeyOnDelete('social_projects', 'user_id', 'users', 'set null');
+    }
+
+    public function test_municipalities_columns_and_indexes(): void
+    {
+        $this->assertTrue(Schema::hasColumns('municipalities', [
+            'id',
+            'ibge_code',
+            'name',
+            'slug',
+            'normalized_name',
+            'immediate_region_code',
+            'immediate_region_name',
+            'intermediate_region_code',
+            'intermediate_region_name',
+            'micro_region_name',
+            'meso_region_name',
+            'created_at',
+            'updated_at',
+        ]));
+
+        $this->assertTrue(Schema::hasIndex('municipalities', ['ibge_code'], 'unique'));
+        $this->assertTrue(Schema::hasIndex('municipalities', ['slug'], 'unique'));
+        $this->assertTrue(Schema::hasIndex('municipalities', ['normalized_name']));
+        $this->assertTrue(Schema::hasIndex('municipalities', ['immediate_region_code']));
+        $this->assertTrue(Schema::hasIndex('municipalities', ['intermediate_region_code']));
+
+        $this->assertForeignKeyOnDelete('churches', 'municipality_id', 'municipalities', 'set null');
     }
 
     private function assertForeignKeyOnDelete(string $table, string $column, string $references, string $onDelete): void

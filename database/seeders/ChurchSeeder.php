@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Church;
+use App\Models\Municipality;
 use Illuminate\Database\Seeder;
 
 class ChurchSeeder extends Seeder
@@ -58,10 +59,13 @@ class ChurchSeeder extends Seeder
         foreach (self::POLO_CITIES as $city) {
             [$latitude, $longitude] = self::POLO_COORDINATES[$city];
 
+            $municipality = Municipality::findByNormalizedName($city);
+
             Church::query()->updateOrCreate(
                 ['name' => "Igreja Batista Nacional de {$city}"],
                 [
-                    'city' => $city,
+                    'municipality_id' => $municipality?->id,
+                    'city' => $municipality?->name ?? $city,
                     'state' => 'GO',
                     'latitude' => $latitude,
                     'longitude' => $longitude,

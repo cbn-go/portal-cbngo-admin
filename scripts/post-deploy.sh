@@ -19,6 +19,7 @@ mkdir -p \
 chmod -R ug+rwx storage bootstrap/cache || true
 
 "$PHP_BIN" artisan migrate --force
+"$PHP_BIN" artisan db:seed --class=MunicipalitySeeder --force
 "$PHP_BIN" artisan db:seed --class=StatuteSeeder --force
 "$PHP_BIN" artisan db:seed --class=InstitutionalSettingSeeder --force
 "$PHP_BIN" artisan storage:link --force || true
