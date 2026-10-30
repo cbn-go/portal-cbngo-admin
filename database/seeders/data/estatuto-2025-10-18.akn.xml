@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">
+  <act name="estatuto">
+    <meta>
+      <identification source="#cbngo">
+        <FRBRWork>
+          <FRBRthis value="/akn/br/act/estatuto/cbngo/2025-10-18"/>
+          <FRBRuri value="/akn/br/act/estatuto/cbngo/2025-10-18"/>
+          <FRBRdate date="2025-10-18" name="approval"/>
+          <FRBRauthor href="#cbngo" as="#author"/>
+          <FRBRcountry value="br"/>
+          <FRBRsubtype value="statute"/>
+          <FRBRnumber value="2025"/>
+          <FRBRname value="Estatuto da Convenção Batista Nacional do Estado de Goiás"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/akn/br/act/estatuto/cbngo/2025-10-18/por@2025-10-18"/>
+          <FRBRuri value="/akn/br/act/estatuto/cbngo/2025-10-18/por@2025-10-18"/>
+          <FRBRdate date="2025-10-18" name="approval"/>
+          <FRBRauthor href="#cbngo" as="#editor"/>
+          <FRBRlanguage language="por"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/akn/br/act/estatuto/cbngo/2025-10-18/por@2025-10-18/main.xml"/>
+          <FRBRuri value="/akn/br/act/estatuto/cbngo/2025-10-18/por@2025-10-18.akn"/>
+          <FRBRdate date="2025-10-18" name="generation"/>
+          <FRBRauthor href="#cbngo" as="#publisher"/>
+          <FRBRformat value="xml"/>
+        </FRBRManifestation>
+      </identification>
+      <lifecycle source="#cbngo">
+        <eventRef date="2025-10-18" type="generation" eId="approved" source="#cbngo"/>
+      </lifecycle>
+      <references source="#cbngo">
+        <TLCOrganization eId="cbngo" href="/akn/ontology/organization/br/cbngo" showAs="Convenção Batista Nacional do Estado de Goiás"/>
+        <TLCRole eId="author" href="/akn/ontology/role/author" showAs="Autor"/>
+        <TLCRole eId="editor" href="/akn/ontology/role/editor" showAs="Editor"/>
+        <TLCRole eId="publisher" href="/akn/ontology/role/publisher" showAs="Publicador"/>
+      </references>
+    </meta>
+    <preface>
+      <p>
+        <docTitle>ESTATUTO DA CONVENÇÃO BATISTA NACIONAL DO ESTADO DE GOIÁS</docTitle>
+      </p>
+    </preface>
+    <body>
+      <chapter eId="chp_1">
+        <num>CAPÍTULO I</num>
+        <heading>Do Nome, da Constituição e da Sede</heading>
+        <article eId="art_1">
+          <num>Art. 1º</num>
+          <content>
+            <p>A Convenção Batista Nacional do Estado de Goiás, também designada pela sigla CBN-GO, é uma entidade religiosa sem fins lucrativos, criada por iniciativa das Igrejas Batistas Nacionais no Estado de Goiás, que pugna por uma genuína renovação espiritual e crê no Batismo no Espírito Santo e nos dons espirituais como realidade para a Igreja de Cristo presente no mundo, sendo a duração da entidade por tempo indeterminado.</p>
+          </content>
+        </article>
+        <article eId="art_2">
+          <num>Art. 2º</num>
+          <content>
+            <p>A Convenção Batista Nacional do Estado de Goiás é constituída das Igrejas a ela filiadas e tem sede e foro na cidade de Goiânia – Goiás, na Rua 04, número 515, 12º andar, sala 1.207, Edifício Parthenon Center, CEP: 74.020-045, Setor Central.</p>
+          </content>
+        </article>
+      </chapter>
+      <chapter eId="chp_2">
+        <num>CAPÍTULO II</num>
+        <heading>Dos Fins e da Representação</heading>
+        <article eId="art_3">
+          <num>Art. 3º</num>
+          <content>
+            <p>A CBN-GO tem por finalidade unir as Igrejas a ela filiadas na promoção do crescimento do Reino de Deus, planejando e executando o trabalho cooperativo em obediência às deliberações da Assembleia Geral (AG).</p>
+          </content>
+        </article>
+        <article eId="art_4">
+          <num>Art. 4º</num>
+          <content>
+            <p>A CBN-GO é representada ativa e passivamente judicial e extrajudicialmente pelo seu Presidente.</p>
+          </content>
+        </article>
+      </chapter>
+      <chapter eId="chp_3">
+        <num>CAPÍTULO III</num>
+        <heading>Dos Órgãos Deliberativos e Administrativos</heading>
+        <article eId="art_5">
+          <num>Art. 5º</num>
+          <intro>
+            <p>A CBN-GO será administrada pelos seguintes órgãos:</p>
+          </intro>
+          <point eId="art_5__point_I">
+            <num>I -</num>
+            <content>
+              <p>Assembleia Geral - AG;</p>
+            </content>
+          </point>
+          <point eId="art_5__point_II">
+            <num>II -</num>
+            <content>
+              <p>Diretoria;</p>
+            </content>
+          </point>
+          <point eId="art_5__point_III">
+            <num>III -</num>
+            <content>
+              <p>Conselho de Planejamento e Execução – CONPLEX;</p>
+            </content>
+          </point>
+          <point eId="art_5__point_IV">
+            <num>IV -</num>
+            <content>
+              <p>Conselho Fiscal.</p>
+            </content>
+          </point>
+          <paragraph eId="art_5__para_uniq">
+            <num>Parágrafo Único.</num>
+            <content>
+              <p>Nos interregnos das Assembleias Gerais, para cumprimento de suas finalidades gerais, a CBN-GO, por intermédio do CONPLEX, poderá criar e contar com órgãos, instituições e outros, nos termos regimentais, homologando-os na próxima AG.</p>
+            </content>
+          </paragraph>
+        </article>
+        <section eId="chp_3__sec_1">
+          <num>SEÇÃO I</num>
+          <heading>Da Assembleia Geral – AG</heading>
+          <article eId="art_6">
+            <num>Art. 6º</num>
+            <intro>
+              <p>A Assembleia Geral da CBN-GO é seu órgão soberano, e se reunirá de forma Ordinária trienalmente, no mês de setembro, para a Eleição da Diretoria, demais membros do CONPLEX, membros do Conselho Fiscal, e, de forma Extraordinária, sempre que se fizer necessário, sendo composta nos termos regimentais, votam:</p>
+            </intro>
+            <point eId="art_6__point_I">
+              <num>I -</num>
+              <content>
+                <p>Pastores regularmente inscritos na Ordem dos Ministros Batistas Nacionais Seção Goiás (ORMIBAN-GO).</p>
+              </content>
+            </point>
+            <point eId="art_6__point_II">
+              <num>II -</num>
+              <content>
+                <p>Representantes credenciados pelas igrejas filiadas e cooperantes ativamente, em número de até (7) sete, de cada Grei.</p>
+              </content>
+            </point>
+            <point eId="art_6__point_III">
+              <num>III -</num>
+              <content>
+                <p>Evangelistas e Missionários credenciados pela ORMIBAN.</p>
+              </content>
+            </point>
+          </article>
+        </section>
+        <section eId="chp_3__sec_2">
+          <num>SEÇÃO II</num>
+          <heading>Da Diretoria</heading>
+          <article eId="art_7">
+            <num>Art. 7º</num>
+            <intro>
+              <p>A Diretoria da CBN-GO é constituída de 01 (um) Presidente, 01 (um) Vice-Presidente e 02 (dois) Secretários de Atas, eleitos por maioria absoluta da Assembleia Geral, com mandato de 03 (três) anos, podendo ser reeleitos para até mais 01 (um) mandato consecutivo.</p>
+            </intro>
+            <paragraph eId="art_7__para_1">
+              <num>§ 1º –</num>
+              <content>
+                <p>O início do mandato da Diretoria ocorrerá no primeiro dia do mês de outubro subsequente à eleição realizada na Assembleia Geral.</p>
+              </content>
+            </paragraph>
+            <paragraph eId="art_7__para_2">
+              <num>§ 2º –</num>
+              <content>
+                <p>A Diretoria da CBN-GO não recebe remuneração a qualquer título.</p>
+              </content>
+            </paragraph>
+          </article>
+          <article eId="art_8">
+            <num>Art. 8º</num>
+            <intro>
+              <p>Competem aos membros da Diretoria as seguintes atribuições:</p>
+            </intro>
+            <point eId="art_8__point_I">
+              <num>I –</num>
+              <intro>
+                <p>Ao Presidente:</p>
+              </intro>
+              <point eId="art_8__point_I__point_a">
+                <num>a) –</num>
+                <content>
+                  <p>Convocar e Presidir as reuniões da Diretoria, da Assembleia Geral e do CONPLEX.</p>
+                </content>
+              </point>
+              <point eId="art_8__point_I__point_b">
+                <num>b) –</num>
+                <content>
+                  <p>Nomear a Comissão de indicação da AGE.</p>
+                </content>
+              </point>
+              <point eId="art_8__point_I__point_c">
+                <num>c) –</num>
+                <content>
+                  <p>Assinar documentos de aquisição, alienação e gravame de bens patrimoniais por decisão do CONPLEX, juntamente com o Vice-Presidente.</p>
+                </content>
+              </point>
+              <point eId="art_8__point_I__point_d">
+                <num>d) –</num>
+                <content>
+                  <p>Exercer o voto especial de qualidade.</p>
+                </content>
+              </point>
+              <point eId="art_8__point_I__point_e">
+                <num>e) –</num>
+                <content>
+                  <p>É defeso ao Presidente ser avalista ou fiador.</p>
+                </content>
+              </point>
+            </point>
+            <point eId="art_8__point_II">
+              <num>II –</num>
+              <intro>
+                <p>Ao Vice-Presidente:</p>
+              </intro>
+              <point eId="art_8__point_II__point_a">
+                <num>a) –</num>
+                <content>
+                  <p>Substituir o Presidente em seus impedimentos ocasionais.</p>
+                </content>
+              </point>
+              <point eId="art_8__point_II__point_b">
+                <num>b) –</num>
+                <content>
+                  <p>Assumir a Presidência em caso de vacância.</p>
+                </content>
+              </point>
+              <point eId="art_8__point_II__point_c">
+                <num>c) –</num>
+                <content>
+                  <p>Auxiliar o Presidente quando solicitado.</p>
+                </content>
+              </point>
+            </point>
+            <point eId="art_8__point_III">
+              <num>III –</num>
+              <intro>
+                <p>Ao 1º Secretário de Atas:</p>
+              </intro>
+              <point eId="art_8__point_III__point_a">
+                <num>a) –</num>
+                <content>
+                  <p>Assistir a Presidência nas reuniões da Diretoria, nas sessões da Assembleia Geral (AG) e reuniões do CONPLEX.</p>
+                </content>
+              </point>
+              <point eId="art_8__point_III__point_b">
+                <num>b) –</num>
+                <content>
+                  <p>Documentar as ocorrências durante as reuniões, fazendo constar em livro próprio, encaminhando cópias das Atas ao CONPLEX para suas providências cabíveis.</p>
+                </content>
+              </point>
+              <point eId="art_8__point_III__point_c">
+                <num>c) –</num>
+                <content>
+                  <p>Substituir o Presidente em seus impedimentos ocasionais, observando a ordem de sucessão.</p>
+                </content>
+              </point>
+            </point>
+            <point eId="art_8__point_IV">
+              <num>IV –</num>
+              <intro>
+                <p>Ao 2º Secretário de Atas:</p>
+              </intro>
+              <point eId="art_8__point_IV__point_a">
+                <num>a) –</num>
+                <content>
+                  <p>Assistir o 1º Secretário em suas atribuições e tarefas, e substituí-lo em suas faltas ou impedimentos.</p>
+                </content>
+              </point>
+            </point>
+          </article>
+        </section>
+        <section eId="chp_3__sec_3">
+          <num>SEÇÃO III</num>
+          <heading>Do CONPLEX</heading>
+          <article eId="art_9">
+            <num>Art. 9º</num>
+            <intro>
+              <p>O Conselho de Planejamento e Execução (CONPLEX) é o órgão responsável pelo planejamento, coordenação e execução das atividades da CBN-GO, nos termos regimentais, constituindo-se dos seguintes membros:</p>
+            </intro>
+            <point eId="art_9__point_I">
+              <num>I –</num>
+              <content>
+                <p>Diretoria da CBN-GO.</p>
+              </content>
+            </point>
+            <point eId="art_9__point_II">
+              <num>II –</num>
+              <content>
+                <p>Presidente da ORMIBAN-GO.</p>
+              </content>
+            </point>
+            <point eId="art_9__point_III">
+              <num>III –</num>
+              <content>
+                <p>Coordenadores das Associações, doravante denominada, AMIGO - Associação Missionária Goiana.</p>
+              </content>
+            </point>
+            <point eId="art_9__point_IV">
+              <num>IV –</num>
+              <content>
+                <p>Presidente do CONAD, Conselho de Administração do SETEBAN-GO.</p>
+              </content>
+            </point>
+            <point eId="art_9__point_V">
+              <num>V –</num>
+              <content>
+                <p>04 (quatro) vogais, eleitos na Assembleia Geral, sendo, no mínimo, dois leigos.</p>
+              </content>
+            </point>
+            <paragraph eId="art_9__para_uniq">
+              <num>Parágrafo Único.</num>
+              <content>
+                <p>O CONPLEX terá regimento interno próprio, aprovado pela Assembleia Geral da CBN-GO.</p>
+              </content>
+            </paragraph>
+          </article>
+        </section>
+        <section eId="chp_3__sec_4">
+          <num>SEÇÃO IV</num>
+          <heading>Das Associações – AMIGO</heading>
+          <article eId="art_10">
+            <num>Art. 10</num>
+            <intro>
+              <p>Para facilitar o trabalho missionário e pastoral das igrejas e seus pastores, as igrejas se reunirão em Associações Missionárias, aqui denominada, AMIGO - Associação Missionária Goiana, em número mínimo de 5 (cinco) e máximo de 15 (quinze) igrejas, por Região.</p>
+            </intro>
+            <paragraph eId="art_10__para_1">
+              <num>§ 1º -</num>
+              <content>
+                <p>As Associações terão regimento interno próprio, aprovado pela Assembleia Geral da CBN-GO.</p>
+              </content>
+            </paragraph>
+            <paragraph eId="art_10__para_2">
+              <num>§ 2º -</num>
+              <content>
+                <p>A finalidade das Associações é de promover o trabalho missionário urbano, nacional e transcultural; apoiar a formação teológica e apoiar as igrejas e obreiros filiados à CBN-GO.</p>
+              </content>
+            </paragraph>
+            <paragraph eId="art_10__para_3">
+              <num>§ 3º -</num>
+              <content>
+                <p>A Diretoria de cada Associação será eleita para um mandato de três anos, pelas igrejas a ela filiadas e homologada na Assembleia Geral da CBN-GO ou CONPLEX. A Diretoria poderá ser reeleita por até 01 (um) mandato consecutivo.</p>
+              </content>
+            </paragraph>
+          </article>
+        </section>
+        <section eId="chp_3__sec_5">
+          <num>SEÇÃO V</num>
+          <heading>Do Conselho Fiscal</heading>
+          <article eId="art_11">
+            <num>Art. 11</num>
+            <intro>
+              <p>Haverá um Conselho Fiscal, eleito em reunião ordinária da AG da CBN-GO, para um mandato de três anos, podendo ser reeleito para até mais 01 (um) mandato consecutivo.</p>
+            </intro>
+            <paragraph eId="art_11__para_1">
+              <num>§ 1º -</num>
+              <content>
+                <p>O Conselho Fiscal é o órgão fiscalizador das finanças e contabilidade da CBN-GO, e de seus órgãos e instituições, composto de 01 (um) relator, 02 (dois) vogais e 03 (três) suplentes; um deles habilitado na área, eleitos e empossados pela Assembleia Geral.</p>
+              </content>
+            </paragraph>
+            <paragraph eId="art_11__para_2">
+              <num>§ 2º -</num>
+              <content>
+                <p>O Conselho Fiscal examinará a contabilidade da CBN-GO, sua Tesouraria, e a contabilidade dos órgãos pertencentes à Convenção, trimestralmente, apresentando relatório escrito ao CONPLEX e à AG.</p>
+              </content>
+            </paragraph>
+            <paragraph eId="art_11__para_3">
+              <num>§ 3º -</num>
+              <content>
+                <p>Após aprovados, os relatórios financeiros deverão ser encaminhados, com parecer, a cada uma das igrejas que sejam ativamente cooperantes.</p>
+              </content>
+            </paragraph>
+          </article>
+        </section>
+      </chapter>
+      <chapter eId="chp_4">
+        <num>CAPÍTULO IV</num>
+        <heading>Do Patrimônio</heading>
+        <article eId="art_12">
+          <num>Art. 12</num>
+          <intro>
+            <p>O Patrimônio da CBN-GO será constituído de contribuição das Igrejas filiadas e propriedades imobiliárias, móveis, semoventes ou doações adquiridos por quaisquer formas permitidas em direito.</p>
+          </intro>
+          <paragraph eId="art_12__para_1">
+            <num>§ 1º -</num>
+            <content>
+              <p>A CBN-GO é a sucessora legítima de todos os bens pertencentes aos seus órgãos executivos, instituições teológicas, assistenciais, educacionais, missionárias e outras; em caso de dissolução ou mudança da finalidade para as quais foram criados os referidos.</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_12__para_2">
+            <num>§ 2º -</num>
+            <content>
+              <p>Para vender, comprar, permutar, alienar ou onerar o seu patrimônio imobiliário, no todo ou em parte, será necessária a decisão favorável de três quartos dos membros do CONPLEX e homologado pela AGE.</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_12__para_3">
+            <num>§ 3º -</num>
+            <content>
+              <p>Mediante decisão favorável da maioria absoluta dos membros do CONPLEX, os bens pertencentes ao patrimônio imóvel da CBN-GO, adquiridos por compra, doação ou transferência de igrejas que sejam extintas ou dissolvidas, poderão ser cedidos em comodato a qualquer igreja Batista Nacional, e em comodato ou locação a qualquer igreja evangélica, instituição de ensino ou de missão urbana, tais como creches, casas de recuperação, e outras congêneres, desde que sejam, em quaisquer dos casos citados, instituições genuinamente cristãs.</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_12__para_4">
+            <num>§ 4º –</num>
+            <intro>
+              <p>Os bens imóveis doados pela CBN-GO a igrejas, instituições ou entidades, ainda que com finalidade assistencial, educacional ou missionária, deverão conter expressamente, no respectivo instrumento público de doação, cláusula de inalienabilidade, impenhorabilidade e incomunicabilidade, além da cláusula de reversão automática à Convenção Batista Nacional do Estado de Goiás, na hipótese de:</p>
+            </intro>
+            <point eId="art_12__para_4__point_I">
+              <num>I –</num>
+              <content>
+                <p>alteração da finalidade original do uso do bem;</p>
+              </content>
+            </point>
+            <point eId="art_12__para_4__point_II">
+              <num>II –</num>
+              <content>
+                <p>tentativa de alienação ou oneração do bem, sem prévia autorização da Assembleia Geral Extraordinária da CBN-GO, nos termos deste Estatuto;</p>
+              </content>
+            </point>
+            <point eId="art_12__para_4__point_III">
+              <num>III –</num>
+              <content>
+                <p>dissolução, extinção, encerramento das atividades da donatária;</p>
+              </content>
+            </point>
+            <point eId="art_12__para_4__point_IV">
+              <num>IV –</num>
+              <content>
+                <p>desfiliação ou exclusão da instituição donatária do rol de igrejas ou entidades filiadas à Convenção Batista Nacional do Estado de Goiás.</p>
+              </content>
+            </point>
+          </paragraph>
+          <paragraph eId="art_12__para_4_a">
+            <num>§ 4º-A –</num>
+            <content>
+              <p>A doação poderá ser revogada, a critério exclusivo da CBN-GO, nos casos previstos nos incisos do parágrafo 4º deste artigo, devendo constar nos registros públicos competentes as cláusulas restritivas e de reversão aqui estabelecidas.</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_12__para_4_b">
+            <num>§ 4º-B –</num>
+            <content>
+              <p>É expressamente vedado à donatária oferecer o bem imóvel recebido em doação como garantia real de qualquer natureza, inclusive hipoteca, alienação fiduciária ou caução. A inobservância desta vedação implicará a imediata reversão do imóvel ao patrimônio da CBN-GO, independentemente de notificação judicial ou extrajudicial.</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_12__para_4_c">
+            <num>§ 4º-C -</num>
+            <content>
+              <p>As construções e/ou benfeitorias realizadas em imóveis doados pela CBN-GO passarão a ser incorporadas ao referido bem, sem direito a indenização.</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_12__para_4_d">
+            <num>§ 4º-D –</num>
+            <content>
+              <p>Resguarda-se a possibilidade de negociação junto à CBN-GO, com preferência de compra do imóvel, à igreja donatária que tenha sido beneficiada com a doação prevista no § 4º deste artigo;</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_12__para_5">
+            <num>§ 5º –</num>
+            <content>
+              <p>As fontes de recursos para manutenção da entidade vêm do Plano Cooperativo, que é a contribuição das igrejas filiadas, ofertas diversas das igrejas, congregações e pessoas diversas.</p>
+            </content>
+          </paragraph>
+        </article>
+      </chapter>
+      <chapter eId="chp_5">
+        <num>CAPÍTULO V</num>
+        <heading>Das Igrejas Filiadas</heading>
+        <article eId="art_13">
+          <num>Art. 13</num>
+          <intro>
+            <p>As Igrejas filiadas são autônomas e livres no Senhor, segundo preceitua o Novo Testamento; porém, pelo ato de sua filiação, se comprometem doutrinária, moral, espiritual, jurídica e financeiramente a cooperarem, em todos os sentidos, com a CBN-GO. Sendo o seu Pastor Titular obrigatoriamente membro ativo e participativo da ORMIBAN (Ordem dos Ministros Batistas Nacionais).</p>
+          </intro>
+          <paragraph eId="art_13__para_1">
+            <num>§ 1º -</num>
+            <content>
+              <p>As Igrejas organizadas enviarão às AMIGO da CBN-GO o anteprojeto do seu Estatuto, para apreciação da Diretoria, antes de ser aprovado pela Igreja.</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_13__para_2">
+            <num>§ 2º -</num>
+            <content>
+              <p>As Igrejas, ao solicitarem filiação à CBN-GO, encaminharão cópia do seu Estatuto e ofício requerente para a apreciação; sendo aprovada, deverá ser recebida pela Associação e homologada pelo CONPLEX.</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_13__para_3">
+            <num>§ 3º -</num>
+            <content>
+              <p>As Igrejas que se filiarem à CBN-GO farão constar em seu nome a expressão "Nacional", podendo, também, optar pela logomarca da CBN. As igrejas já filiadas farão constar em sua fachada "filiada à CBN" juntamente com a logomarca da CBN.</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_13__para_4">
+            <num>§ 4º -</num>
+            <content>
+              <p>As Igrejas filiadas à CBN-GO enviarão mensalmente o Plano-Cooperativo, à secretaria da CBN-GO. A CBN-GO, por sua vez, enviará a parte que cabe à CBN, conforme estabelecido.</p>
+            </content>
+          </paragraph>
+          <paragraph eId="art_13__para_5">
+            <num>§ 5º -</num>
+            <content>
+              <p>As igrejas filiadas poderão solicitar apoio à CBN-GO nos processos de transição pastoral.</p>
+            </content>
+          </paragraph>
+        </article>
+      </chapter>
+      <chapter eId="chp_6">
+        <num>CAPÍTULO VI</num>
+        <heading>Das Disposições Gerais e Transitórias</heading>
+        <article eId="art_14">
+          <num>Art. 14</num>
+          <intro>
+            <p>Todas as Instituições criadas e/ou mantidas pela CBN-GO, ou pelos integrantes, poderão ter Estatuto e ou Regimento Interno próprios, outorgados pelo CONPLEX.</p>
+          </intro>
+          <paragraph eId="art_14__para_uniq">
+            <num>Parágrafo Único.</num>
+            <content>
+              <p>Excetua-se ao disposto no caput deste artigo a Ordem de Ministros Batistas Nacionais Seção de Goiás, cujo Estatuto e Regimento Interno serão apreciados e votados em Assembleia própria da ORMIBAN.</p>
+            </content>
+          </paragraph>
+        </article>
+        <article eId="art_15">
+          <num>Art. 15</num>
+          <intro>
+            <p>O presente Estatuto poderá ser reformado por encaminhamento da Assembleia Geral ou do CONPLEX, para Assembleia Geral Extraordinária, cuja convocação conste "Reforma de Estatuto", pelo voto favorável de dois terços dos mensageiros presentes na reunião.</p>
+          </intro>
+          <paragraph eId="art_15__para_uniq">
+            <num>Parágrafo Único.</num>
+            <content>
+              <p>Não serão apreciadas propostas de reforma estatutária que visem revogar, alterar ou desvirtuar, de qualquer forma, a Confissão de Fé dos Batistas Nacionais.</p>
+            </content>
+          </paragraph>
+        </article>
+        <article eId="art_16">
+          <num>Art. 16</num>
+          <content>
+            <p>A CBN-GO somente poderá ser dissolvida pelo voto unânime dos mensageiros que representam dois terços das Igrejas filiadas, destinando-se o seu patrimônio à CBN – Convenção Batista Nacional, com sede em Brasília.</p>
+          </content>
+        </article>
+        <article eId="art_17">
+          <num>Art. 17</num>
+          <content>
+            <p>Para cumprir suas finalidades, no âmbito regional, a CBN-GO contará com as Igrejas filiadas, sediadas em sua circunscrição conforme dispuser o Regimento Interno.</p>
+          </content>
+        </article>
+        <article eId="art_18">
+          <num>Art. 18</num>
+          <content>
+            <p>As decisões nas Assembleias Gerais da CBN-GO e nas Reuniões do CONPLEX serão tomadas por maioria simples de votos dos presentes, observando as exceções previstas neste Estatuto.</p>
+          </content>
+        </article>
+        <article eId="art_19">
+          <num>Art. 19</num>
+          <content>
+            <p>Os casos omissos neste Estatuto serão resolvidos pelo CONPLEX, ad-referendum da Assembleia Geral.</p>
+          </content>
+        </article>
+        <article eId="art_20">
+          <num>Art. 20</num>
+          <content>
+            <p>Os membros não respondem subsidiariamente pelas obrigações sociais.</p>
+          </content>
+        </article>
+        <article eId="art_21">
+          <num>Art. 21</num>
+          <content>
+            <p>Este Estatuto entrará em vigor na data de sua aprovação, revogadas as disposições em contrário.</p>
+          </content>
+        </article>
+      </chapter>
+    </body>
+    <conclusions>
+      <p>Anápolis, 18 de outubro de 2025.</p>
+    </conclusions>
+  </act>
+</akomaNtoso>
