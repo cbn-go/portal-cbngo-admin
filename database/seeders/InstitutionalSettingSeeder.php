@@ -17,7 +17,6 @@ class InstitutionalSettingSeeder extends Seeder
         }
 
         InstitutionalSetting::create([
-            'id' => 1,
             'email' => 'contato@cbngo.org.br',
             'phone' => '(62) 3223-0000',
             'whatsapp' => '(62) 98100-0000',
