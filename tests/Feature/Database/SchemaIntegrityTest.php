@@ -237,6 +237,9 @@ class SchemaIntegrityTest extends TestCase
             'id',
             'user_id',
             'title',
+            'tag',
+            'subtitle',
+            'meta',
             'image',
             'alt_text',
             'link_url',
@@ -246,6 +249,7 @@ class SchemaIntegrityTest extends TestCase
             'starts_at',
             'ends_at',
             'is_active',
+            'is_square',
             'created_at',
             'updated_at',
         ]));
@@ -254,7 +258,6 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasIndex('banners', ['starts_at']));
         $this->assertTrue(Schema::hasIndex('banners', ['ends_at']));
         $this->assertForeignKeyOnDelete('banners', 'user_id', 'users', 'set null');
-        $this->assertFalse(Schema::hasColumn('banners', 'subtitle'));
         $this->assertFalse(Schema::hasColumn('banners', 'focal_point'));
     }
 

@@ -92,6 +92,16 @@ class BannerVisibilityTest extends TestCase
     {
         $this->assertSame('Saiba mais', Banner::factory()->make(['link_label' => null])->display_link_label);
         $this->assertSame('Inscreva-se', Banner::factory()->make(['link_label' => 'Inscreva-se'])->display_link_label);
+    }
 
+    public function test_legacy_banner_without_square_photo_is_not_visible(): void
+    {
+        $squareBanner = Banner::factory()->create(['is_square' => true, 'is_active' => true]);
+        $legacyBanner = Banner::factory()->create(['is_square' => false, 'is_active' => true]);
+
+        $visibleIds = Banner::query()->visible()->pluck('id')->all();
+
+        $this->assertContains($squareBanner->id, $visibleIds);
+        $this->assertNotContains($legacyBanner->id, $visibleIds);
     }
 }

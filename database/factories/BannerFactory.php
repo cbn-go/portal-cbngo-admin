@@ -18,14 +18,18 @@ class BannerFactory extends Factory
         return [
             'user_id' => null,
             'title' => fake()->sentence(4),
+            'tag' => 'Assembleia',
+            'subtitle' => 'Quatro dias de louvor, palavra e comunhão para toda a convenção.',
+            'meta' => '14–15 mar · Anápolis',
             'image' => 'banners/'.fake()->uuid().'.jpg',
             'alt_text' => 'Encontro de Missões Nacionais 2026, de 14 a 16 de novembro, em Goiânia. Inscrições abertas.',
             'link_url' => '/eventos',
-            'link_label' => null,
+            'link_label' => 'Saiba mais',
             'opens_in_new_tab' => false,
             'starts_at' => null,
             'ends_at' => null,
             'is_active' => true,
+            'is_square' => true,
         ];
     }
 

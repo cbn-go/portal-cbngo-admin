@@ -121,36 +121,41 @@ Gerido em **Institucional → Documentos**, apenas pelo super administrador.
 
 URL do documento: `MEDIA_URL/{file}` quando `file` está preenchido; senão, `external_url`. Exibir: `is_active = 1 ORDER BY position`.
 
-## `banners` (site: hero da página inicial)
+## `banners` (site: avisos da home / hero 1:1)
 
-Gerido em **Comunicação → Banners da Home** pelo super administrador e pelo editor da convenção. Não confundir com `notices`, que continuam sendo a barra fina no topo do site.
+Gerido em **Comunicação → Avisos da Home** pelo super administrador e pelo editor da convenção. Não confundir com `notices`, que continuam sendo a barra fina no topo do site.
 
-**O banner é a arte completa**, já com textos, datas e logos. O site exibe a imagem inteira, sem corte e sem escrever nada por cima: caixa 16:9 (`aspect-video`) com `object-contain` e fundo neutro para artes fora do padrão.
+**O aviso da home adota foto quadrada 1:1** no estilo post de rede social, com o texto estruturado ao lado (conforme especificado na issue #46 e no mockup `mockup-home-avisos-1x1.html`).
 
-| Coluna | Observação |
-|---|---|
-| `title` | **Nome interno.** Não é exibido sobre a imagem; use só nos rótulos dos controles do carrossel para leitores de tela |
-| `image` | Arte em 16:9, recomendado 1920×1080 (mínimo 1280×720). Caminho no disco de mídia (`banners/...`); URL `MEDIA_URL/{image}`, com as versões WebP `-thumb`, `-card` e `-cover` (veja [Mídia compartilhada](#mídia-compartilhada)). Use `width="1920" height="1080"` para reservar o espaço |
-| `alt_text` | Sempre preenchido (até 500 caracteres). Transcreve a arte (evento, datas, local); é o nome acessível da imagem e do link |
-| `link_url` | Opcional. Caminho do site (`/eventos/assembleia`) ou URL completa `http(s)://`. Com link, **a arte inteira é o link**; vazio = imagem não clicável |
-| `opens_in_new_tab` | Quando `1`, abrir com `target="_blank" rel="noopener noreferrer"` e aviso "(abre em nova aba)" para leitores de tela. O painel marca automaticamente para domínios fora de `cbngo.org.br`/`cbngo.com.br` |
-| `link_label` | Não é mais usado (não há botão). A coluna continua existindo, sem edição no painel |
-| `position` | Ordem do carrossel, definida arrastando as linhas no painel |
-| `starts_at`, `ends_at` | Opcionais. Nulos = sem início/fim |
-| `is_active` | |
+| Coluna | Tipo | Observação |
+|---|---|---|
+| `title` | `string(70)` | **Título principal** exibido no site em destaque ao lado da foto (obrigatório) |
+| `tag` | `string(30)` | **Selo de categoria** exibido no topo da foto e acima do título (ex.: "Assembleia", "Juventude", "Ação social", "SETEBAN-GO") |
+| `subtitle` | `string(160)` | **Subtítulo explicativo** exibido abaixo do título |
+| `meta` | `string(60)` | **Linha de apoio** com data, período e local exibida ao lado do botão (ex.: "14–15 mar · Anápolis") |
+| `image` | `string(255)` | Foto quadrada 1:1 sem texto, recomendado 1080×1080 (mínimo 800×800). Caminho no disco de mídia (`banners/...`); URL `MEDIA_URL/{image}`, com as versões WebP `-thumb` (160px), `-card` (800px) e `-cover` (1080px) |
+| `alt_text` | `string(500)` | Descrição da foto para leitores de tela e acessibilidade |
+| `link_label` | `string(60)` | **Texto do botão** de ação (padrão "Saiba mais") |
+| `link_url` | `string(255)` | Caminho do site (`/eventos/assembleia`) ou URL completa `http(s)://` |
+| `opens_in_new_tab` | `boolean` | Quando `1`, abrir com `target="_blank" rel="noopener noreferrer"` |
+| `position` | `integer` | Ordem do carrossel, definida arrastando as linhas no painel |
+| `starts_at`, `ends_at` | `datetime` | Opcionais. Nulos = sem início/fim |
+| `is_square` | `boolean` | `1` = foto quadrada 1:1 compatível com a nova hero; `0` = legado 16:9 desativado |
+| `is_active` | `boolean` | `1` = ativo |
 
-`subtitle` e `focal_point` foram removidos (#26).
+### Regra de exibição no site público
 
-Um banner é exibido quando:
+Um aviso é exibido no carrossel da home quando:
 
-```
+```sql
 is_active = 1
+AND is_square = 1
 AND (starts_at IS NULL OR starts_at <= NOW())
 AND (ends_at IS NULL OR ends_at >= NOW())
 ORDER BY position
 ```
 
-É a mesma regra de `Banner::visible()`. Sem banners visíveis, o site exibe o hero institucional.
+É a mesma regra de `Banner::visible()`. Sem avisos visíveis, o site exibe a hero institucional padrão.
 
 ## `social_projects` (site: `/projetos-sociais`)
 

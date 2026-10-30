@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Enums\NoticeValidityStatus;
+use App\Filament\Resources\BannerResource;
 use App\Models\Concerns\HasImageVariants;
+use App\Support\AspectRatio;
 use Database\Factories\BannerFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +22,9 @@ use Illuminate\Support\Facades\Auth;
  * @property int $id
  * @property int|null $user_id
  * @property string $title
+ * @property string|null $tag
+ * @property string|null $subtitle
+ * @property string|null $meta
  * @property string $image
  * @property string $alt_text
  * @property string|null $link_url
@@ -29,6 +34,7 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon|null $starts_at
  * @property Carbon|null $ends_at
  * @property bool $is_active
+ * @property bool $is_square
  * @property-read NoticeValidityStatus $validity_status
  * @property-read string $display_link_label
  * @property Carbon|null $created_at
@@ -52,15 +58,15 @@ class Banner extends Model
     public const DEFAULT_LINK_LABEL = 'Saiba mais';
 
     /**
-     * Proporção padrão da arte (16:9): tamanho recomendado e mínimo aceito.
+     * Proporção padrão da arte (1:1 quadrada): tamanho recomendado e mínimo aceito.
      */
-    public const RECOMMENDED_WIDTH = 1920;
+    public const RECOMMENDED_WIDTH = 1080;
 
     public const RECOMMENDED_HEIGHT = 1080;
 
-    public const MIN_WIDTH = 1280;
+    public const MIN_WIDTH = 800;
 
-    public const MIN_HEIGHT = 720;
+    public const MIN_HEIGHT = 800;
 
     /**
      * @var list<string>
@@ -68,6 +74,9 @@ class Banner extends Model
     protected $fillable = [
         'user_id',
         'title',
+        'tag',
+        'subtitle',
+        'meta',
         'image',
         'alt_text',
         'link_url',
@@ -77,6 +86,7 @@ class Banner extends Model
         'starts_at',
         'ends_at',
         'is_active',
+        'is_square',
     ];
 
     /**
@@ -91,6 +101,7 @@ class Banner extends Model
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
             'is_active' => 'boolean',
+            'is_square' => 'boolean',
         ];
     }
 
@@ -106,6 +117,15 @@ class Banner extends Model
 
             if (blank($banner->position)) {
                 $banner->position = (int) static::query()->max('position') + 1;
+            }
+        });
+
+        static::saving(function (Banner $banner): void {
+            if ($banner->is_square === false && filled($banner->image)) {
+                $dimensions = BannerResource::imageDimensions($banner->image);
+                if ($dimensions !== null && AspectRatio::isSquare($dimensions[0], $dimensions[1])) {
+                    $banner->is_square = true;
+                }
             }
         });
     }
@@ -129,6 +149,7 @@ class Banner extends Model
         $now = now();
 
         return $query->where('is_active', true)
+            ->where('is_square', true)
             ->where(fn (Builder $q) => $q->whereNull('starts_at')->orWhere('starts_at', '<=', $now))
             ->where(fn (Builder $q) => $q->whereNull('ends_at')->orWhere('ends_at', '>=', $now))
             ->orderBy('position');
@@ -141,6 +162,7 @@ class Banner extends Model
     public function scopeScheduled(Builder $query): Builder
     {
         return $query->where('is_active', true)
+            ->where('is_square', true)
             ->whereNotNull('starts_at')
             ->where('starts_at', '>', now());
     }
@@ -152,6 +174,7 @@ class Banner extends Model
     public function scopeExpired(Builder $query): Builder
     {
         return $query->where('is_active', true)
+            ->where('is_square', true)
             ->whereNotNull('ends_at')
             ->where('ends_at', '<', now());
     }

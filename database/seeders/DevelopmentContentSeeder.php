@@ -439,8 +439,12 @@ class DevelopmentContentSeeder extends Seeder
         $banners = [
             [
                 'image' => 'banners/encontro-missoes-nacionais-2026.jpg',
+                'tag' => 'Assembleia',
                 'title' => 'Encontro de Missões Nacionais 2026',
+                'subtitle' => 'De 14 a 16 de novembro no Centro de Convenções de Goiânia. Inscreva sua liderança.',
+                'meta' => '14–16 nov · Goiânia',
                 'alt_text' => 'Encontro de Missões Nacionais 2026, de 14 a 16 de novembro, no Centro de Convenções de Goiânia. Inscrições abertas.',
+                'link_label' => 'Fazer inscrição',
                 'link_url' => '/noticias',
                 'opens_in_new_tab' => false,
                 'starts_at' => now()->subDays(2),
@@ -449,8 +453,12 @@ class DevelopmentContentSeeder extends Seeder
             ],
             [
                 'image' => 'banners/campanha-missoes-nacionais.jpg',
+                'tag' => 'Missões',
                 'title' => 'Campanha de Missões Nacionais',
+                'subtitle' => 'Ore, contribua e envie mensageiros. Juntos alcançamos o estado de Goiás e o Brasil.',
+                'meta' => 'Campanha Estadual',
                 'alt_text' => 'Campanha de Missões Nacionais: ore, contribua e envie. Juntos alcançamos o Brasil.',
+                'link_label' => 'Saiba mais',
                 'link_url' => 'https://www.convencaobatistanacional.com.br',
                 'opens_in_new_tab' => true,
                 'starts_at' => null,
@@ -459,8 +467,12 @@ class DevelopmentContentSeeder extends Seeder
             ],
             [
                 'image' => 'banners/retiro-pastores-2026.jpg',
+                'tag' => 'Pastores',
                 'title' => 'Retiro de Pastores e Esposas',
+                'subtitle' => 'Três dias de renovo espiritual, comunhão e descanso para os ministros do evangelho.',
+                'meta' => 'Julho · Pirenópolis',
                 'alt_text' => 'Retiro de Pastores e Esposas 2026. Vagas abertas em breve.',
+                'link_label' => 'Ver detalhes',
                 'link_url' => null,
                 'opens_in_new_tab' => false,
                 'starts_at' => now()->addDays(15),
@@ -469,8 +481,12 @@ class DevelopmentContentSeeder extends Seeder
             ],
             [
                 'image' => 'banners/culto-de-gratidao.jpg',
+                'tag' => 'Gratidão',
                 'title' => 'Culto de Gratidão',
+                'subtitle' => 'Celebração pelas vitórias concedidas ao longo do ano em todas as regiões do estado.',
+                'meta' => 'Encerrado',
                 'alt_text' => 'Culto de Gratidão: obrigado a todas as igrejas que participaram.',
+                'link_label' => 'Saiba mais',
                 'link_url' => null,
                 'opens_in_new_tab' => false,
                 'starts_at' => now()->subDays(40),
@@ -487,13 +503,13 @@ class DevelopmentContentSeeder extends Seeder
 
             Banner::query()->updateOrCreate(
                 ['image' => $data['image']],
-                [...$data, 'user_id' => $editor->id, 'position' => $index + 1, 'is_active' => true],
+                [...$data, 'user_id' => $editor->id, 'position' => $index + 1, 'is_active' => true, 'is_square' => true],
             );
         }
     }
 
     /**
-     * Arte de exemplo 1920×1080 (cor sólida com o nome do banner), gravada
+     * Arte de exemplo 1080×1080 quadrada (cor sólida com o nome do aviso), gravada
      * apenas quando o arquivo ainda não existe.
      *
      * @param  array{0: int, 1: int, 2: int}  $color
@@ -506,17 +522,17 @@ class DevelopmentContentSeeder extends Seeder
             return;
         }
 
-        // Desenha em 480×270 e amplia, porque as fontes embutidas do GD são pequenas.
-        $small = imagecreatetruecolor(480, 270);
+        // Desenha em 400×400 e amplia, mantendo proporção quadrada 1:1.
+        $small = imagecreatetruecolor(400, 400);
         imagefill($small, 0, 0, (int) imagecolorallocate($small, $color[0], $color[1], $color[2]));
         $white = (int) imagecolorallocate($small, 255, 255, 255);
         $label = mb_strtoupper(iconv('UTF-8', 'ASCII//TRANSLIT', $text) ?: $text);
-        $x = max(8, (int) ((480 - strlen($label) * imagefontwidth(5)) / 2));
-        imagestring($small, 5, $x, 120, $label, $white);
-        imagestring($small, 3, 8, 250, 'CBN-GO - arte de exemplo 16:9', $white);
+        $x = max(8, (int) ((400 - strlen($label) * imagefontwidth(5)) / 2));
+        imagestring($small, 5, $x, 180, $label, $white);
+        imagestring($small, 3, 8, 370, 'CBN-GO - foto 1:1', $white);
 
         $art = imagecreatetruecolor(Banner::RECOMMENDED_WIDTH, Banner::RECOMMENDED_HEIGHT);
-        imagecopyresampled($art, $small, 0, 0, 0, 0, Banner::RECOMMENDED_WIDTH, Banner::RECOMMENDED_HEIGHT, 480, 270);
+        imagecopyresampled($art, $small, 0, 0, 0, 0, Banner::RECOMMENDED_WIDTH, Banner::RECOMMENDED_HEIGHT, 400, 400);
 
         ob_start();
         imagejpeg($art, null, 85);

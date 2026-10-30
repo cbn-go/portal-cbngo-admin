@@ -120,7 +120,7 @@ class DatabaseSeederTest extends TestCase
             Storage::disk('media')->assertExists($image);
             $info = getimagesizefromstring((string) Storage::disk('media')->get($image));
             $this->assertIsArray($info);
-            $this->assertSame([1920, 1080], [$info[0], $info[1]]);
+            $this->assertSame([Banner::RECOMMENDED_WIDTH, Banner::RECOMMENDED_HEIGHT], [$info[0], $info[1]]);
         }
     }
 

@@ -3,7 +3,6 @@
 namespace Tests\Feature\Filament;
 
 use App\Enums\UserRole;
-use App\Filament\Resources\BannerResource;
 use App\Filament\Resources\BannerResource\Pages\CreateBanner;
 use App\Filament\Resources\BannerResource\Pages\EditBanner;
 use App\Filament\Resources\BannerResource\Pages\ListBanners;
@@ -45,9 +44,14 @@ class BannerResourceTest extends TestCase
     private function validData(array $overrides = []): array
     {
         return [
-            'title' => 'Assembleia Estadual 2026',
-            'image' => UploadedFile::fake()->image('banner.jpg', 1920, 1080),
-            'alt_text' => 'Assembleia Estadual 2026, de 14 a 16 de novembro, em Goiânia. Inscrições abertas.',
+            'title' => 'Assembleia Geral Ordinária 2026',
+            'tag' => 'Assembleia',
+            'subtitle' => 'Dias 14 e 15 de março, em Anápolis. Inscreva os mensageiros da sua igreja até 28 de fevereiro.',
+            'meta' => '14–15 mar · Anápolis',
+            'image' => UploadedFile::fake()->image('aviso.jpg', 1080, 1080),
+            'alt_text' => 'Pastores e líderes reunidos no auditório da assembleia em Anápolis.',
+            'link_label' => 'Fazer inscrição',
+            'link_url' => '/eventos/assembleia',
             'is_active' => true,
             ...$overrides,
         ];
@@ -80,81 +84,93 @@ class BannerResourceTest extends TestCase
         }
     }
 
-    public function test_editor_can_create_banner_with_image_on_media_disk(): void
+    public function test_editor_can_create_home_notice_with_1x1_photo_and_all_fields(): void
     {
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->editor);
 
         Livewire::test(CreateBanner::class)
-            ->fillForm($this->validData(['link_url' => '/eventos/assembleia', 'link_label' => 'Inscreva-se']))
+            ->fillForm($this->validData())
             ->call('create')
             ->assertHasNoFormErrors();
 
-        $banner = Banner::query()->where('title', 'Assembleia Estadual 2026')->firstOrFail();
+        $banner = Banner::query()->where('title', 'Assembleia Geral Ordinária 2026')->firstOrFail();
 
         $this->assertStringStartsWith('banners/', $banner->image);
         Storage::disk('media')->assertExists($banner->image);
         $this->assertSame($this->editor->id, $banner->user_id);
+        $this->assertSame('Assembleia', $banner->tag);
+        $this->assertSame('Dias 14 e 15 de março, em Anápolis. Inscreva os mensageiros da sua igreja até 28 de fevereiro.', $banner->subtitle);
+        $this->assertSame('14–15 mar · Anápolis', $banner->meta);
+        $this->assertSame('Fazer inscrição', $banner->link_label);
         $this->assertSame('/eventos/assembleia', $banner->link_url);
         $this->assertFalse($banner->opens_in_new_tab);
         $this->assertSame(1, $banner->position);
+        $this->assertTrue($banner->is_square);
     }
 
-    public function test_form_has_internal_name_and_no_overlay_fields(): void
+    public function test_form_has_all_1x1_sections_and_fields(): void
     {
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 
         Livewire::test(CreateBanner::class)
-            ->assertFormFieldExists('title', fn (TextInput $field): bool => $field->getLabel() === 'Nome do banner (uso interno)')
-            ->assertFormFieldExists('alt_text', fn (Textarea $field): bool => str_contains((string) $field->getHelperText(), 'Transcreva'))
+            ->assertFormFieldExists('title', fn (TextInput $field): bool => $field->getLabel() === 'Título do aviso' && $field->getMaxLength() === 70)
+            ->assertFormFieldExists('tag', fn (TextInput $field): bool => $field->getLabel() === 'Selo de categoria' && $field->getMaxLength() === 30)
+            ->assertFormFieldExists('subtitle', fn (Textarea $field): bool => $field->getLabel() === 'Subtítulo' && $field->getMaxLength() === 160)
+            ->assertFormFieldExists('meta', fn (TextInput $field): bool => $field->getLabel() === 'Linha de apoio (data e local)' && $field->getMaxLength() === 60)
+            ->assertFormFieldExists('link_label', fn (TextInput $field): bool => $field->getLabel() === 'Texto do botão')
+            ->assertFormFieldExists('alt_text', fn (Textarea $field): bool => str_contains((string) $field->getHelperText(), 'leitores de tela'))
             ->assertFormFieldExists('image', fn (FileUpload $field): bool => $field->hasImageEditor()
-                && str_contains((string) $field->getHelperText(), 'já com textos e logos, em 16:9 (1920×1080)'))
-            ->assertFormFieldDoesNotExist('subtitle')
-            ->assertFormFieldDoesNotExist('focal_point')
-            ->assertFormFieldDoesNotExist('link_label');
+                && str_contains((string) $field->getHelperText(), 'quadrada (1080×1080, mínimo 800×800)'));
     }
 
-    public function test_accepts_real_art_size_and_enforces_minimum(): void
+    public function test_rejects_non_square_images(): void
     {
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 
         Livewire::test(CreateBanner::class)
-            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('missoes.jpg', 1376, 768)]))
+            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('widescreen.jpg', 1920, 1080)]))
             ->call('create')
-            ->assertHasNoFormErrors();
+            ->assertHasFormErrors(['image']);
 
-        $this->assertSame(1, Banner::query()->count());
+        $this->assertSame(0, Banner::query()->count());
     }
 
-    public function test_warns_without_blocking_when_art_is_not_16_9(): void
+    public function test_rejects_small_images_below_800x800(): void
     {
         Filament::setCurrentPanel(Filament::getPanel('admin'));
         $this->actingAs($this->superAdmin);
 
         Livewire::test(CreateBanner::class)
-            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('quadrada.jpg', 1376, 900)]))
-            ->assertSee('Atenção: a arte tem 1376×900')
+            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('pequena.jpg', 600, 600)]))
             ->call('create')
-            ->assertHasNoFormErrors();
+            ->assertHasFormErrors(['image']);
 
-        Livewire::test(CreateBanner::class)
-            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('padrao.jpg', 1376, 768)]))
-            ->assertDontSee('Atenção: a arte tem');
-
-        $this->assertSame(1, Banner::query()->count());
+        $this->assertSame(0, Banner::query()->count());
     }
 
-    public function test_aspect_ratio_warning_reads_saved_images(): void
+    public function test_rejects_title_exceeding_70_characters(): void
     {
-        Storage::disk('media')->put('banners/torta.jpg', UploadedFile::fake()->image('t.jpg', 1600, 1200)->getContent());
-        Storage::disk('media')->put('banners/certa.jpg', UploadedFile::fake()->image('c.jpg', 1920, 1080)->getContent());
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
 
-        $this->assertStringContainsString('1600×1200', (string) BannerResource::aspectRatioWarning(['uuid' => 'banners/torta.jpg']));
-        $this->assertNull(BannerResource::aspectRatioWarning(['uuid' => 'banners/certa.jpg']));
-        $this->assertNull(BannerResource::aspectRatioWarning([]));
-        $this->assertNull(BannerResource::aspectRatioWarning('banners/nao-existe.jpg'));
+        Livewire::test(CreateBanner::class)
+            ->fillForm($this->validData(['title' => str_repeat('A', 71)]))
+            ->call('create')
+            ->assertHasFormErrors(['title']);
+    }
+
+    public function test_rejects_subtitle_exceeding_160_characters(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        Livewire::test(CreateBanner::class)
+            ->fillForm($this->validData(['subtitle' => str_repeat('B', 161)]))
+            ->call('create')
+            ->assertHasFormErrors(['subtitle']);
     }
 
     public function test_title_image_and_alt_text_are_required(): void
@@ -166,24 +182,6 @@ class BannerResourceTest extends TestCase
             ->fillForm(['title' => null, 'image' => null, 'alt_text' => null])
             ->call('create')
             ->assertHasFormErrors(['title' => 'required', 'image' => 'required', 'alt_text' => 'required']);
-    }
-
-    public function test_rejects_small_images_and_non_images(): void
-    {
-        Filament::setCurrentPanel(Filament::getPanel('admin'));
-        $this->actingAs($this->superAdmin);
-
-        Livewire::test(CreateBanner::class)
-            ->fillForm($this->validData(['image' => UploadedFile::fake()->image('pequena.jpg', 1200, 675)]))
-            ->call('create')
-            ->assertHasFormErrors(['image']);
-
-        Livewire::test(CreateBanner::class)
-            ->fillForm($this->validData(['image' => UploadedFile::fake()->create('arte.pdf', 100, 'application/pdf')]))
-            ->call('create')
-            ->assertHasFormErrors(['image']);
-
-        $this->assertSame(0, Banner::query()->count());
     }
 
     public function test_link_url_must_be_site_path_or_http_url(): void
@@ -288,5 +286,20 @@ class BannerResourceTest extends TestCase
 
         $this->assertSame(1, $expired->refresh()->position);
         $this->assertSame(2, $active->refresh()->position);
+    }
+
+    public function test_list_displays_legacy_banner_alert_when_16_9_banners_exist(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+        $this->actingAs($this->superAdmin);
+
+        Banner::factory()->create(['is_square' => false, 'title' => 'Banner Antigo 16:9']);
+
+        Livewire::test(ListBanners::class)
+            ->assertSee('precisa de foto quadrada 1:1');
+
+        $this->get('/admin/banners')
+            ->assertSuccessful()
+            ->assertSee('precisa de foto quadrada 1:1');
     }
 }
