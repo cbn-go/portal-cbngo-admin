@@ -23,6 +23,7 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasTable('banners'));
         $this->assertTrue(Schema::hasTable('social_projects'));
         $this->assertTrue(Schema::hasTable('municipalities'));
+        $this->assertTrue(Schema::hasTable('municipality_indicators'));
     }
 
     public function test_churches_columns_and_indexes(): void
@@ -306,6 +307,25 @@ class SchemaIntegrityTest extends TestCase
         $this->assertTrue(Schema::hasIndex('municipalities', ['intermediate_region_code']));
 
         $this->assertForeignKeyOnDelete('churches', 'municipality_id', 'municipalities', 'set null');
+    }
+
+    public function test_municipality_indicators_columns_and_indexes(): void
+    {
+        $this->assertTrue(Schema::hasColumns('municipality_indicators', [
+            'id',
+            'municipality_id',
+            'indicator',
+            'period',
+            'value',
+            'source',
+            'fetched_at',
+            'created_at',
+            'updated_at',
+        ]));
+
+        $this->assertTrue(Schema::hasIndex('municipality_indicators', ['municipality_id', 'indicator', 'period'], 'unique'));
+        $this->assertTrue(Schema::hasIndex('municipality_indicators', ['indicator', 'period']));
+        $this->assertForeignKeyOnDelete('municipality_indicators', 'municipality_id', 'municipalities', 'cascade');
     }
 
     private function assertForeignKeyOnDelete(string $table, string $column, string $references, string $onDelete): void

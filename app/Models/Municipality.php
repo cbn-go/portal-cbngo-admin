@@ -97,4 +97,12 @@ class Municipality extends Model
     {
         return $this->hasMany(Church::class);
     }
+
+    /**
+     * @return HasMany<MunicipalityIndicator, $this>
+     */
+    public function indicators(): HasMany
+    {
+        return $this->hasMany(MunicipalityIndicator::class);
+    }
 }
