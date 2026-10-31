@@ -11,9 +11,9 @@ use Filament\Widgets\ChartWidget;
  */
 class AgeGroupChartWidget extends ChartWidget
 {
-    protected static bool $isDiscovered = false;
-
     protected static bool $isLazy = false;
+
+    protected static ?string $pollingInterval = null;
 
     protected static ?string $heading = 'População por faixa etária (Censo 2022)';
 
