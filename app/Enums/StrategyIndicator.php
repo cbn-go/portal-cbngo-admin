@@ -363,4 +363,64 @@ enum StrategyIndicator: string
             || $this === self::RELIGION_EVANGELICAL_VARIATION
             || $this === self::NON_EVANGELICAL_POPULATION_ESTIMATE;
     }
+
+    /**
+     * Seção do indicador nas telas do Painel de Estratégia.
+     */
+    public function group(): string
+    {
+        return match ($this) {
+            self::POPULATION_CENSUS_2022,
+            self::POPULATION_ESTIMATE,
+            self::POPULATION_GROWTH,
+            self::POPULATION_10_PLUS_2022,
+            self::NON_EVANGELICAL_POPULATION_ESTIMATE => 'População',
+            self::AGE_0_14,
+            self::AGE_15_29,
+            self::AGE_30_59,
+            self::AGE_60_PLUS => 'Faixa etária',
+            self::RACE_WHITE,
+            self::RACE_BLACK,
+            self::RACE_YELLOW,
+            self::RACE_BROWN,
+            self::RACE_INDIGENOUS => 'Cor ou raça',
+            self::RELIGION_CATHOLIC_2022,
+            self::RELIGION_EVANGELICAL_2022,
+            self::RELIGION_NONE_2022,
+            self::RELIGION_OTHER_2022,
+            self::RELIGION_CATHOLIC_PCT_2022,
+            self::RELIGION_EVANGELICAL_PCT_2022,
+            self::RELIGION_NONE_PCT_2022,
+            self::RELIGION_OTHER_PCT_2022,
+            self::RELIGION_EVANGELICAL_VARIATION => 'Religião (Censo 2022)',
+            self::POPULATION_2010,
+            self::RELIGION_EVANGELICAL_2010,
+            self::RELIGION_BAPTIST_2010,
+            self::RELIGION_EVANGELICAL_PCT_2010,
+            self::RELIGION_BAPTIST_PCT_2010 => 'Religião (Censo 2010)',
+            self::PIB_PER_CAPITA,
+            self::TERRITORIAL_AREA,
+            self::DEMOGRAPHIC_DENSITY => 'Território e economia',
+        };
+    }
+
+    /**
+     * Valor formatado em pt-BR com a unidade do indicador.
+     */
+    public function format(float|string|null $value): string
+    {
+        if ($value === null || $value === '') {
+            return '—';
+        }
+
+        $value = (float) $value;
+
+        return match ($this->unit()) {
+            'habitantes' => number_format($value, 0, ',', '.'),
+            '%' => number_format($value, 2, ',', '.').'%',
+            'p.p.' => ($value > 0 ? '+' : '').number_format($value, 2, ',', '.').' p.p.',
+            'R$' => 'R$ '.number_format($value, 2, ',', '.'),
+            default => number_format($value, 2, ',', '.').' '.$this->unit(),
+        };
+    }
 }

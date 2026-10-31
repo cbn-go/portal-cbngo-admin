@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 'Secretaria',
+                'Estratégia',
                 'Portal',
                 'Sistema',
             ])
