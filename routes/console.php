@@ -11,3 +11,7 @@ Artisan::command('inspire', function () {
 Schedule::command('strategy:sync-indicators')
     ->monthly()
     ->description('Sincronização mensal de indicadores territoriais do SIDRA/IBGE');
+
+Schedule::command('strategy:sync-map')
+    ->monthly()
+    ->description('Atualização mensal da malha municipal de Goiás (IBGE Malhas) para o mapa');

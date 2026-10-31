@@ -23,6 +23,10 @@ use App\Policies\NoticePolicy;
 use App\Policies\SocialProjectPolicy;
 use App\Policies\UserPolicy;
 use App\Services\Strategy\StateIndicatorService;
+use Filament\Support\Assets\AlpineComponent;
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -58,5 +62,13 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Notice::class, NoticePolicy::class);
         Gate::policy(SocialProject::class, SocialProjectPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
+
+        // Mapa do Painel de Estratégia: Leaflet versionado no repositório e
+        // carregado só na Visão de Goiás. Publicado em public/ com `filament:assets`.
+        FilamentAsset::register([
+            Css::make('leaflet', resource_path('vendor/leaflet/leaflet.css'))->loadedOnRequest(),
+            Js::make('leaflet', resource_path('vendor/leaflet/leaflet.js'))->loadedOnRequest(),
+            AlpineComponent::make('strategy-map', resource_path('js/filament/strategy-map.js')),
+        ]);
     }
 }

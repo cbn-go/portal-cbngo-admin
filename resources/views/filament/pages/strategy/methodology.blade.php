@@ -75,6 +75,38 @@
     </x-filament::section>
 
     <x-filament::section>
+        <x-slot name="heading">Mapa</x-slot>
+
+        <table class="st-table">
+            <thead>
+                <tr>
+                    <th>Camada</th>
+                    <th>Fonte</th>
+                    <th>Última sincronização</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="st-strong">Malha municipal de Goiás</div>
+                        <div class="st-muted">Contorno dos 246 municípios em qualidade mínima, suficiente para o mapa do estado. Baixada pelo comando <code>strategy:sync-map</code> e servida pelo painel.</div>
+                    </td>
+                    <td class="st-muted">IBGE, API de Malhas (v3)</td>
+                    <td class="st-nowrap">
+                        @if ($mapSyncedAt = $this->mapSyncedAt())
+                            {{ $mapSyncedAt->timezone(config('app.timezone'))->format('d/m/Y H:i') }}
+                        @else
+                            <x-filament::badge color="warning">Nunca sincronizado</x-filament::badge>
+                        @endif
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="mt-3 text-xs text-gray-500">As cores usam faixas por quantis: cinco grupos com quantidades parecidas de municípios. No índice de prioridade, isso mostra a ordem relativa; as faixas alta, média e baixa continuam na lista de Municípios. Municípios sem igreja e sem dados do IBGE têm cores próprias e nunca entram como zero.</p>
+    </x-filament::section>
+
+    <x-filament::section>
         <x-slot name="heading">Limitações</x-slot>
 
         <ul class="list-disc space-y-1 pl-5 text-sm text-gray-700">

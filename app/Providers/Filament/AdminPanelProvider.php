@@ -4,12 +4,15 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
 use App\Filament\Strategy\Widgets\AgeGroupChartWidget;
+use App\Filament\Strategy\Widgets\MunicipalityMapWidget;
 use App\Filament\Strategy\Widgets\StrategyKpisWidget;
+use App\Http\Controllers\Strategy\MunicipalityMapGeoJsonController;
 use App\Providers\Filament\Concerns\ConfiguresCbngoTheme;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Route;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -53,8 +56,14 @@ class AdminPanelProvider extends PanelProvider
             // @phpstan-ignore argument.type
             ->livewireComponents([
                 StrategyKpisWidget::class,
+                MunicipalityMapWidget::class,
                 AgeGroupChartWidget::class,
-            ]);
+            ])
+            // Malha do IBGE para o mapa da Visão de Goiás, servida pelo próprio painel.
+            ->authenticatedRoutes(function (): void {
+                Route::get('estrategia/malha.geojson', MunicipalityMapGeoJsonController::class)
+                    ->name('strategy.map-geojson');
+            });
 
         return $this->applyCbngoConfiguration($panel);
     }

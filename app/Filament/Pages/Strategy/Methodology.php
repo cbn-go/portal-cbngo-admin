@@ -4,6 +4,7 @@ namespace App\Filament\Pages\Strategy;
 
 use App\Enums\StrategyIndicator;
 use App\Filament\Concerns\HasStrategySourceFooter;
+use App\Services\Strategy\MunicipalityMap;
 use App\Services\Strategy\StateIndicatorService;
 use Filament\Pages\Page;
 use Illuminate\Support\Carbon;
@@ -79,6 +80,11 @@ class Methodology extends Page
         }
 
         return $groups;
+    }
+
+    public function mapSyncedAt(): ?Carbon
+    {
+        return app(MunicipalityMap::class)->lastSyncedAt();
     }
 
     /**

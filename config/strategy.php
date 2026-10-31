@@ -53,4 +53,15 @@ return [
             ],
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mapa: malha municipal de Goiás
+    |--------------------------------------------------------------------------
+    |
+    | GeoJSON baixado da API de Malhas do IBGE pelo comando strategy:sync-map
+    | e servido pelo painel em /admin/estrategia/malha.geojson.
+    |
+    */
+    'map_path' => storage_path('app/strategy/goias-municipios.geojson'),
 ];
