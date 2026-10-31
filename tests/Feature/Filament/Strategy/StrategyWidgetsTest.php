@@ -3,6 +3,7 @@
 namespace Tests\Feature\Filament\Strategy;
 
 use App\Filament\Strategy\Widgets\AgeGroupChartWidget;
+use App\Filament\Strategy\Widgets\MunicipalityMapWidget;
 use App\Filament\Strategy\Widgets\StrategyKpisWidget;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,7 +24,7 @@ class StrategyWidgetsTest extends TestCase
      */
     private function widgets(): array
     {
-        return [StrategyKpisWidget::class, AgeGroupChartWidget::class];
+        return [StrategyKpisWidget::class, MunicipalityMapWidget::class, AgeGroupChartWidget::class];
     }
 
     public function test_widgets_are_registered_with_livewire(): void
@@ -39,6 +40,11 @@ class StrategyWidgetsTest extends TestCase
     {
         // Os dados mudam só na sincronização mensal; polling a cada 5 s não traz nada novo.
         foreach ($this->widgets() as $widget) {
+            // O mapa é um widget simples, sem polling nenhum.
+            if (! method_exists($widget, 'getPollingInterval')) {
+                continue;
+            }
+
             $method = new \ReflectionMethod($widget, 'getPollingInterval');
 
             $this->assertNull($method->invoke(new $widget));

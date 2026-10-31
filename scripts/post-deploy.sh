@@ -23,6 +23,8 @@ chmod -R ug+rwx storage bootstrap/cache || true
 "$PHP_BIN" artisan db:seed --class=StatuteSeeder --force
 "$PHP_BIN" artisan db:seed --class=InstitutionalSettingSeeder --force
 "$PHP_BIN" artisan storage:link --force || true
+# Malha do mapa do Painel de Estratégia: baixa só se ainda não existir; sem ela o mapa mostra um aviso.
+"$PHP_BIN" artisan strategy:sync-map --if-missing || true
 if [[ -d "$APP_DIR/public_html" ]]; then
     ln -sfn "$APP_DIR/storage/app/public" "$APP_DIR/public_html/storage"
 fi

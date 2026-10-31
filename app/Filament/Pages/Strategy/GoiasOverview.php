@@ -6,6 +6,7 @@ use App\DTOs\Strategy\RegionalCoverageData;
 use App\Filament\Concerns\HasStrategySourceFooter;
 use App\Filament\Resources\MunicipalityResource;
 use App\Filament\Strategy\Widgets\AgeGroupChartWidget;
+use App\Filament\Strategy\Widgets\MunicipalityMapWidget;
 use App\Filament\Strategy\Widgets\StrategyKpisWidget;
 use App\Services\Strategy\ChurchCoverageService;
 use Filament\Pages\Page;
@@ -49,6 +50,7 @@ class GoiasOverview extends Page
     {
         return [
             StrategyKpisWidget::class,
+            MunicipalityMapWidget::class,
             AgeGroupChartWidget::class,
         ];
     }
