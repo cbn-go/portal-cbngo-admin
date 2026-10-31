@@ -148,6 +148,43 @@ class Church extends Model
     }
 
     /**
+     * Vincula as igrejas aos municípios de Goiás pelo nome normalizado da cidade.
+     *
+     * Com `$onlyUnlinked` (padrão), só preenche igrejas ainda sem município:
+     * é o que o deploy faz para igrejas cadastradas antes da base territorial.
+     *
+     * @return array{linked: int, unmatched: list<Church>}
+     */
+    public static function linkToMunicipalities(bool $onlyUnlinked = true): array
+    {
+        $linked = 0;
+        $unmatched = [];
+
+        $churches = static::query()
+            ->when($onlyUnlinked, fn (Builder $query): Builder => $query->whereNull('municipality_id'))
+            ->orderBy('id')
+            ->get();
+
+        foreach ($churches as $church) {
+            $municipality = Municipality::findByNormalizedName($church->city);
+
+            if ($municipality === null) {
+                $unmatched[] = $church;
+
+                continue;
+            }
+
+            $church->updateQuietly([
+                'municipality_id' => $municipality->id,
+                'city' => $municipality->name,
+            ]);
+            $linked++;
+        }
+
+        return ['linked' => $linked, 'unmatched' => $unmatched];
+    }
+
+    /**
      * @return BelongsTo<Municipality, $this>
      */
     public function municipality(): BelongsTo
