@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\StrategyIndicator;
 use Database\Factories\MunicipalityFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -88,6 +90,23 @@ class Municipality extends Model
         }
 
         return static::query()->where('normalized_name', $normalized)->first();
+    }
+
+    /**
+     * Adiciona o valor mais recente de um indicador como coluna (`$alias`).
+     *
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
+     */
+    public function scopeWithIndicatorValue(Builder $query, StrategyIndicator $indicator, string $alias): Builder
+    {
+        return $query->addSelect([$alias => MunicipalityIndicator::query()
+            ->select('value')
+            ->whereColumn('municipality_id', 'municipalities.id')
+            ->where('indicator', $indicator)
+            ->orderByDesc('period')
+            ->limit(1),
+        ]);
     }
 
     /**
