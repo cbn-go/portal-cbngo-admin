@@ -20,4 +20,3 @@ final readonly class RegionalCoverageData
         public int $publishedSocialProjectsCount,
     ) {}
 }
-
