@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Church;
 use App\Models\Municipality;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -53,5 +54,9 @@ class MunicipalitySeeder extends Seeder
                 ]
             );
         }
+
+        // Roda a cada deploy: vincula igrejas cadastradas antes da base territorial
+        // (ou nunca salvas desde então). As que já têm município não mudam.
+        Church::linkToMunicipalities();
     }
 }
