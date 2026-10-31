@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
+use App\Filament\Strategy\Widgets\AgeGroupChartWidget;
+use App\Filament\Strategy\Widgets\StrategyKpisWidget;
 use App\Providers\Filament\Concerns\ConfiguresCbngoTheme;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -44,7 +46,15 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::GLOBAL_SEARCH_AFTER,
                 fn (): View => view('filament.components.view-site-link')
             )
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets');
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            // Widgets da Visão de Goiás: fora da descoberta para não irem ao Dashboard,
+            // mas precisam estar no Livewire, senão toda atualização volta 419.
+            // O Filament só lê os valores do array; as chaves do docblock não são usadas.
+            // @phpstan-ignore argument.type
+            ->livewireComponents([
+                StrategyKpisWidget::class,
+                AgeGroupChartWidget::class,
+            ]);
 
         return $this->applyCbngoConfiguration($panel);
     }

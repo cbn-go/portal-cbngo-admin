@@ -14,9 +14,9 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
  */
 class StrategyKpisWidget extends BaseWidget
 {
-    protected static bool $isDiscovered = false;
-
     protected static bool $isLazy = false;
+
+    protected static ?string $pollingInterval = null;
 
     protected function getStats(): array
     {
