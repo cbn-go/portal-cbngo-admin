@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Console;
 
+use App\Enums\UserRole;
 use App\Models\Church;
 use App\Models\Minister;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,6 +43,13 @@ class ImportOrmibanRolCommandTest extends TestCase
         $this->assertSame('PASTOR TESTE ALFA', $alfa->name);
         $this->assertSame('1975-05-15', $alfa->birth_date?->format('Y-m-d'));
         $this->assertSame($churchGyn->id, $alfa->church_id); // Vinculado à igreja
+        $this->assertNotNull($alfa->user_id);
+        $this->assertNotNull($alfa->user);
+        $this->assertSame(UserRole::MINISTER, $alfa->user->role);
+        $this->assertSame('11144477735', $alfa->user->cpf);
+        $this->assertTrue($alfa->user->must_set_password);
+        $this->assertTrue($alfa->user->is_active);
+        $this->assertSame('pastor.alfa@exemplo.com', $alfa->user->email);
         $this->assertCount(3, $alfa->familyMembers);
         $this->assertCount(2, $alfa->historyEvents);
         $this->assertNotNull($alfa->diplomaEvent());
@@ -62,6 +70,9 @@ class ImportOrmibanRolCommandTest extends TestCase
         $this->assertNotNull($gama);
         $this->assertSame('33366699957', $gama->cpf);
         $this->assertNull($gama->email);
+        $this->assertNotNull($gama->user);
+        $this->assertNull($gama->user->email);
+        $this->assertSame(UserRole::MINISTER, $gama->user->role);
         $this->assertCount(0, $gama->familyMembers);
         $this->assertCount(2, $gama->historyEvents);
     }

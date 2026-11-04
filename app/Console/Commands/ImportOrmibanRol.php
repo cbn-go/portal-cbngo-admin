@@ -2,9 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\UserRole;
 use App\Models\Church;
 use App\Models\Minister;
 use App\Models\Municipality;
+use App\Models\User;
+use App\Support\Cpf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -170,6 +173,34 @@ class ImportOrmibanRol extends Command
                 'church_id' => $churchId,
             ];
 
+            // Cria ou atualiza o usuário de acesso do ministro (#70)
+            /** @var User|null $user */
+            $user = User::query()->where('cpf', $cpf)->first();
+            if (! $user && ! empty($attributes['email'])) {
+                $user = User::query()->where('email', $attributes['email'])->first();
+            }
+
+            $userPayload = [
+                'name' => $attributes['name'],
+                'cpf' => $cpf,
+                'email' => $attributes['email'],
+                'role' => UserRole::MINISTER,
+                'is_active' => ($attributes['status'] === 'ATIVO(A)'),
+            ];
+
+            if (! $user) {
+                $userPayload['password'] = null;
+                $userPayload['must_set_password'] = true;
+                $user = User::create($userPayload);
+            } else {
+                if ($user->password === null) {
+                    $userPayload['must_set_password'] = true;
+                }
+                $user->update($userPayload);
+            }
+
+            $attributes['user_id'] = $user->id;
+
             /** @var Minister|null $minister */
             $minister = Minister::query()
                 ->where('cpf', $cpf)
@@ -248,17 +279,7 @@ class ImportOrmibanRol extends Command
      */
     protected function normalizeCpf(?string $cpf): ?string
     {
-        if (blank($cpf)) {
-            return null;
-        }
-
-        $digits = (string) preg_replace('/\D/', '', $cpf);
-
-        if ($digits === '') {
-            return null;
-        }
-
-        return str_pad($digits, 11, '0', STR_PAD_LEFT);
+        return Cpf::normalize($cpf);
     }
 
     /**
