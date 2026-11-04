@@ -19,12 +19,14 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property string $name
- * @property string $email
+ * @property string|null $email
+ * @property string|null $cpf
  * @property Carbon|null $email_verified_at
- * @property string $password
+ * @property string|null $password
  * @property UserRole $role
  * @property int|null $church_id
  * @property bool $is_active
+ * @property bool $must_set_password
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -42,10 +44,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     protected $fillable = [
         'name',
         'email',
+        'cpf',
         'password',
         'role',
         'church_id',
         'is_active',
+        'must_set_password',
     ];
 
     /**
@@ -71,6 +75,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             'role' => UserRole::class,
             'church_id' => 'integer',
             'is_active' => 'boolean',
+            'must_set_password' => 'boolean',
         ];
     }
 
@@ -136,13 +141,18 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return match ($panel->getId()) {
             'admin' => $this->hasAdminPanelAccess(),
             'portal' => $this->role->hasPortalPanelAccess(),
+            'ormiban' => $this->role->hasOrmibanPanelAccess(),
             default => false,
         };
     }
 
     public function getDefaultPanelUrl(): string
     {
-        $panelId = $this->role->hasAdminPanelAccess() ? 'admin' : 'portal';
+        $panelId = match (true) {
+            $this->role->hasAdminPanelAccess() => 'admin',
+            $this->role->isMinister() => 'ormiban',
+            default => 'portal',
+        };
 
         return url(filament()->getPanel($panelId)->getPath());
     }

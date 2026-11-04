@@ -28,11 +28,13 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'cpf' => null,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'role' => UserRole::CHURCH_REPRESENTATIVE,
             'church_id' => null,
             'is_active' => true,
+            'must_set_password' => false,
             'remember_token' => Str::random(10),
         ];
     }

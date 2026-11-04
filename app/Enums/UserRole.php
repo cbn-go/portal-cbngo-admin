@@ -11,6 +11,7 @@ enum UserRole: string implements HasColor, HasLabel
     case CONVENTION_EDITOR = 'convention_editor';
     case AUTHOR = 'author';
     case CHURCH_REPRESENTATIVE = 'church_representative';
+    case MINISTER = 'minister';
 
     public function getLabel(): string
     {
@@ -19,6 +20,7 @@ enum UserRole: string implements HasColor, HasLabel
             self::CONVENTION_EDITOR => 'Editor da Convenção',
             self::AUTHOR => 'Autor',
             self::CHURCH_REPRESENTATIVE => 'Representante de Igreja',
+            self::MINISTER => 'Ministro Ormiban',
         };
     }
 
@@ -29,6 +31,7 @@ enum UserRole: string implements HasColor, HasLabel
             self::CONVENTION_EDITOR => 'warning',
             self::AUTHOR => 'info',
             self::CHURCH_REPRESENTATIVE => 'success',
+            self::MINISTER => 'primary',
         };
     }
 
@@ -52,6 +55,11 @@ enum UserRole: string implements HasColor, HasLabel
         return $this === self::CHURCH_REPRESENTATIVE;
     }
 
+    public function isMinister(): bool
+    {
+        return $this === self::MINISTER;
+    }
+
     public function hasAdminPanelAccess(): bool
     {
         return in_array($this, [self::SUPER_ADMIN, self::CONVENTION_EDITOR], true);
@@ -60,5 +68,10 @@ enum UserRole: string implements HasColor, HasLabel
     public function hasPortalPanelAccess(): bool
     {
         return in_array($this, [self::SUPER_ADMIN, self::AUTHOR, self::CHURCH_REPRESENTATIVE], true);
+    }
+
+    public function hasOrmibanPanelAccess(): bool
+    {
+        return in_array($this, [self::SUPER_ADMIN, self::MINISTER], true);
     }
 }
