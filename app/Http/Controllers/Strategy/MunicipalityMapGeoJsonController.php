@@ -17,7 +17,7 @@ class MunicipalityMapGeoJsonController
     {
         $user = $request->user();
 
-        abort_unless($user !== null && $user->is_active && $user->role->hasAdminPanelAccess(), 403);
+        abort_unless($user !== null && $user->is_active && $user->role->canAccessStrategy(), 403);
         abort_unless($map->exists(), 404, 'Malha municipal ainda não sincronizada.');
 
         $response = new BinaryFileResponse($map->path(), 200, [

@@ -28,7 +28,7 @@ class MunicipalityPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->hasAdminPanelAccess();
+        return $user->role->canAccessStrategy();
     }
 
     /**
@@ -36,7 +36,7 @@ class MunicipalityPolicy
      */
     public function view(User $user, Municipality $municipality): bool
     {
-        return $user->role->hasAdminPanelAccess();
+        return $user->role->canAccessStrategy();
     }
 
     public function create(User $user): bool

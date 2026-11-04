@@ -74,4 +74,9 @@ enum UserRole: string implements HasColor, HasLabel
     {
         return in_array($this, [self::SUPER_ADMIN, self::MINISTER], true);
     }
+
+    public function canAccessStrategy(): bool
+    {
+        return in_array($this, [self::SUPER_ADMIN, self::CONVENTION_EDITOR, self::MINISTER], true);
+    }
 }
