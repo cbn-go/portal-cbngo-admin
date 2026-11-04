@@ -114,6 +114,14 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasMany(Notice::class);
     }
 
+    /**
+     * @return HasOne<Minister, $this>
+     */
+    public function minister(): HasOne
+    {
+        return $this->hasOne(Minister::class);
+    }
+
     public function hasAdminPanelAccess(): bool
     {
         return $this->is_active && $this->role->hasAdminPanelAccess();

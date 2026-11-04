@@ -1,0 +1,5000 @@
+{
+  "fonte": "FICHAS CADASTROS ATIVOS GO.pdf",
+  "total": 69,
+  "fichas": [
+    {
+      "pagina": 1,
+      "matricula": "3429",
+      "funcao": "Pastor",
+      "nome": "ADONIAS FERREIRA LEITE",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Betel - CBN-GO",
+      "endereco": "RUA BARTOLOMEU BUENO DA SILVA QD 04 LT, 8 CENTRO - TERESINA DE GOIAS - GO - BRA",
+      "cep": "73795-000",
+      "telefone": "(62) 3467-1250",
+      "email": "pradoniasfl@hotmail.com",
+      "outros_telefones": [
+        {
+          "tipo": "CELULAR",
+          "ddd": "62",
+          "numero": "9643-0333"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "494.265.759-87",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "BELO HORIZONTE MG",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "27/04/1959",
+        "profissao": null,
+        "identidade": "3029660-5",
+        "passaporte": null,
+        "orgao_emissor": "SSP/PR",
+        "data_emissao_ci": null,
+        "data_cadastro": "04/12/2007 10:10:23",
+        "ultima_alteracao": "27/09/2022 15:10:10"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ADRIANA DA COSTA TEIXEIRA LEITE",
+          "data_nascimento": "16/11/1964"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "ARIANA CASIMIRO NUNES",
+          "data_nascimento": "19/10/1983"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "RAIMUNDO FERREIRA LEITE"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA INOCENCIA LEITE"
+        }
+      ],
+      "historico": [
+        {
+          "data": "07/03/2003",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "03/09/2007",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 2,
+      "matricula": "5757",
+      "funcao": "Pastor",
+      "nome": "ALESSANDRO GONZAGA SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central de Anápolis - CBN-GO",
+      "endereco": "Rua 4, Quadra 4, Lote, 17 Condomínio Residencial Villa L - ANAPOLIS - GO - BRA",
+      "cep": "75073-134",
+      "telefone": "(62) 99341-5015",
+      "email": "alessandrosgonzaga@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "002.911.171-47",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ANAPOLIS GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "17/12/1984",
+        "profissao": "ADVOGADO(A)",
+        "identidade": "4363116",
+        "passaporte": null,
+        "orgao_emissor": "DGPC Data do Cadastro : 07/07/2025 13:38:24",
+        "data_emissao_ci": "17/09/1999",
+        "data_cadastro": "07/07/2025 13:38:24",
+        "ultima_alteracao": "08/07/2025 11:27:25"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "JORGE GONZAGA DA SILVA",
+          "data_nascimento": "21/06/1951"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "HELENICE MARIA PEREIRA SILVA",
+          "data_nascimento": "12/08/1957"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "DENISE CRISTINE DE PAULA GONZAGA",
+          "data_nascimento": "06/10/1990"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "BENJAMIN DE PAULA GONZAGA",
+          "data_nascimento": "06/02/2018"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "MELISSA DE PAULA GONZAGA",
+          "data_nascimento": "17/10/2019"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "LEVI DE PAULA GONZAGA",
+          "data_nascimento": "01/08/2025"
+        }
+      ],
+      "historico": [
+        {
+          "data": "07/06/2025",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "07/07/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 3,
+      "matricula": "4687",
+      "funcao": "Pastor",
+      "nome": "ANDRE LUIZ RODRIGUES DA SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Ide - CBN-GO",
+      "endereco": "RUA 05 QD 15 LT, 19 Vila Santos Dumont - MORRINHOS - GO - BRA",
+      "cep": "75650-000",
+      "telefone": "(64) 99224-8080",
+      "email": "pastorrochaibi@gmail.com",
+      "outros_telefones": [
+        {
+          "tipo": "RESIDENCIAL",
+          "ddd": "64",
+          "numero": "3413-2656"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "598.618.861-68",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "MORRINHOS GO",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "31/10/1972",
+        "profissao": "Não Consta",
+        "identidade": "26257",
+        "passaporte": null,
+        "orgao_emissor": "PM/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "24/06/2017 11:30:20",
+        "ultima_alteracao": "12/11/2025 11:01:06"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ELÊ DE SOUZA LOBO RODRIGUES",
+          "data_nascimento": "26/06/1966"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ANDRE LUIZ RODRIGUES DA SILVA JUNIOR",
+          "data_nascimento": "10/06/1992"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "PATRICK RODRIGUES LOBO",
+          "data_nascimento": "30/09/1995"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "EMANUEL RODRIGUES LOBO",
+          "data_nascimento": "26/03/1998"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ODETE PEREIRA DA SILVA MARTINS"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "GERALDO RODRIGUES MARTINS"
+        }
+      ],
+      "historico": [
+        {
+          "data": "23/05/2009",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "24/06/2017",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": [
+        {
+          "funcao_igreja": "VICE PRESIDENTE CONVENÇÃO BATISTA NACIONAL - GOIÁS",
+          "data_inicial": "01/10/2019",
+          "data_final": "30/09/2021"
+        }
+      ]
+    },
+    {
+      "pagina": 4,
+      "matricula": "5104",
+      "funcao": "Pastor",
+      "nome": "ANTONIO ALVES PEREIRA JUNIOR",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Elim - CBN-GO",
+      "endereco": "AVENIDA CONTORNO QD 02 LT, 10 SETOR AEROPORTO - PORANGATU - GO - BRA",
+      "cep": "76550-000",
+      "telefone": "(62) 98532-0987",
+      "email": "junior-bros@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "718.128.221-20",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "JANUARIA MG",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "27/10/1982",
+        "profissao": "Não Consta",
+        "identidade": "2093171",
+        "passaporte": null,
+        "orgao_emissor": "SSP/DF Data do Cadastro : 04/08/2020 17:52:08",
+        "data_emissao_ci": null,
+        "data_cadastro": "04/08/2020 17:52:08",
+        "ultima_alteracao": "25/09/2020 12:13:51"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARCILENE NUNES MAGALHAES",
+          "data_nascimento": "01/10/1990"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "MIGUEL MAGALHAES ALVES",
+          "data_nascimento": "17/05/2010"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ARTHUR MAGALHAES ALVES",
+          "data_nascimento": "21/05/2015"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "RAPHAEL MAGALHAES ALVES",
+          "data_nascimento": "23/09/2016"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "NEUZA DE FATIMA CHAVES PEREIRA"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "ANTONIO ALVES PEREIRA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "30/11/2011",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "03/11/2012",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "04/08/2020",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 5,
+      "matricula": "4551",
+      "funcao": "Pastor",
+      "nome": "ANTONIO ULISSES AZEREDO",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Central - CBN-GO",
+      "endereco": "RUA MAJOR ROCHA N, 778 VILA ROCHA - RIO VERDE - GO - BRA",
+      "cep": "75906-540",
+      "telefone": "(64) 99974-9092",
+      "email": "ibncrv@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "253.626.821-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "11/09/1962",
+        "profissao": null,
+        "identidade": "632127",
+        "passaporte": null,
+        "orgao_emissor": "SSP/DF",
+        "data_emissao_ci": null,
+        "data_cadastro": "27/06/2016 14:34:22",
+        "ultima_alteracao": "31/01/2024 11:56:10"
+      },
+      "familiares": [
+        {
+          "parentesco": "Filho",
+          "nome": "ROSENI ALVES FRAZAO AZEREDO",
+          "data_nascimento": "26/02/1960"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "DANIELLA FRAZAO AZEREDO",
+          "data_nascimento": "12/06/1992"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "CAMILLA FRAZAO AZEREDO",
+          "data_nascimento": "27/04/1994"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ALICE BUENO DE AZEREDO"
+        }
+      ],
+      "historico": [
+        {
+          "data": "18/02/2006",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "17/11/2007",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "27/06/2016",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 6,
+      "matricula": "2817",
+      "funcao": "Pastor",
+      "nome": "CRISTIANO PEREIRA SOUSA RESENDE",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Lírio dos Vales - CBN-GO",
+      "endereco": "RUA 301 QD 166 LT, 16 SETOR NORTE FERROVIA - GOIANIA - GO - BRA",
+      "cep": "74063-380",
+      "telefone": "(62) 3225-2255",
+      "email": "cristianores2010@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "813.247.071-00",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "03/11/1976",
+        "profissao": null,
+        "identidade": "3356027",
+        "passaporte": null,
+        "orgao_emissor": "DGPC/GO Data do Cadastro : 12/09/2005 10:40:33",
+        "data_emissao_ci": null,
+        "data_cadastro": "12/09/2005 10:40:33",
+        "ultima_alteracao": "11/04/2024 14:31:41"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ELISANGELA TAVARES DE OLIVEIRA RESENDE",
+          "data_nascimento": "02/09/1975"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "DAVI OLIVEIRA RESENDE",
+          "data_nascimento": "28/02/2005"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "PAULO CESAR RODRIGUES RESENDE"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "IRANY DE SOUZA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "31/12/2001",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "06/11/2004",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": [
+        {
+          "funcao_igreja": "PRESIDENTE Igreja Batista da Restauração",
+          "data_inicial": "08/03/2017",
+          "data_final": null
+        }
+      ]
+    },
+    {
+      "pagina": 7,
+      "matricula": "5715",
+      "funcao": "Pastor",
+      "nome": "DEJANE NASCIMENTO SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "CONVENÇÃO BATISTA NACIONAL - GOIÁS - CBN-GO",
+      "endereco": "RUA TIBURCIO PEREIRA COUTINHO, QD 16, LT 4 SETOR RODOVIARIO - TRÊS RANCHOS - GO -",
+      "cep": "75720-000",
+      "telefone": "(62) 99492-5114",
+      "email": "nascimentodejone613@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "853.472.132-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "RONDON DO PARÁ PA",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "18/11/1982",
+        "profissao": "Não Consta",
+        "identidade": "4197033",
+        "passaporte": null,
+        "orgao_emissor": "SSP/PA Data do Cadastro : 26/02/2025 11:56:28",
+        "data_emissao_ci": "22/04/1999",
+        "data_cadastro": "26/02/2025 11:56:28",
+        "ultima_alteracao": "02/12/2025 12:12:51"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "ANTONIO GOMES DA SILVA",
+          "data_nascimento": "16/05/1947"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "TEREZINHA NASCIMENTO SILVA",
+          "data_nascimento": "15/05/1952"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "VALDIRENE QUARESMA SANTOS",
+          "data_nascimento": "24/04/1979"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "DANIEL QUARESMA SILVA",
+          "data_nascimento": "24/03/2011"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "LEVI QUARESMA SILVA",
+          "data_nascimento": "14/05/2014"
+        }
+      ],
+      "historico": [
+        {
+          "data": "14/12/2024",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "26/02/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 8,
+      "matricula": "5502",
+      "funcao": "Pastor",
+      "nome": "DELANO DE JESUS SILVA SANTOS",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista do Evangelho Vivo - CBN-GO",
+      "endereco": "Rua S 2, QD S8, LT 17 E 18, 289 SETOR BELA VISTA - GOIANIA - GO - BRA",
+      "cep": "74823-430",
+      "telefone": "(62) 99664-9305",
+      "email": "delanojssantos@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "324.479.492-00",
+        "nacionalidade": null,
+        "naturalidade": "Itaituba PA",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "25/12/1972",
+        "profissao": "Não Consta",
+        "identidade": "11975941",
+        "passaporte": null,
+        "orgao_emissor": "SSP/MG Data do Cadastro : 28/08/2023 15:12:33",
+        "data_emissao_ci": "05/11/2001",
+        "data_cadastro": "28/08/2023 15:12:33",
+        "ultima_alteracao": "02/12/2025 12:00:46"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ZENIZE DA CRUZ SANTOS",
+          "data_nascimento": "20/11/1972"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "DEBORAH RHEESA SANTOS",
+          "data_nascimento": "29/01/1998"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "DANIEL JOSH SANTOS",
+          "data_nascimento": "12/06/2002"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "EUCLIDES MARQUES DOS SANTOS"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ADONAIDE SILVA LIMA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "15/04/2023",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "28/08/2023",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 9,
+      "matricula": "2816",
+      "funcao": "Pastor",
+      "nome": "DEUSIMAR PEREIRA DO AMARAL",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional da Paz - CBN-GO",
+      "endereco": "RUA WALDEMAR G. DE MENESES QD 21 LT, 9 CENTRO - GUAPO - GO - BRA",
+      "cep": "75350-000",
+      "telefone": "(62) 99870-0089",
+      "email": "deusimar_amaral@yahoo.com.br",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "414.930.951-53",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ANICUS GO",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "25/05/1967",
+        "profissao": null,
+        "identidade": "1703396",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 12/09/2005 10:26:42",
+        "data_emissao_ci": null,
+        "data_cadastro": "12/09/2005 10:26:42",
+        "ultima_alteracao": "30/04/2026 16:09:00"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "SUELY SILVA LEITE AMARAL",
+          "data_nascimento": "12/02/1967"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "BRENO AMARAL LEITE",
+          "data_nascimento": "16/05/1991"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "BRUNA LIZ DO AMARAL LEITE",
+          "data_nascimento": "27/05/1995"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "NORALDINO LINO DO AMARAL"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA DAS DORES PEREIRA DO AMARAL"
+        }
+      ],
+      "historico": [
+        {
+          "data": "15/05/2004",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "10/12/2005",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 10,
+      "matricula": "5199",
+      "funcao": "Pastor",
+      "nome": "DIORANDE PERES ALVES",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Corpo Vivo de Cristo - CBN-GO",
+      "endereco": "ENDEREÇO INSUFICIENTE, 102 JARDIM PRESIDENTE - RIO VERDE - GO - BRA",
+      "cep": "75908-430",
+      "telefone": "(64) 98427-4685",
+      "email": "dioranderv@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "779.614.551-91",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "MINEIROS GO",
+        "grau_instrucao": "PÓS-GRADUADO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "01/07/1972",
+        "profissao": "Não Consta",
+        "identidade": "2216016",
+        "passaporte": null,
+        "orgao_emissor": "Data do Cadastro : 22/11/2021 12:16:39",
+        "data_emissao_ci": null,
+        "data_cadastro": "22/11/2021 12:16:39",
+        "ultima_alteracao": "01/03/2023 10:02:08"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARTA DA S. SOUZA PERES",
+          "data_nascimento": "04/02/1972"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "DANIEL SOUZA PERES",
+          "data_nascimento": "20/08/1999"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "SAMUEL SOUZA PERES",
+          "data_nascimento": "28/03/2003"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "ORLANDO ALVES DE SOUZA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ORLANDINA PERES ALVES"
+        }
+      ],
+      "historico": [
+        {
+          "data": "18/09/2021",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "22/11/2021",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 11,
+      "matricula": "3234",
+      "funcao": "Pastor",
+      "nome": "DJOCI NOGUEIRA DA SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Ebenézer - CBN-GO",
+      "endereco": "RUA 14 N, 71 SETOR CENTRAL - PORANGATU - GO - BRA",
+      "cep": "76550-000",
+      "telefone": "(62) 9109-3837",
+      "email": "prdjoci@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "343.926.453-04",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "PASSAGEM FRANCA MA",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "20/01/1970",
+        "profissao": null,
+        "identidade": "21272892002-4",
+        "passaporte": null,
+        "orgao_emissor": "SSP/MA Data do Cadastro : 14/12/2006 15:03:45",
+        "data_emissao_ci": null,
+        "data_cadastro": "14/12/2006 15:03:45",
+        "ultima_alteracao": "09/10/2025 09:57:34"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ANTONIA EDNA SILVA NOGUEIRA",
+          "data_nascimento": "12/01/1972"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "DALETE SILVA NOGUEIRA",
+          "data_nascimento": "01/03/1994"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "SARA SILVA NOGUEIRA",
+          "data_nascimento": "07/07/1995"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "DANIEL SILVA NOGUEIRA",
+          "data_nascimento": "27/08/1999"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "RITA FERREIRA DA SILVA"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "SEBASTIÃO NOGUEIRA DE ARAÚJO"
+        }
+      ],
+      "historico": [
+        {
+          "data": "05/08/1994",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "17/03/1999",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "13/01/2001",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "30/04/2011",
+          "codigo": "0",
+          "descricao": "MEMBRESIA"
+        },
+        {
+          "data": "27/11/2014",
+          "codigo": "14",
+          "descricao": "DESLIGADO"
+        },
+        {
+          "data": "04/08/2016",
+          "codigo": "10",
+          "descricao": "RECEBIDO POR TRANSFERÊNCIA"
+        },
+        {
+          "data": "27/11/2016",
+          "codigo": "12",
+          "descricao": "ISENTO ESPECIAL POR RENDA"
+        },
+        {
+          "data": "13/02/2019",
+          "codigo": "12",
+          "descricao": "ISENTO ESPECIAL POR RENDA"
+        },
+        {
+          "data": "21/10/2025",
+          "codigo": "12",
+          "descricao": "ISENTO ESPECIAL POR RENDA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 12,
+      "matricula": "873",
+      "funcao": "Pastor",
+      "nome": "EDER JOSE DE MELO SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Campos do Jordão - CBN-GO",
+      "endereco": "RUA 03 Nº 264 QD 14 LOTE, 11 SETOR MORAIS - GOIANIA - GO - BRA",
+      "cep": "74620-385",
+      "telefone": "(62) 3202-5151",
+      "email": "edermelo07@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "354.984.551-00",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "07/04/1965",
+        "profissao": null,
+        "identidade": "1557862",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "07/09/2022 22:03:30"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "OTILIO FLORISBELO DA SILVA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "VICENCIA CANDIDA MELO SILVA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "LUCY NEIDE DE FREITAS MELO",
+          "data_nascimento": "29/05/1962"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "EDER DAVID DE FREITAS MELO",
+          "data_nascimento": "23/08/1985"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "FRANCIELLY DE FREITAS MELO",
+          "data_nascimento": "10/03/1987"
+        }
+      ],
+      "historico": [
+        {
+          "data": "07/12/1987",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "13/08/1988",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 13,
+      "matricula": "2893",
+      "funcao": "Pastor",
+      "nome": "EDILSON DE PAIVA CORREA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Aliança - CBN-GO",
+      "endereco": "Rua Dom Emanuel, Chácara 49, 7 - Resid. Dom Afonso, Bl. Da2, Apto 402 MARACANÃ - ANAPOLIS -",
+      "cep": "75040-440",
+      "telefone": "(62) 99323-8786",
+      "email": "edilsondepaivacorrea@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "166.603.581-53",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ARAGUARI MG",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "01/05/1959",
+        "profissao": null,
+        "identidade": "949994",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 20/12/2005 10:06:27",
+        "data_emissao_ci": null,
+        "data_cadastro": "20/12/2005 10:06:27",
+        "ultima_alteracao": "31/01/2024 11:15:51"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "HELENA ABADIA MARTINS CORREA",
+          "data_nascimento": "15/05/1952"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ROBSON MARTINS CORREA",
+          "data_nascimento": "16/12/1978"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "RUBIAN PAIVA MARTINS CORREA",
+          "data_nascimento": "19/05/1980"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "ROBERTA MARTINS CORREA",
+          "data_nascimento": "08/09/1982"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ABADIA DE PAIVA CORREA"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "ODILIO DEOLINO VORREA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "13/02/2001",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "12/12/2002",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "10/02/2017",
+          "codigo": "7",
+          "descricao": "AUSÊNCIA NÃO JUSTIFICADA"
+        },
+        {
+          "data": "05/01/2022",
+          "codigo": "3",
+          "descricao": "REINTEGRAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 14,
+      "matricula": "4276",
+      "funcao": "Pastor",
+      "nome": "EDIMAR JOSE PIRES",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central de Anápolis - CBN-GO",
+      "endereco": "Avenida Universitária, 1257 - Apto 1205 A Vila Santa Isabel - ANAPOLIS - GO - BRA",
+      "cep": "75083-350",
+      "telefone": "(12) 99125-7210",
+      "email": "predpires@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "355.015.961-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "RUBIATABA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "22/05/1965",
+        "profissao": null,
+        "identidade": "27949264-4",
+        "passaporte": null,
+        "orgao_emissor": "SSP/SP Data do Cadastro : 16/09/2014 11:42:59",
+        "data_emissao_ci": "04/11/2004",
+        "data_cadastro": "16/09/2014 11:42:59",
+        "ultima_alteracao": "09/04/2025 09:39:06"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "INACIO PIRES DE MORAES",
+          "data_nascimento": "04/09/1944"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "SEBASTIANA ROSA DE MORAES",
+          "data_nascimento": "11/04/1949"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "CRISTIANE NASCIMENTO DA SILVA MARQUES",
+          "data_nascimento": "13/10/1982"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "BRUNO PIRES",
+          "data_nascimento": "24/09/1986"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "ISABELLE PELLICCIONE PIRES",
+          "data_nascimento": "17/09/1997"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "SAMARA PELLICCIONE PIRES",
+          "data_nascimento": "28/11/2005"
+        }
+      ],
+      "historico": [
+        {
+          "data": "17/11/2001",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "22/02/2014",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        },
+        {
+          "data": "16/09/2014",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        },
+        {
+          "data": "20/01/2022",
+          "codigo": "12",
+          "descricao": "ISENTO ESPECIAL POR RENDA"
+        },
+        {
+          "data": "29/01/2025",
+          "codigo": "20",
+          "descricao": "TRANSFERÊNCIA (EM TRÂNSITO)"
+        },
+        {
+          "data": "22/02/2025",
+          "codigo": "10",
+          "descricao": "RECEBIDO POR TRANSFERÊNCIA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 15,
+      "matricula": "3417",
+      "funcao": "Pastor",
+      "nome": "EDIVALDO PEREIRA ALVES",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Congregação Batista Nacional Renovada Deus Triuno (I B Deus Triuno) - CBN-GO",
+      "endereco": "Rua H 72, Quadra 215, Lote 33 Cidade Vera Cruz - APARECIDA DE GOIANIA - GO - BRA",
+      "cep": "74936-230",
+      "telefone": "(93) 9184-8090",
+      "email": null,
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "021.353.882-20",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "BELEM PA",
+        "grau_instrucao": null,
+        "estado_civil": "Viúvo(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "26/12/1946",
+        "profissao": null,
+        "identidade": "115909",
+        "passaporte": null,
+        "orgao_emissor": "SSP/PA",
+        "data_emissao_ci": null,
+        "data_cadastro": "11/10/2007 13:31:19",
+        "ultima_alteracao": "17/06/2024 14:00:42"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "JOAO ALVES"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "ELAINE DAS VIRGENS ALVES"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ELIAS PEREIRA ALVES"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "HEBER PEREIRA ALVES"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "EDNALDO PEREIRA ALVES"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "EDIVALDO PEREIRA ALVES JUNIOR"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "BILIZIDA PEREIRA ALVES"
+        }
+      ],
+      "historico": [
+        {
+          "data": "21/09/2007",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "20/11/2008",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "06/03/2024",
+          "codigo": "20",
+          "descricao": "TRANSFERÊNCIA (EM TRÂNSITO)"
+        },
+        {
+          "data": "02/04/2024",
+          "codigo": "10",
+          "descricao": "RECEBIDO POR TRANSFERÊNCIA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 16,
+      "matricula": "2571",
+      "funcao": "Pastor",
+      "nome": "FABIANO ANTONIO PINTO",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional - CBN-GO",
+      "endereco": "AV. TOCANTINS, 1184 - APTO 301, ED. IZABEL SETOR AEROPORTO - GOIANIA - GO - BRA",
+      "cep": "74075-100",
+      "telefone": "(62) 98128-6585",
+      "email": "prfabpinto@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "545.199.261-49",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "UMUARAMA PR",
+        "grau_instrucao": "Segundo Grau",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "03/01/1974",
+        "profissao": null,
+        "identidade": "257575",
+        "passaporte": null,
+        "orgao_emissor": "SSP/RO Data do Cadastro : 23/09/2004 10:07:00",
+        "data_emissao_ci": null,
+        "data_cadastro": "23/09/2004 10:07:00",
+        "ultima_alteracao": "19/12/2024 12:15:40"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "CÁSSIA NEMÉSIO PINTO",
+          "data_nascimento": "15/07/1976"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "FABIANA NEMESIO PINTO",
+          "data_nascimento": "19/10/1999"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "GRABRIEL NEMESIO PINTO",
+          "data_nascimento": "15/02/2005"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "ANTÔNIO PINTO"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ROSA MARIA RODRIGUES PINTO"
+        }
+      ],
+      "historico": [
+        {
+          "data": "21/09/2002",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "28/11/2015",
+          "codigo": "18",
+          "descricao": "DESCONTO OU ANISTIA DE DÉBITOS"
+        },
+        {
+          "data": "22/02/2016",
+          "codigo": "10",
+          "descricao": "RECEBIDO POR TRANSFERÊNCIA"
+        },
+        {
+          "data": "27/02/2016",
+          "codigo": "0",
+          "descricao": "MEMBRESIA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 17,
+      "matricula": "5714",
+      "funcao": "Pastor",
+      "nome": "FABIO TEIXEIRA DOS SANTOS",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Renovada- Anapolis - CBN-GO",
+      "endereco": "Rua 3 Qd 3, 31 VILA UNIÃO - ANAPOLIS - GO - BRA",
+      "cep": "75136-015",
+      "telefone": "(62) 99229-7234",
+      "email": "biowfim@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "710.391.121-53",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "LUZIÂNIA GO",
+        "grau_instrucao": "MESTRADO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "08/12/1981",
+        "profissao": "PROFESSOR(A)",
+        "identidade": "1833294",
+        "passaporte": null,
+        "orgao_emissor": "SSP/DF Data do Cadastro : 25/02/2025 16:49:02",
+        "data_emissao_ci": "30/01/1996",
+        "data_cadastro": "25/02/2025 16:49:02",
+        "ultima_alteracao": "20/04/2026 08:13:52"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "ADELINO PEREIRA DOS SANTOS",
+          "data_nascimento": "26/08/1949"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARGARIDA TEXEIRA DOS SANTOS",
+          "data_nascimento": "18/05/1953"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "RUTE CLEIA FERREIRA DOS SANTOS",
+          "data_nascimento": "28/07/1983"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "PEDRO FERREIRA DOS SANTOS",
+          "data_nascimento": "07/06/2013"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "CALEBE FERREIRA DOS SANTOS",
+          "data_nascimento": "25/11/2018"
+        }
+      ],
+      "historico": [
+        {
+          "data": "23/11/2024",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "25/02/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 18,
+      "matricula": "4790",
+      "funcao": "Pastor",
+      "nome": "FLAVIO MINEIRO DO AMARAL",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Shamah Itaberaí - CBN-MT",
+      "endereco": "Av. Dom Jose de Mascarenhas, 118 - QD 46, LT 10 VILA PROGRESSO - ITABERAI - GO - BRA",
+      "cep": "76630-000",
+      "telefone": "(62) 98504-0600",
+      "email": "pastorflavio@ibninhumas.com.br",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "802.450.561-49",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ITABERAI GO",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "15/05/1977",
+        "profissao": "Não Consta",
+        "identidade": "3681581",
+        "passaporte": null,
+        "orgao_emissor": "DGPC/GO Data do Cadastro : 07/02/2018 19:14:08",
+        "data_emissao_ci": "08/10/1994",
+        "data_cadastro": "07/02/2018 19:14:08",
+        "ultima_alteracao": "15/04/2026 09:29:16"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "IRACILENE ALVES RODRIGUES DO AMARAL",
+          "data_nascimento": "02/12/1977"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "FLAVIO MINEIRO DO AMARAL FILHO",
+          "data_nascimento": "29/08/1998"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "VICTOR ALVES RODRIGUES AMARAL",
+          "data_nascimento": "10/08/2002"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "KAROLYNE VITORIA ALVES AMARAL",
+          "data_nascimento": "13/11/2008"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA DAS GRAÇAS DO AMARAL"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "SEBASTIAO BUENO DO AMARAL"
+        }
+      ],
+      "historico": [
+        {
+          "data": "14/09/2012",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "19/07/2017",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "07/02/2018",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        },
+        {
+          "data": "02/12/2025",
+          "codigo": "20",
+          "descricao": "TRANSFERÊNCIA (EM TRÂNSITO)"
+        },
+        {
+          "data": "28/02/2026",
+          "codigo": "10",
+          "descricao": "RECEBIDO POR TRANSFERÊNCIA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 19,
+      "matricula": "4538",
+      "funcao": "Pastor",
+      "nome": "FRANK AUGUSTO MARQUES",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Ebenézer - CBN-GO",
+      "endereco": "RUA B, 51 VILA FORMOSA - ANAPOLIS - GO - BRA",
+      "cep": "75100-030",
+      "telefone": "(62) 9137-0563",
+      "email": null,
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "538.836.081-49",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "25/08/1970",
+        "profissao": null,
+        "identidade": "5067475",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 10/05/2016 11:03:13",
+        "data_emissao_ci": "13/06/2012",
+        "data_cadastro": "10/05/2016 11:03:13",
+        "ultima_alteracao": "31/01/2024 15:53:51"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ROBILENE MARQUES DE OLIVEIRA",
+          "data_nascimento": "25/10/1975"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "CINTIA DA PAZ MARQUES",
+          "data_nascimento": "13/03/1988"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "ESTHER FRANCIELE MARQUES DE OLIVEIRA",
+          "data_nascimento": "17/05/2011"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "JAIR PEREIRA MARQUES"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ZELIA ANGELICA DUARTE MARQUES"
+        }
+      ],
+      "historico": [
+        {
+          "data": "27/03/2011",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "19/12/2015",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "10/05/2016",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 20,
+      "matricula": "5591",
+      "funcao": "Missionário",
+      "nome": "IRON FERNANDES DA SILVA JUNIOR",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "CONVENÇÃO BATISTA NACIONAL - GOIÁS - CBN-GO",
+      "endereco": "Avenida Independência, 912 Setor Leste Vila Nova - GOIANIA - GO - BRA",
+      "cep": "74645-010",
+      "telefone": "(62) 98142-0582",
+      "email": "ironfernandesjunior@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "001.307.271-48",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "14/03/1987",
+        "profissao": "Não Consta",
+        "identidade": "4572427",
+        "passaporte": null,
+        "orgao_emissor": "DGPC/GO Data do Cadastro : 18/04/2024 19:25:07",
+        "data_emissao_ci": null,
+        "data_cadastro": "18/04/2024 19:25:07",
+        "ultima_alteracao": "14/05/2024 16:04:51"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "CAROLINA RAMOS DE OLIVEIRA FERNANDES",
+          "data_nascimento": "05/08/1987"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "MARIAH RAMOS DE OLIVEIRA MOURA FERNANDES",
+          "data_nascimento": "14/06/2017"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "IRON FERNANDES DA SILVA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "VANILDES APOLINARIA DE MOURA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "29/01/2022",
+          "codigo": "15",
+          "descricao": "CONSAGRAÇÃO"
+        },
+        {
+          "data": "18/04/2024",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 21,
+      "matricula": "3430",
+      "funcao": "Pastor",
+      "nome": "JACOB RUBENS MAIA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central - CBN-GO",
+      "endereco": "RUA 6 QD \"W\" LT 07 A, 7 SETOR PALMARES - MONTE ALEGRE DE GOIAS - GO - BRA",
+      "cep": "73830-000",
+      "telefone": "(62) 3457-1270",
+      "email": "jacobrubens@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "799.058.201-59",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ITAÚ. RN",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "31/12/1977",
+        "profissao": null,
+        "identidade": "3274270",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 04/12/2007 10:45:39",
+        "data_emissao_ci": null,
+        "data_cadastro": "04/12/2007 10:45:39",
+        "ultima_alteracao": "21/12/2017 16:18:21"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARIA APARECIDA DA SILVA MAIA",
+          "data_nascimento": "19/06/1971"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "GIOVANNA LETICIA SILVA MAIA",
+          "data_nascimento": "12/11/2002"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "ANTONIO PAULINO FILHO"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA AZENETH MAIA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "21/05/2005",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "03/09/2007",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 22,
+      "matricula": "4705",
+      "funcao": "Pastor",
+      "nome": "JAMIL APARECIDO VIEIRA DA SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Ide - CBN-GO",
+      "endereco": "Rua MV, 2 - Q 18 LT 18 MONTE VERDE - MORRINHOS - GO - BRA",
+      "cep": "75650-000",
+      "telefone": "(64) 99241-5353",
+      "email": "carajoia@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "418.866.231-04",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "MORRINHOS GO",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "05/10/1964",
+        "profissao": "Não Consta",
+        "identidade": "1774036",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 16/08/2017 16:29:27",
+        "data_emissao_ci": "17/10/1985",
+        "data_cadastro": "16/08/2017 16:29:27",
+        "ultima_alteracao": "07/10/2025 11:55:20"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ROSIMERE MARCELINO DE PAULA VIEIRA",
+          "data_nascimento": "11/03/1965"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "JAMILLY VITORIA DE PAULA VIEIRA",
+          "data_nascimento": "01/07/2003"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "JUVERCINO VIEIRA DA SILVA"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "SHIRLEY APARECIDA VIEIRA SILVA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARCIANA ROSA AMADOR"
+        }
+      ],
+      "historico": [
+        {
+          "data": "26/03/2009",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "11/02/2017",
+          "codigo": "0",
+          "descricao": "MEMBRESIA"
+        },
+        {
+          "data": "16/08/2017",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        },
+        {
+          "data": "15/12/2017",
+          "codigo": "12",
+          "descricao": "ISENTO ESPECIAL POR RENDA"
+        },
+        {
+          "data": "30/04/2024",
+          "codigo": "12",
+          "descricao": "ISENTO ESPECIAL POR RENDA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 23,
+      "matricula": "2387",
+      "funcao": "Pastor",
+      "nome": "JANIO VALADARES DA SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Renovada- Anapolis - CBN-GO",
+      "endereco": "RUA CERQUEIRA LEITE, 23 - QUADRA 18 VILA BRASIL - ANAPOLIS - GO - BRA",
+      "cep": "75140-500",
+      "telefone": "(62) 99253-6416",
+      "email": "silvavaladares@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "402.927.701-20",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ANAPOLIS GO",
+        "grau_instrucao": "PÓS-GRADUADO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "11/01/1968",
+        "profissao": "ECONOMIÁRIO",
+        "identidade": "2225887",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 19/01/2004",
+        "data_emissao_ci": null,
+        "data_cadastro": "19/01/2004",
+        "ultima_alteracao": "12/01/2022 16:30:10"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "BENEDITO VALADARES SILVA",
+          "data_nascimento": "30/12/1899"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA ANTÔNIA DE MELO SILVA",
+          "data_nascimento": "30/12/1899"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "IDINAIR MARIA DE CARVALHO VALADARES",
+          "data_nascimento": "24/07/1965"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "THIAGO SAMUEL VALADARES",
+          "data_nascimento": "13/10/1988"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "JESSICA CARVALHO VALADARES",
+          "data_nascimento": "09/06/1993"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "REBECA CARVALHO VALADARES",
+          "data_nascimento": "20/01/1999"
+        }
+      ],
+      "historico": [
+        {
+          "data": "30/08/2003",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 24,
+      "matricula": "5200",
+      "funcao": "Pastor",
+      "nome": "JESSE CLAUDIO DE OLIVEIRA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Central - CBN-GO",
+      "endereco": "ENDEREÇO INSUFICIENTE, 56 RESIDENCIAL GAMELEIRA - RIO VERDE - GO - BRA",
+      "cep": "75906-830",
+      "telefone": "(64) 98132-4272",
+      "email": "jesseoliveiram2@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "009.904.119-74",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "APUCARANA PR",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "16/05/1989",
+        "profissao": "CIRURGIÃO DENTISTA",
+        "identidade": "7505460",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 22/11/2021 12:39:06",
+        "data_emissao_ci": "09/07/2019",
+        "data_cadastro": "22/11/2021 12:39:06",
+        "ultima_alteracao": "31/01/2024 11:56:25"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "SEBASTIAO PRESCILIANO DE OLIVEIRA",
+          "data_nascimento": "18/12/1945"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "LENIRA RODRIGUES DE OLIVEIRA",
+          "data_nascimento": "02/10/1953"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "RAFAELA FERREIRA SILVA",
+          "data_nascimento": "05/09/1995"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "MARIANA SOUZA OLIVEIRA",
+          "data_nascimento": "08/04/2012"
+        }
+      ],
+      "historico": [
+        {
+          "data": "28/07/2021",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "22/11/2021",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 25,
+      "matricula": "1202",
+      "funcao": "Pastor",
+      "nome": "JESUS APARECIDO DOS SANTOS SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central de Anápolis - CBN-GO",
+      "endereco": "RUA DONA ADA CENTINE, 658 MARACANA1 - ANAPOLIS - GO - BRA",
+      "cep": "75040-050",
+      "telefone": "(62) 99263-2858",
+      "email": "jesusaparecido@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "331.945.301-78",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "SÃO GERALDO",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "10/05/1964",
+        "profissao": null,
+        "identidade": "1697957",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "15/09/2022 09:30:59"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "JOAO DA SILVA SOBRINHO",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA TEREZINHA DOS SANTOS",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARCIA HARUMI KUDO",
+          "data_nascimento": "29/07/1963"
+        }
+      ],
+      "historico": [
+        {
+          "data": "17/12/1988",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "26/05/1995",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 26,
+      "matricula": "3286",
+      "funcao": "Pastor",
+      "nome": "JOAO JOSE BRAGA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Ebenézer - CBN-GO",
+      "endereco": "RUA 43 N, 396 SETOR SANTA LUZIA - GOIANESIA - GO - BRA",
+      "cep": "76380-000",
+      "telefone": "(62) 8411-6171",
+      "email": "prjoaobraga@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "566.093.701-25",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "BELA VISTA DE GOIAS GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "31/07/1970",
+        "profissao": null,
+        "identidade": "2868437",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 22/03/2007 10:14:51",
+        "data_emissao_ci": null,
+        "data_cadastro": "22/03/2007 10:14:51",
+        "ultima_alteracao": "02/12/2025 11:22:10"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARILDA DIAS DE FREITAS BRAGA",
+          "data_nascimento": "09/04/1972"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "PEDRO DIVINO BRAGA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA BATISTA BRAGA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "09/12/1995",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "22/03/1996",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "06/05/2014",
+          "codigo": "12",
+          "descricao": "ISENTO ESPECIAL POR RENDA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 27,
+      "matricula": "3878",
+      "funcao": "Pastor",
+      "nome": "JOAO PAULO SOARES AMORIM",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Congregação Igreja Batista Nacional Filadélfia - CBN-GO",
+      "endereco": "RUA ARUCARA, QUADRA 18, LOTE, 20 JARDIM CALIFORNIA - GOIANIA - GO - BRA",
+      "cep": "74735-190",
+      "telefone": "(62) 99674-1607",
+      "email": "paulinhoamorim6@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "961.913.411-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "24/06/1983",
+        "profissao": null,
+        "identidade": "4141922-2",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 28/07/2011 12:18:39",
+        "data_emissao_ci": null,
+        "data_cadastro": "28/07/2011 12:18:39",
+        "ultima_alteracao": "07/09/2022 22:12:22"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MAYANNA DE SOUSA SODRIGUES SOARES",
+          "data_nascimento": "25/08/1990"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "LUCAS IAN DE SOUSA SOARES",
+          "data_nascimento": "09/03/2019"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "WALTERLOT ARRUDA SOARES"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ELVIMAR PEREIRA AMORIM"
+        }
+      ],
+      "historico": [
+        {
+          "data": "05/12/2008",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "28/07/2011",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        },
+        {
+          "data": "22/05/2019",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 28,
+      "matricula": "479",
+      "funcao": "Pastor",
+      "nome": "JOSE CARLOS GOMIDE PEZZOTTI",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "CONVENÇÃO BATISTA NACIONAL - GOIÁS - CBN-GO",
+      "endereco": "RUA MANIHARA, 686 A PROVIDENCIA - BELO HORIZONTE - MG - BRA",
+      "cep": "31814-020",
+      "telefone": "(31) 3564-2682",
+      "email": "jcpezzotti@hotmail.com",
+      "outros_telefones": [
+        {
+          "tipo": "CELULAR",
+          "ddd": "31",
+          "numero": "8515-0140"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "109.259.706-97",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "Não Declarada ND",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "19/04/1946",
+        "profissao": null,
+        "identidade": "1564064",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "08/10/2025 10:30:53"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "JOSE PEZZOTTI",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA GOMIDE PEZZOTTI",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ROSALETE XAVIER PEZZOTTI",
+          "data_nascimento": "09/09/1946"
+        }
+      ],
+      "historico": [
+        {
+          "data": "30/11/1972",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "15/03/1973",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "23/07/2024",
+          "codigo": "20",
+          "descricao": "TRANSFERÊNCIA (EM TRÂNSITO)"
+        },
+        {
+          "data": "31/08/2024",
+          "codigo": "10",
+          "descricao": "RECEBIDO POR TRANSFERÊNCIA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 29,
+      "matricula": "4993",
+      "funcao": "Pastor",
+      "nome": "JOSE EDELSON TAVARES",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Ebenézer - CBN-GO",
+      "endereco": "Rua Maracanã QUADRA 54, 14 COLINA PARK RESIDENCIAL - GOIANESIA - GO - BRA",
+      "cep": "76383-371",
+      "telefone": "(62) 98577-3452",
+      "email": "joseedelson@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "798.810.921-91",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "Não Declarada GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "24/06/1972",
+        "profissao": "Não Consta",
+        "identidade": "2021288",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 21/10/2019 10:35:37",
+        "data_emissao_ci": "02/10/2018",
+        "data_cadastro": "21/10/2019 10:35:37",
+        "ultima_alteracao": "02/12/2025 11:23:06"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "SANDRA LIMA PAIVA TAVARES",
+          "data_nascimento": "10/12/1966"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "SABRINA LIMA PAIVA COSTA",
+          "data_nascimento": "22/10/1996"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "VITOR LUIZ TAVARES"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "JULIETA MARIA TAVARES"
+        }
+      ],
+      "historico": [
+        {
+          "data": "26/09/2017",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "29/06/2019",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "21/10/2019",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 30,
+      "matricula": "4561",
+      "funcao": "Pastor",
+      "nome": "JOSE LUIZ MARQUES",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional da Paz - CBN-GO",
+      "endereco": "RUA EDEIA COM AVENIDA PARA QD. 06 LOTE 01 N, 83 CENTRO - GUAPO - GO - BRA",
+      "cep": "75350-000",
+      "telefone": "(62) 3552-1077",
+      "email": "pr.jlmarques@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "330.358.901-10",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "BELA VISTA DE GOIAS GO",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "23/10/1963",
+        "profissao": null,
+        "identidade": "1335462",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": "10/02/2004",
+        "data_cadastro": "30/08/2016 14:20:20",
+        "ultima_alteracao": "02/12/2025 11:27:12"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "SINAIR SOARES CARMO MARQUES",
+          "data_nascimento": "06/11/1969"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "THIAGO MARQUES DO CARMO",
+          "data_nascimento": "23/07/1987"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "THAIS MARQUES SOARES",
+          "data_nascimento": "13/07/1989"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "MIGUEL MARQUES PINTO"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA DIVINA APARECIDA PINTO"
+        }
+      ],
+      "historico": [
+        {
+          "data": "04/11/2000",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "01/04/2014",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "21/05/2016",
+          "codigo": "0",
+          "descricao": "MEMBRESIA"
+        },
+        {
+          "data": "30/08/2016",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 31,
+      "matricula": "1140",
+      "funcao": "Pastor",
+      "nome": "JOSE MODESTO DOS SANTOS",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Shalon - CBN-GO",
+      "endereco": "ENDEREÇO INSUFICIENTE CENTRO - SÃO LUIS DE MONTES BELOS - GO - BRA",
+      "cep": "76100-000",
+      "telefone": "(64) 3671-1240",
+      "email": "prmodesto@yahoo.com.br",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "219.206.211-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "SÃO LUIS DE MONTES BELOGO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "25/10/1958",
+        "profissao": null,
+        "identidade": "862.879",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "01/03/2023 09:27:35"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "JOSE TOBIAS MODESTO",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA MADALENA MODESTO",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARIA AMELIA MAXIMO DE C. MODESTO",
+          "data_nascimento": "23/07/1960"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "TESSA KAIEIRENE MODESTO",
+          "data_nascimento": "04/12/1989"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ERIC JOSUE MODESTO",
+          "data_nascimento": "28/09/1992"
+        }
+      ],
+      "historico": [
+        {
+          "data": "06/12/1986",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "19/02/1987",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "22/07/2010",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "18/04/2015",
+          "codigo": "10",
+          "descricao": "RECEBIDO POR TRANSFERÊNCIA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 32,
+      "matricula": "1139",
+      "funcao": "Pastor",
+      "nome": "JOSE WILSON DE OLIVEIRA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Central - CBN-GO",
+      "endereco": "RUA RECIFE N 1045 APTO, 4 BELA VISTA - ITUMBIARA - GO - BRA",
+      "cep": "75510-380",
+      "telefone": "(64) 98131-2728",
+      "email": "jw.deoliveira@hotmail.com",
+      "outros_telefones": [
+        {
+          "tipo": "RESIDENCIAL",
+          "ddd": "64",
+          "numero": "3404-8479"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "342.248.401-97",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "VILA DO CHUMBO MG",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "06/11/1964",
+        "profissao": null,
+        "identidade": "2026262",
+        "passaporte": null,
+        "orgao_emissor": "SEGUP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "31/01/2024 11:57:12"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "JOSE DAMAS DA SILVA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "IRENI RUFINA DE OLIVEIRA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARIA ZELIA DA SILVA OLIVEIRA",
+          "data_nascimento": "15/06/1965"
+        }
+      ],
+      "historico": [
+        {
+          "data": "15/12/1990",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "30/03/1991",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 33,
+      "matricula": "1680",
+      "funcao": "Pastor",
+      "nome": "JOSIAS DE OLIVEIRA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional - CBN-GO",
+      "endereco": "RUA BOMFIM 555, CENTRO - BARRO ALTO - GO - BRA",
+      "cep": "76390-000",
+      "telefone": "(62) 98189-9459",
+      "email": null,
+      "outros_telefones": [
+        {
+          "tipo": "CELULAR",
+          "ddd": "62",
+          "numero": "98553-3538"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "165.444.551-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "SÃO GERALDO",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "12/05/1948",
+        "profissao": null,
+        "identidade": "240260",
+        "passaporte": null,
+        "orgao_emissor": "SSP/DF",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "20/06/2023 14:10:29"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "IZIDORO AALVES DE OLIVEIRA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "PRESERFINA ALMEIDA DE OLIVEIRA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARIA MARTA DE OLIVEIRA",
+          "data_nascimento": "29/12/1955"
+        }
+      ],
+      "historico": [
+        {
+          "data": "02/12/1982",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "20/04/1987",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 34,
+      "matricula": "1705",
+      "funcao": "Pastor",
+      "nome": "JOSUE DAS NEVES MOTA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central de Anápolis - CBN-GO",
+      "endereco": "AV.PRES. JANIO QUADROS QUADRA 07 LOTE 11, SAO CARLOS - ANAPOLIS - GO - BRA",
+      "cep": "75084-370",
+      "telefone": "(62) 3099-3510",
+      "email": "prjosuemota@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "116.596.021-49",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "BELEM PA",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "15/08/1950",
+        "profissao": null,
+        "identidade": "1887328",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "07/09/2022 22:19:56"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "JOAO MALHEIROS MOTA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA EUNICE DAS NEVES MOTA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARIA DE FATIMA N. S. MOTA",
+          "data_nascimento": "06/06/1947"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "RODRIGO NUNES MOTA",
+          "data_nascimento": "02/02/1978"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "EUNICE NUNES MOTA",
+          "data_nascimento": "21/08/1981"
+        }
+      ],
+      "historico": [
+        {
+          "data": "17/12/1998",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 35,
+      "matricula": "5202",
+      "funcao": "Pastor",
+      "nome": "JUAN CARLOS TESSEN RODRIGUEZ",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Central - CBN-GO",
+      "endereco": "Rua Sebastião Freitas da Silva, 36 VILA AMALIA - RIO VERDE - GO - BRA",
+      "cep": "75906-252",
+      "telefone": "(64) 98407-6962",
+      "email": "juantessen@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "756.769.821-87",
+        "nacionalidade": "PERUANA",
+        "naturalidade": "Não Declarada ND",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "20/03/1977",
+        "profissao": "Não Consta",
+        "identidade": "VG778869",
+        "passaporte": null,
+        "orgao_emissor": "CGT/PF Data do Cadastro : 22/11/2021 13:07:27",
+        "data_emissao_ci": "30/08/2019",
+        "data_cadastro": "22/11/2021 13:07:27",
+        "ultima_alteracao": "31/01/2024 11:56:53"
+      },
+      "familiares": [
+        {
+          "parentesco": "Mãe",
+          "nome": "SANTOS RODRIGUES TESSEN",
+          "data_nascimento": "08/02/1934"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "JUAN JOSE TESSEN NESIOSUP",
+          "data_nascimento": "01/11/1950"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "TATIANA CAJE DE OLIVEIRA TESSEN",
+          "data_nascimento": "11/12/1973"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "ANA VALENTINA TESSEN CAJE DE OLIVEIRA",
+          "data_nascimento": "01/12/2010"
+        }
+      ],
+      "historico": [
+        {
+          "data": "28/07/2021",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "22/11/2021",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 36,
+      "matricula": "5592",
+      "funcao": "Missionário",
+      "nome": "LEONARDO ARAUJO PINTO CARVALHO",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Filadélfia - CBN-GO",
+      "endereco": "Rua Capauam Q4 L4 APT 5, 5 JARDIM CALIFORNIA - GOIANIA - GO - BRA",
+      "cep": "74735-060",
+      "telefone": "(62) 98304-6487",
+      "email": "leoarnionbass@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "001.485.741-30",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "09/04/1984",
+        "profissao": "MÚSICO",
+        "identidade": "4513563",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 18/04/2024 19:34:19",
+        "data_emissao_ci": null,
+        "data_cadastro": "18/04/2024 19:34:19",
+        "ultima_alteracao": "02/12/2025 12:08:24"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "JOAQUIM PINTO DA SILVEIRA NETO",
+          "data_nascimento": "24/09/1960"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "DURVALINA GOME DE ARAUJO PINTO",
+          "data_nascimento": "07/10/1960"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "LETICIA YOHANNE MACHADO CARVALHO ARAUJO",
+          "data_nascimento": "03/07/1992"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "BILLY JAZZ ARAUJO",
+          "data_nascimento": "09/04/2019"
+        }
+      ],
+      "historico": [
+        {
+          "data": "18/04/2024",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        },
+        {
+          "data": "18/04/2024",
+          "codigo": "15",
+          "descricao": "CONSAGRAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 37,
+      "matricula": "5716",
+      "funcao": "Pastor",
+      "nome": "LUCAS MEIRELES DE ASSIS",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "CONVENÇÃO BATISTA NACIONAL - GOIÁS - CBN-GO",
+      "endereco": "RUA JAMES WATT, QD 17, LT 08, 8 SETOR SERRINHA - GOIANIA - GO - BRA",
+      "cep": "74805-100",
+      "telefone": "(62) 98498-6137",
+      "email": "lucasmeireles4656@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "046.433.691-08",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "11/01/1992",
+        "profissao": "BIOMÉDICO",
+        "identidade": "5868267",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 26/02/2025 12:04:28",
+        "data_emissao_ci": "19/02/2010",
+        "data_cadastro": "26/02/2025 12:04:28",
+        "ultima_alteracao": "26/02/2025 13:06:22"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "WALDIR SEBASTIAO DE ASSIS",
+          "data_nascimento": "19/11/1949"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARCIA REGINA MEIRELES E SILVA DE ASSIS",
+          "data_nascimento": "23/06/1969"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "IZABELA MOREIRA SILVA DE ASSIS",
+          "data_nascimento": "23/07/1994"
+        }
+      ],
+      "historico": [
+        {
+          "data": "09/11/2024",
+          "codigo": "15",
+          "descricao": "CONSAGRAÇÃO"
+        },
+        {
+          "data": "26/02/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 38,
+      "matricula": "5231",
+      "funcao": "Pastor",
+      "nome": "LUCIANO PINHEIRO RAPHAEL",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Antioquia - CBN-GO",
+      "endereco": "Rua L-001 QUADRA 30, 7 JARDIM EUROPA - ANAPOLIS - GO - BRA",
+      "cep": "75094-560",
+      "telefone": "(62) 99200-5352",
+      "email": "lucian.raphael@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "074.132.027-43",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "NOVA IGUAÇU RJ",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "31/08/1975",
+        "profissao": "COORDENADOR",
+        "identidade": "337217154",
+        "passaporte": null,
+        "orgao_emissor": "SSP/SP Data do Cadastro : 18/03/2022 17:40:49",
+        "data_emissao_ci": "10/08/1995",
+        "data_cadastro": "18/03/2022 17:40:49",
+        "ultima_alteracao": "10/12/2025 14:26:44"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "SIMONE ROMUALDO DA SILVA RAPHAEL",
+          "data_nascimento": "27/10/1971"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "JHULIANNY STHEPANNY DA SILVA PINHEIRO",
+          "data_nascimento": "05/10/2005"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ALEF SAYMON DA SILVA RAPHAEL",
+          "data_nascimento": "29/08/2008"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "ALTIVO RAPHAEL"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ANITA MARQUES PINHEIRO"
+        }
+      ],
+      "historico": [
+        {
+          "data": "31/10/2021",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "18/03/2022",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 39,
+      "matricula": "5758",
+      "funcao": "Pastor",
+      "nome": "MANOEL CRUZ",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Filadélfia - CBN-GO",
+      "endereco": "Rua 1, Quadra 1, Lote 20, 20 Conjunto Riviera - GOIANIA - GO - BRA",
+      "cep": "74730-090",
+      "telefone": "(62) 99355-0808",
+      "email": "netocruz@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "256.101.631-53",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "PORTO NACIONAL TO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "01/05/1966",
+        "profissao": "Não Consta",
+        "identidade": "00486",
+        "passaporte": null,
+        "orgao_emissor": "CBM/GO Data do Cadastro : 07/07/2025 13:48:00",
+        "data_emissao_ci": "10/08/2021",
+        "data_cadastro": "07/07/2025 13:48:00",
+        "ultima_alteracao": "22/10/2025 16:03:42"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "ADAO CRUZ",
+          "data_nascimento": "10/10/1939"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA MADALENA CRUZ",
+          "data_nascimento": "25/05/1940"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "LUZENITA BARBOSA DOS SANTOS CRUZ",
+          "data_nascimento": "28/05/1967"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "SARA KAROLINE DOS SANTOS CRUZ",
+          "data_nascimento": "30/08/1991"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "EMANUEL DOS CRUZ",
+          "data_nascimento": "13/03/1997"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "KADMIEL DOS SANTOS CRUZ",
+          "data_nascimento": "13/03/1997"
+        }
+      ],
+      "historico": [
+        {
+          "data": "13/11/2005",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "07/07/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 40,
+      "matricula": "5759",
+      "funcao": "Pastor",
+      "nome": "MANOEL DE SOUZA DOURADO NETO",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central de Anápolis - CBN-GO",
+      "endereco": "Rua 7, N225 Cond. Jardins do Eden 1 Torre 4 Ap. 305, 305 Jardim das Américas 2ª Etapa - ANAPOLIS",
+      "cep": "75070-420",
+      "telefone": "(62) 99291-3861",
+      "email": "netodouradoneto@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "845.943.571-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ANAPOLIS GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "29/05/1979",
+        "profissao": "SECRETARIO EXECUTIVO",
+        "identidade": "5610117",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 07/07/2025 13:55:33",
+        "data_emissao_ci": "27/06/2019",
+        "data_cadastro": "07/07/2025 13:55:33",
+        "ultima_alteracao": "08/07/2025 11:50:51"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "NUBIA CRISTINA ALVES DOURADO",
+          "data_nascimento": "21/04/1981"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "MARIA EDUARDA ALVES DOURADO",
+          "data_nascimento": "28/04/2006"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "MARIA FERNANDA ALVES DOURADO",
+          "data_nascimento": "19/04/2011"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "IVONI DOS SANTOS DOURADO"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "DALETH FERRERIA DOURADO"
+        }
+      ],
+      "historico": [
+        {
+          "data": "07/06/2025",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "07/07/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 41,
+      "matricula": "5846",
+      "funcao": "Pastor",
+      "nome": "MARCELO ANTONELLI DE CARVALHO",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "CONVENÇÃO BATISTA NACIONAL - GOIÁS - CBN-GO",
+      "endereco": "RUA 09, QUADRA 05, LOTE 09 VILA PARAISO - PONTALINA - GO - BRA",
+      "cep": "75620-000",
+      "telefone": "(62) 98466-7652",
+      "email": "prof.antonelli47@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "835.159.251-04",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "TRINDADE GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "12/02/1976",
+        "profissao": "PROFESSOR(A)",
+        "identidade": "3673894",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 10/12/2025 13:25:07",
+        "data_emissao_ci": "29/08/1997",
+        "data_cadastro": "10/12/2025 13:25:07",
+        "ultima_alteracao": "26/01/2026 14:31:10"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ROZENILDA FELIX DA SILVA DE CARVALHO",
+          "data_nascimento": "05/04/1981"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "MARIO VIEIRA DE CARVALHO"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA DE FATIMA ANTONELLI"
+        }
+      ],
+      "historico": [
+        {
+          "data": "26/07/2025",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "10/12/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 42,
+      "matricula": "5154",
+      "funcao": "Pastor",
+      "nome": "MARCIO BATISTA DA SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Filadélfia - CBN-GO",
+      "endereco": "RUA SC 6, CASA 4, 29 SETOR CASTRO'S - SENADOR CANEDO - GO - BRA",
+      "cep": "75255-639",
+      "telefone": "(62) 996691415",
+      "email": "alabama_marcio@hotmail.com",
+      "outros_telefones": [
+        {
+          "tipo": "CELULAR",
+          "ddd": "62",
+          "numero": "986302005"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "454.257.011-87",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "PÓS-GRADUADO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "25/02/1968",
+        "profissao": "Não Consta",
+        "identidade": "1848484",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "09/06/2021 15:34:54",
+        "ultima_alteracao": "27/04/2023 14:46:04"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ROSIMEIRE DIAS DE SOUSA SILVA",
+          "data_nascimento": "05/03/1968"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "MARCIO BATISTA DA SILVA FILHO",
+          "data_nascimento": "18/02/1993"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "HELLEN CHRISTIE DE SOUSA",
+          "data_nascimento": "30/09/1997"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "ANTONIO BATISTA DA SILVA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "RITA SOARES DA SILVA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "18/12/2005",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "16/12/2020",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "09/06/2021",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        },
+        {
+          "data": "24/06/2021",
+          "codigo": "12",
+          "descricao": "ISENTO ESPECIAL POR RENDA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 43,
+      "matricula": "5201",
+      "funcao": "Pastor",
+      "nome": "MARCONDES NUNES PEREIRA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Central - CBN-GO",
+      "endereco": "ENDEREÇO INSUFICIENTE, 44 RESIDENCIAL GAMELEIRA - RIO VERDE - GO - BRA",
+      "cep": "75906-854",
+      "telefone": "(64) 99248-0108",
+      "email": "marcondesnunes03@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "732.635.831-15",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "RIO VERDE GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "03/06/1987",
+        "profissao": "CIRURGIÃO DENTISTA",
+        "identidade": "4744582",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 22/11/2021 12:56:45",
+        "data_emissao_ci": "09/07/2019",
+        "data_cadastro": "22/11/2021 12:56:45",
+        "ultima_alteracao": "31/01/2024 11:56:39"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "MAURO CESAR PEREIRA",
+          "data_nascimento": "17/03/1960"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "SORAYA CRISTINA NUNES PEREIRA",
+          "data_nascimento": "30/07/1964"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "CAMILLA FRAZAO AZEVEDO NUNES",
+          "data_nascimento": "27/04/1994"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "LORENZO FRAZAO NUNES AZEVEDO",
+          "data_nascimento": "02/05/2019"
+        }
+      ],
+      "historico": [
+        {
+          "data": "28/07/2021",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "22/11/2021",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 44,
+      "matricula": "5873",
+      "funcao": "Pastor",
+      "nome": "MARCOS COIMBRA DA MOTA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Maranata - CBN-GO",
+      "endereco": "Rua 37, Qd 186, 1 Setor Pai Eterno - TRINDADE - GO - BRA",
+      "cep": "75387-130",
+      "telefone": "(62) 31101795",
+      "email": "marcospm190@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "711.483.611-20",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "TRINDADE GO",
+        "grau_instrucao": "Nível Médio",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "28/08/1980",
+        "profissao": "SERVIDOR PUBLICO",
+        "identidade": "4265606",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 23/03/2026 15:43:45",
+        "data_emissao_ci": "04/09/1998",
+        "data_cadastro": "23/03/2026 15:43:45",
+        "ultima_alteracao": "07/04/2026 10:49:23"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARIA DIVINA VIEIRA DE SÁ COIMBRA",
+          "data_nascimento": "14/10/1976"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "DEBORAH COIMBRA DE SÁ",
+          "data_nascimento": "02/12/2002"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "DENISE COIMBRA DE SÁ",
+          "data_nascimento": "05/12/2005"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "JOAO VIEIRA DA MOTA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA BARRETO DA MOTA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "06/12/2025",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "23/03/2026",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 45,
+      "matricula": "5735",
+      "funcao": "Pastor",
+      "nome": "MARCOS FIALHO SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "CONVENÇÃO BATISTA NACIONAL - GOIÁS - CBN-GO",
+      "endereco": "Rua RI 4, Quadra 37, Lote 17, Casa, 2 Residencial Itaipu - GOIANIA - GO - BRA",
+      "cep": "74356-062",
+      "telefone": "(62) 99370-3446",
+      "email": "marcofialho7@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "006.378.926-40",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOVERNADOR VALADARES MG",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "07/08/1977",
+        "profissao": "Não Consta",
+        "identidade": "53785275",
+        "passaporte": null,
+        "orgao_emissor": "SSP/SP Data do Cadastro : 09/04/2025 14:34:55",
+        "data_emissao_ci": null,
+        "data_cadastro": "09/04/2025 14:34:55",
+        "ultima_alteracao": "09/04/2025 17:28:50"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "GISELE SILVA FIALHO",
+          "data_nascimento": "21/10/1975"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "KATHERINE GRACE SILVA",
+          "data_nascimento": "02/09/2004"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "MARK ALEXANDER FIALHO",
+          "data_nascimento": "24/07/2007"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "MICAEL TEODORO FIALHO",
+          "data_nascimento": "26/12/2015"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ASSELMA FIALHO DA SILVA"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "JECONIAS FERNANDES DA SILVA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "22/03/2025",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "09/04/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 46,
+      "matricula": "4310",
+      "funcao": "Pastor",
+      "nome": "MARIO ABADIO DE OLIVEIRA JUNIOR",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central Rhema - CBN-GO",
+      "endereco": "AV. ROLDAO BENTO DE GODOI, 235 TONICO DA ROSA - JOVIANIA - GO - BRA",
+      "cep": "75610-000",
+      "telefone": "(64) 99676-1202",
+      "email": "mjassessoriacontabil@hotmail.com",
+      "outros_telefones": [
+        {
+          "tipo": "CELULAR",
+          "ddd": "64",
+          "numero": "98132-9824"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "907.536.071-15",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIATUBA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "02/04/1981",
+        "profissao": null,
+        "identidade": "4111323",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/10/2014 15:10:40",
+        "ultima_alteracao": "28/05/2026 21:53:56"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "LUDMILLA GONÇALVES BARBOSA OLIVEIRA",
+          "data_nascimento": "11/11/1983"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "MARIO ABADIO DE OLIVEIRA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "APARECIDA DAS GRAÇAS TELLES"
+        }
+      ],
+      "historico": [
+        {
+          "data": "20/12/2009",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "25/12/2010",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "29/03/2014",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "10/10/2014",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 47,
+      "matricula": "4898",
+      "funcao": "Pastor",
+      "nome": "MAXSUEL FERREIRA RAMOS",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Renovo - CBN-GO",
+      "endereco": "Rua Castro Alves, 18 - Qd V-19, Vila Resende ANHANGUERA - GOIANIA - GO - BRA",
+      "cep": "74335-050",
+      "telefone": "(62) 99602-0073",
+      "email": "pastormaxramos@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "556.403.701-49",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "RIO VERDE GO",
+        "grau_instrucao": "MESTRADO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "25/01/1973",
+        "profissao": "PASTOR",
+        "identidade": "3171355",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 26/02/2019 22:16:03",
+        "data_emissao_ci": "29/01/1991",
+        "data_cadastro": "26/02/2019 22:16:03",
+        "ultima_alteracao": "03/11/2025 19:14:41"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "POLIANA TORRES AFONSO SILVA",
+          "data_nascimento": "06/01/1981"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "EDUARDO AFONSO RAMOS",
+          "data_nascimento": "08/10/2003"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "HENRIQUE AFONSO RAMOS",
+          "data_nascimento": "14/07/2005"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "CLODAIR DE FREITAS RAMOS"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "DILMA FERREIRA RAMOS"
+        }
+      ],
+      "historico": [
+        {
+          "data": "27/07/2018",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "06/11/2018",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "26/02/2019",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 48,
+      "matricula": "4546",
+      "funcao": "Pastor",
+      "nome": "ODEZIO LUIZ DA SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Memorial - CBN-GO",
+      "endereco": "RUA MONACO QD 10 LT, 5 RES. AYRTON SENNA - ANAPOLIS - GO - BRA",
+      "cep": "75097-115",
+      "telefone": "(62) 99187-2460",
+      "email": "odezioluiz@hotmail.com",
+      "outros_telefones": [
+        {
+          "tipo": "COMERCIAL",
+          "ddd": "62",
+          "numero": "3321-0611"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "648.610.901-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "NOVA VENEZA GO",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "01/10/1973",
+        "profissao": null,
+        "identidade": "3321777",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "19/05/2016 11:30:24",
+        "ultima_alteracao": "21/12/2017 16:29:44"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARLEIDE BATISTA MARQUES SILVA",
+          "data_nascimento": "21/05/1960"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "DURVALINO LUIZ DA SILVA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "SIBELIA CLAUDINA DA SILVA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "28/04/2012",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "19/05/2016",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": [
+        {
+          "funcao_igreja": "PRESIDENTE Igreja Batista Memorial",
+          "data_inicial": "07/03/2017",
+          "data_final": null
+        }
+      ]
+    },
+    {
+      "pagina": 49,
+      "matricula": "2436",
+      "funcao": "Pastor",
+      "nome": "OTILIO FLORISBELO DA SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Filadélfia - CBN-GO",
+      "endereco": "RUA 4, 1565 APT 103 S. AEROPORTO - GOIANIA - GO - BRA",
+      "cep": "74025-090",
+      "telefone": "(62) 3224-2524",
+      "email": null,
+      "outros_telefones": [
+        {
+          "tipo": "CELULAR",
+          "ddd": "62",
+          "numero": "98413-9775"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "021.467.031-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "CUMARI GO",
+        "grau_instrucao": "Segundo Grau",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "21/05/1942",
+        "profissao": null,
+        "identidade": "346216",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "11/02/2004",
+        "ultima_alteracao": "14/09/2022 11:21:02"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "JOSÉ FLORISBELO FILHO",
+          "data_nascimento": "30/12/1899"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA RITA BELO",
+          "data_nascimento": "30/12/1899"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "VICÊNCIA CÂNDIDO DE MELO SILVA",
+          "data_nascimento": "23/08/1940"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "OTILIO FLORISBELO SILVA JUNIOR"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "EDER JOSE DE MELO SILVA"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "PAULO DE MELO SILVA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "12/12/1998",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "13/04/2002",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "01/01/2007",
+          "codigo": "11",
+          "descricao": "ISENTO ESPECIAL POR IDADE"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 50,
+      "matricula": "3731",
+      "funcao": "Pastor",
+      "nome": "PAULO AFONSO DE ARAUJO",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Filadélfia - CBN-GO",
+      "endereco": "RUA RIO DAS GARÇAS QD 01 LT, 24 CONJUNTO ARUANA I - GIOIANIA - GO - BRA",
+      "cep": "74740-260",
+      "telefone": "(62) 3284-4552",
+      "email": "contagem.pauloafonso@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "448.873.291-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "SÃO LUIS DE MONTES BELOGO",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "25/02/1969",
+        "profissao": null,
+        "identidade": "1734900",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "31/05/2010 10:01:33",
+        "ultima_alteracao": "17/04/2024 12:56:56"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARLI DE ASSUNÇÃO DE ARAUJO",
+          "data_nascimento": "02/02/1967"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "JESSICA PAULA DE ARAUJO",
+          "data_nascimento": "27/03/1992"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "PAULO AFONSO DE ARAUJO FILHO",
+          "data_nascimento": "19/12/1994"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "PEDRO RAIMUNDO DE ARAUJO"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA FRANCISCA DE ARAUJO"
+        }
+      ],
+      "historico": [
+        {
+          "data": "26/09/2009",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 51,
+      "matricula": "4103",
+      "funcao": "Pastor",
+      "nome": "PAULO CEZAR MOREIRA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Shalon - CBN-GO",
+      "endereco": "AV. HERMOGENES COELHO, 3750 SETOR AEROPORTO - SÃO LUIS DE MONTES BELOS - GO -",
+      "cep": "76100-000",
+      "telefone": "(64) 8402-9502",
+      "email": "paulocezar777@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "320.718.419-72",
+        "nacionalidade": null,
+        "naturalidade": "CURITIBA PR",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "07/03/1959",
+        "profissao": null,
+        "identidade": "18304198",
+        "passaporte": null,
+        "orgao_emissor": "SSP/PR",
+        "data_emissao_ci": null,
+        "data_cadastro": "11/06/2013 11:30:56",
+        "ultima_alteracao": "31/01/2024 11:34:15"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "GINA SUELI ANDRESSA MOREIRA",
+          "data_nascimento": "22/06/1959"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "JONATAS LEVI MOREIRA",
+          "data_nascimento": "23/05/1984"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "PRISCILA SUELI MOREIRA",
+          "data_nascimento": "27/11/1986"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "CLAUDIA CRISTINA MOREIRA",
+          "data_nascimento": "24/10/1988"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA LAURETE VOSGRAU MOREIRA"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "JULIO CEZAR MOREIRA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "14/09/2002",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "21/10/2013",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 52,
+      "matricula": "4729",
+      "funcao": "Pastor",
+      "nome": "PAULO RODRIGUES DE SOUZA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Esperança - CBN-GO",
+      "endereco": "Avenida Contorno, 25 - Qd 04 Lt RESIDENCIAL ARCO-ÍRIS - ANAPOLIS - GO - BRA",
+      "cep": "75106-377",
+      "telefone": "(62) 99285-1119",
+      "email": "paulo.doulos@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "252.155.821-49",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "Piranhas GO",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "07/11/1962",
+        "profissao": "Não Consta",
+        "identidade": "1776223",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "20/09/2017 16:15:05",
+        "ultima_alteracao": "10/07/2018 13:06:38"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "NEIDE BUENO COUTINHO",
+          "data_nascimento": "22/07/1968"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "DEBORA COUTINHO RODRIGUES",
+          "data_nascimento": "10/11/1990"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "BENEDITO RODRIGUES MIRANADA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "IRANI FELIPE DE SOUZA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "19/12/2015",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "20/09/2017",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        },
+        {
+          "data": "22/09/2023",
+          "codigo": "12",
+          "descricao": "ISENTO ESPECIAL POR RENDA"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 53,
+      "matricula": "946",
+      "funcao": "Pastor",
+      "nome": "RANULFO MARQUES DE LIMA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nova Aliança - CBN-GO",
+      "endereco": "AV. NEW YORK 1959 QD 88 LOTE, 4 JD.NOVO MUNDO - GOIANIA - GO - BRA",
+      "cep": "74713-440",
+      "telefone": "(62) 3512-2936",
+      "email": "ranulfo_rh@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "130.144.551-72",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ITAPURANGA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "09/03/1957",
+        "profissao": null,
+        "identidade": "594648",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "21/12/2017 16:31:36"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "CAMILO MARQUES DE LIMA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "BERNARDA RAMOS DE LIMA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "JOANA DARC DE ARAUJO MARQUES",
+          "data_nascimento": "07/11/1966"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "HEBER RANULFO ARAUJO MARQUES",
+          "data_nascimento": "09/03/1988"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "HELLEN PRISCILA MARQUES DE ARAUJO",
+          "data_nascimento": "22/11/1990"
+        }
+      ],
+      "historico": [
+        {
+          "data": "07/12/1991",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "26/09/1992",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 54,
+      "matricula": "4482",
+      "funcao": "Pastor",
+      "nome": "REIDNER PEREIRA DE ALMEIDA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Filadélfia - CBN-GO",
+      "endereco": "AV. CRISTOVAO COLOMBO QD 151 LT, 20 JARDIM NOVO MUNDO - GOIANIA - GO - BRA",
+      "cep": "74705-130",
+      "telefone": "(62) 9111-5027",
+      "email": "reidnerpa@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "800.872.211-87",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "Nível Médio",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "17/09/1972",
+        "profissao": null,
+        "identidade": "1914128",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 11/11/2015 11:30:50",
+        "data_emissao_ci": null,
+        "data_cadastro": "11/11/2015 11:30:50",
+        "ultima_alteracao": "12/11/2019 14:37:25"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "HEUMA RAMOS DOS ANJOS DE ALMEIDA",
+          "data_nascimento": "01/08/1981"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "LAIS MONTEIRO DE ALMEIDA",
+          "data_nascimento": "11/03/2008"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "RUI PEREIRA DE ALMEIDA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ETERNA MARIA PEREIRA DE ALMEIDA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "10/12/2005",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "25/06/2009",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "11/11/2015",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 55,
+      "matricula": "4950",
+      "funcao": "Pastor",
+      "nome": "RICARDO BORGES DA SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Campos do Jordão - CBN-GO",
+      "endereco": "Rua José Neto Paranhos, 382 - Bloco 3, Apto 104 JUNDIAÍ - ANAPOLIS - GO - BRA",
+      "cep": "75110-750",
+      "telefone": "(62) 98195-5055",
+      "email": "rb-silva@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "763.883.361-91",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ANAPOLIS GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "10/07/1975",
+        "profissao": "Não Consta",
+        "identidade": "2191178",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 17/05/2019 12:33:59",
+        "data_emissao_ci": "02/01/1990",
+        "data_cadastro": "17/05/2019 12:33:59",
+        "ultima_alteracao": "09/01/2024 16:26:26"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "TATIANA SOARES BERNARDES DA SILVA",
+          "data_nascimento": "29/06/1977"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "PEDRO AUGUSTO BERNARDES SILVA",
+          "data_nascimento": "22/11/2002"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ROGER BERNARDES DA SILVA",
+          "data_nascimento": "10/09/2012"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "SEBASTIAO BERNARDES DA SILVA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "TEREZINHA BORGES FIRMINO"
+        }
+      ],
+      "historico": [
+        {
+          "data": "03/11/2012",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "09/12/2013",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "24/02/2017",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "17/05/2019",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 56,
+      "matricula": "5760",
+      "funcao": "Pastor",
+      "nome": "RICARDO PEREIRA DA COSTA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central de Anápolis - CBN-GO",
+      "endereco": "Rua Presidente Jânio Quadros, Qd 07 Lt 11, 11 SAO CARLOS - ANAPOLIS - GO - BRA",
+      "cep": "75084-370",
+      "telefone": "(62) 99978-9096",
+      "email": "ricardocristo@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "000.565.261-80",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ITAUCU GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "18/01/1983",
+        "profissao": "SUPERVISOR ADMINISTRATIVO",
+        "identidade": "4428272",
+        "passaporte": null,
+        "orgao_emissor": "PC/GO Data do Cadastro : 07/07/2025 14:03:15",
+        "data_emissao_ci": "20/05/2016",
+        "data_cadastro": "07/07/2025 14:03:15",
+        "ultima_alteracao": "08/07/2025 11:51:44"
+      },
+      "familiares": [
+        {
+          "parentesco": "Mãe",
+          "nome": "LAURITA ROSA LINO",
+          "data_nascimento": "12/03/1953"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "EUNICE NUNES MOTA DA COSTA",
+          "data_nascimento": "28/08/1981"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "ANA LAURA MARTINS COSTA",
+          "data_nascimento": "31/03/2010"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "ESTER NUNES MOTA DA COSTA",
+          "data_nascimento": "20/02/2020"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "EUFROSINO PEREIRA DA COSTA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "07/06/2025",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "07/07/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 57,
+      "matricula": "5761",
+      "funcao": "Pastor",
+      "nome": "ROBERTO FERREIRA DE MATOS",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central de Anápolis - CBN-GO",
+      "endereco": "Rua Tocantins, Qd 25, Lt 23, 23 ALVORADA - ANAPOLIS - GO - BRA",
+      "cep": "75084-630",
+      "telefone": "(62) 99688-8120",
+      "email": "robertosupervi@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "530.419.091-20",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ANAPOLIS GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "22/01/1971",
+        "profissao": "ADMINISTRADOR DE EMPRESA",
+        "identidade": "2433497",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 07/07/2025 14:10:35",
+        "data_emissao_ci": "14/07/2023",
+        "data_cadastro": "07/07/2025 14:10:35",
+        "ultima_alteracao": "26/01/2026 08:47:03"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "JOAO NUNES DE MATOS",
+          "data_nascimento": "06/11/1930"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "FRANCISCA MARIA DE MATOS",
+          "data_nascimento": "28/08/1933"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "HELOISA ELENA ALVES MATOS",
+          "data_nascimento": "28/08/1968"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "KARINE ALVES MATOS",
+          "data_nascimento": "29/12/1997"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ROBERTO FERREIRA DE MATOS FILHO",
+          "data_nascimento": "04/01/2000"
+        }
+      ],
+      "historico": [
+        {
+          "data": "07/06/2025",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "07/07/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 58,
+      "matricula": "5815",
+      "funcao": "Pastor",
+      "nome": "RONE ROGERES GARCEZ DIAS SILVA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Congregação Batista Central Rhema - CBN-GO",
+      "endereco": "RUA BURITI, QUADRA 02, LOTE 12 MANGUEIRAS - Edéia - GO - BRA",
+      "cep": "75940-000",
+      "telefone": "(27) 99906-3309",
+      "email": "ronedjc1000@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "038.785.145-30",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "PEDRO CANARIO ES",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "17/02/1989",
+        "profissao": "MOTORISTA",
+        "identidade": "5185165",
+        "passaporte": null,
+        "orgao_emissor": "SPTC/GO Data do Cadastro : 20/10/2025 12:26:04",
+        "data_emissao_ci": "24/05/2005",
+        "data_cadastro": "20/10/2025 12:26:04",
+        "ultima_alteracao": "19/11/2025 11:58:26"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "CHARLES RAMON COELHO SILVA"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "DANIEL SILVA BARBOSA"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "DAVI GARCEZ GONÇALVES"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "LUCIMAR GARCEZ DIAS SILVA"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "CAMILA GONÇALVES BARBOSA GARCEZ"
+        }
+      ],
+      "historico": [
+        {
+          "data": "11/10/2025",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "20/10/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 59,
+      "matricula": "3432",
+      "funcao": "Pastor",
+      "nome": "SANDRO MORATO SUZANA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Antioquia - CBN-GO",
+      "endereco": "AV SOCRATES DINIZ QD O LT, 19 JARDIM GONÇALVES - ANAPOLIS - GO - BRA",
+      "cep": "75125-390",
+      "telefone": "(62) 3099-6122",
+      "email": "sandromorato@yahoo.com.br",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "575.937.011-15",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ANAPOLIS GO",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "27/12/1971",
+        "profissao": null,
+        "identidade": "2191972",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 04/12/2007 11:06:23",
+        "data_emissao_ci": null,
+        "data_cadastro": "04/12/2007 11:06:23",
+        "ultima_alteracao": "21/12/2017 16:33:49"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ANA LUIZA DE PINA REIS MORATO SUZANA",
+          "data_nascimento": "12/11/1967"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "ANA LAURA DE PINA REIS MORATO SUZANA",
+          "data_nascimento": "01/05/1999"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "ANA VICTORIA DE PINA REIS MORATO SUZANA",
+          "data_nascimento": "01/05/1999"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "MARIA FERNANDA DE PINA REIS MORATO SUZAN",
+          "data_nascimento": "13/04/2005"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "OLGA MORATO SIUZANA"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "CLAUDIO ROBERTO CINTRA SUZANA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "21/05/2005",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "03/09/2007",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": [
+        {
+          "funcao_igreja": "PRESIDENTE Igreja Batista Antioquia",
+          "data_inicial": "12/01/2024",
+          "data_final": null
+        }
+      ]
+    },
+    {
+      "pagina": 60,
+      "matricula": "4688",
+      "funcao": "Pastor",
+      "nome": "SILVANDO PEREIRA DE OLIVEIRA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional da Graça - CBN-GO",
+      "endereco": "RUA K QD 02 LT, 34 Goias 2 - IPORA - GO - BRA",
+      "cep": "76200-000",
+      "telefone": "(62) 99340-8119",
+      "email": "silvandop@hotmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "647.195.701-78",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ANAPOLIS GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "08/10/1973",
+        "profissao": "Não Consta",
+        "identidade": "2636251",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 24/06/2017 12:09:39",
+        "data_emissao_ci": "14/10/2016",
+        "data_cadastro": "24/06/2017 12:09:39",
+        "ultima_alteracao": "29/06/2017 14:40:32"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "NIVEA DE ALMIRAR COLODETO OLIVEIRA",
+          "data_nascimento": "18/05/1971"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "ISAIAS PEREIRA DE OLIVEIRA"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA CONCEIÇAO DE OLIVEIRA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "02/12/1996",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "05/11/2000",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "27/08/2016",
+          "codigo": "0",
+          "descricao": "MEMBRESIA"
+        },
+        {
+          "data": "24/06/2017",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 61,
+      "matricula": "5762",
+      "funcao": "Pastor",
+      "nome": "SIRIO CAETANO ROSA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central de Anápolis - CBN-GO",
+      "endereco": "RUA 01 CONJUNTO RAUL BALDUINO - ANAPOLIS - GO - BRA",
+      "cep": "75123-180",
+      "telefone": "(62) 99557-9655",
+      "email": "linsfreitasrosa@yahoo.com.br",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "361.008.891-53",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ANAPOLIS GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "22/02/1965",
+        "profissao": "PROTETICO",
+        "identidade": "22266355",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 07/07/2025 14:22:11",
+        "data_emissao_ci": "17/06/2024",
+        "data_cadastro": "07/07/2025 14:22:11",
+        "ultima_alteracao": "08/07/2025 11:53:11"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "ADAMIR CAETANO ROSA",
+          "data_nascimento": "18/05/1931"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "LEOCELINA FERREIRA ROSA",
+          "data_nascimento": "30/10/1936"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "PATRICIA CRISTIANE LINS E FREITAS ROSA",
+          "data_nascimento": "16/06/1971"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "MATHEUS HENRIQUE LINS ROSA",
+          "data_nascimento": "22/01/1996"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "PAULA BEATRIZ LINS ROSA",
+          "data_nascimento": "16/09/2004"
+        }
+      ],
+      "historico": [
+        {
+          "data": "07/06/2025",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "07/07/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 62,
+      "matricula": "1466",
+      "funcao": "Pastor",
+      "nome": "THADEU PEREIRA DE ARAUJO",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Congregação Batista Central (I B C Anápolis) - CBN-GO",
+      "endereco": "Rua Doutor Alfredo Fleury, Quadra, 35 - Lote 2, Casa 2 JARDIM ALEXANDRINA - ANAPOLIS - GO -",
+      "cep": "75060-060",
+      "telefone": "(62) 99259-5885",
+      "email": null,
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "100.796.701-30",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "CAMPO GRANDE MS",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "28/01/1953",
+        "profissao": null,
+        "identidade": "263512",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO Data do Cadastro : 10/01/2000",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "15/04/2020 11:40:30"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "ANTONIO FERREIRA DE ARAUJO",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "FRANCISCA PEREIRA DE ARAUJO",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARCIA FERREIRA NAVES DE ARAUJO",
+          "data_nascimento": "11/03/1962"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ANDERSON DA SILVA ARAUJO",
+          "data_nascimento": "27/09/1976"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ASAPH ARIEL NEVES DE ARAUJO",
+          "data_nascimento": "21/04/1988"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ASAEL ABNER NEVES DE ARAUJO",
+          "data_nascimento": "20/12/1991"
+        }
+      ],
+      "historico": [
+        {
+          "data": "02/12/1995",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "26/06/1996",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "23/06/2015",
+          "codigo": "17",
+          "descricao": "PEDIDO DE LICENÇA"
+        },
+        {
+          "data": "06/04/2020",
+          "codigo": "3",
+          "descricao": "REINTEGRAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 63,
+      "matricula": "5763",
+      "funcao": "Pastor",
+      "nome": "THALES DE PINA REIS MORAIS",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central de Anápolis - CBN-GO",
+      "endereco": "Rua AV 11, Qd 19, Lt 17, 17 Residencial Anaville - ANAPOLIS - GO - BRA",
+      "cep": "75102-055",
+      "telefone": "(62) 98168-1523",
+      "email": "thales.pina@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "984.321.331-91",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "06/11/1982",
+        "profissao": "Não Consta",
+        "identidade": "4234843",
+        "passaporte": null,
+        "orgao_emissor": "DGPC/GO Data do Cadastro : 07/07/2025 14:29:26",
+        "data_emissao_ci": "22/01/1993",
+        "data_cadastro": "07/07/2025 14:29:26",
+        "ultima_alteracao": "08/07/2025 11:54:06"
+      },
+      "familiares": [
+        {
+          "parentesco": "Mãe",
+          "nome": "ANA PAULA DE PINA REIS MORAIS",
+          "data_nascimento": "15/09/1962"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "JULIANA CRISTINA SILVA REIS MORAIS",
+          "data_nascimento": "22/06/1985"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "THALES AUGUSTO SILVA PINA REIS DE MORAIS",
+          "data_nascimento": "03/03/2013"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "PEDRO AUGUSTO SILVA PINA REIS DE MORAIS",
+          "data_nascimento": "13/02/2017"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "PAULO AUGUSTO SILVA PINA REIS DE MORAIS",
+          "data_nascimento": "17/02/2020"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "SERGIO AUGUSTO DE MORAIS"
+        }
+      ],
+      "historico": [
+        {
+          "data": "07/06/2025",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "07/07/2025",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 64,
+      "matricula": "2891",
+      "funcao": "Pastor",
+      "nome": "UILSON RODRIGUES DINIZ",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Congregação Batista Nova Geração (I B Nova Aliança Sen. Canedo) - CBN-GO",
+      "endereco": "RUA CP 4 QD CP 5 LOTE, 35 CELINA PARK - GOIANIA - GO - BRA",
+      "cep": "74373-120",
+      "telefone": "(62) 3247-4036",
+      "email": "uilsondiniz@hotmail.com",
+      "outros_telefones": [
+        {
+          "tipo": "CELULAR",
+          "ddd": "62",
+          "numero": "9904-2827"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "189.245.061-53",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "BURITI ALEGRE GO",
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "06/07/1958",
+        "profissao": null,
+        "identidade": "717534",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "20/12/2005 09:54:04",
+        "ultima_alteracao": "02/12/2025 12:10:40"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "GILDA MARES SANTOS DINIZ",
+          "data_nascimento": "02/04/1962"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ISRAEL SANTOS DINIZ",
+          "data_nascimento": "07/04/1989"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "GABRIELA SANTOS DINIZ",
+          "data_nascimento": "04/10/1990"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "AMADEU RODRIGUES VIDAL"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "GENI RODRIGUES DINIZ"
+        }
+      ],
+      "historico": [
+        {
+          "data": "02/05/1987",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 65,
+      "matricula": "4867",
+      "funcao": "Pastor",
+      "nome": "VALDEIR CARVALHO COELHO",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional Filadélfia - CBN-GO",
+      "endereco": "Rua Serra das Mangabeiras, Qd. 13, Lote, 2 RESIDENCIAL SONHO VERDE - GOIANIA - GO - BRA",
+      "cep": "74730-510",
+      "telefone": "(62) 99314-1758",
+      "email": "valdeirprof100@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "588.589.975-49",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ARACAJU SE",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "22/11/1974",
+        "profissao": "PROFESSOR DE MUSICA",
+        "identidade": "1083908",
+        "passaporte": null,
+        "orgao_emissor": "SSP/SE Data do Cadastro : 22/10/2018 14:13:42",
+        "data_emissao_ci": null,
+        "data_cadastro": "22/10/2018 14:13:42",
+        "ultima_alteracao": "17/11/2025 10:24:09"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "IRANI ALEXANDRE CARVALHO COELHO",
+          "data_nascimento": "01/04/1972"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "VICTOR ALEXANDRE DE CARVALHO COELHO",
+          "data_nascimento": "22/05/1996"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "VITORIA ALEXANDRE DE CARVALHO COELHO",
+          "data_nascimento": "04/08/1999"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "VICSON ALEXANDRE CARVALHO COELHO",
+          "data_nascimento": "03/06/2007"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "VALDEREZ MARIA CARVALHO SANTOS"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "ALIRIO MOREIRA COELHO"
+        }
+      ],
+      "historico": [
+        {
+          "data": "16/12/2011",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "22/08/2018",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "22/10/2018",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 66,
+      "matricula": "1628",
+      "funcao": "Pastor",
+      "nome": "WALDIR SEBASTIAO DE ASSIS",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Deus Triuno - CBN-GO",
+      "endereco": "AV RIO VERDE QUD. 193, LOTE 14, SETOR PEDRO LUDOVICO - GOIANIA - GO - BRA",
+      "cep": "74835-270",
+      "telefone": "(62) 32803209",
+      "email": "awmassis@aol.com.br",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "049.529.361-04",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "19/11/1949",
+        "profissao": null,
+        "identidade": "3093",
+        "passaporte": null,
+        "orgao_emissor": "PM/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "31/01/2024 12:04:00"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "BENEDITO FRANCISCO DE ASSIS",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "BENEDITA DO ROSARIO ASSIS",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARCIA REGINA MEIRELES E SILVA DE ASSIS",
+          "data_nascimento": "26/06/1964"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "WALDIR SEBASTIAO DE ASSIS JUNIOR",
+          "data_nascimento": "17/06/1987"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ANDRE MEIRELES DE ASSIS",
+          "data_nascimento": "05/12/1989"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "SARA REGINA MEIRELES DE ASSIS",
+          "data_nascimento": "14/12/1990"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "LUCAS MEIRELES DE ASSIS",
+          "data_nascimento": "11/01/1992"
+        }
+      ],
+      "historico": [
+        {
+          "data": "20/12/1995",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "29/01/1997",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 67,
+      "matricula": "4886",
+      "funcao": "Pastor",
+      "nome": "WEBER DA CONCEIÇÃO OLIVEIRA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Central de Goiânia - CBN-GO",
+      "endereco": "Rua 5, Nº, 380 - Apto 1003 SETOR OESTE - GOIANIA - GO - BRA",
+      "cep": "74115-060",
+      "telefone": "(62) 998547577",
+      "email": "weberdcoliveira@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "517.420.551-68",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "01/08/1971",
+        "profissao": "Não Consta",
+        "identidade": "1606014",
+        "passaporte": null,
+        "orgao_emissor": "SPTC/GO",
+        "data_emissao_ci": "18/08/2006",
+        "data_cadastro": "23/11/2018 13:14:27",
+        "ultima_alteracao": "30/11/2018 13:16:35"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "SARA COZAC MACHADO OLIVEIRA",
+          "data_nascimento": "02/10/1977"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "CAMILA COZAC MACHADO DE OLIVEIRA",
+          "data_nascimento": "12/01/2000"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "JULIA COZAC MACHADO DE OLIVEIRA",
+          "data_nascimento": "01/06/2008"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "PEDRO COZAC MACHADO DE OLIVEIRA",
+          "data_nascimento": "23/12/2009"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "MARIA DA CONCEIÇÃO OLIVEIRA"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "WLADENIR OLIVEIRA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "14/09/2008",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "09/11/2018",
+          "codigo": "0",
+          "descricao": "MEMBRESIA"
+        },
+        {
+          "data": "23/11/2018",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 68,
+      "matricula": "5871",
+      "funcao": "Pastor",
+      "nome": "WELISMAR ALVES MOREIRA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Congregação Batista Nacional Filadélfia (I B N Central Rio Verde) - CBN-GO",
+      "endereco": "RUA 04, 34 CEMIG - São Simão - GO - BRA",
+      "cep": "75890-000",
+      "telefone": "(62) 99667-9616",
+      "email": "moreirawelismar@gmail.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "022.261.221-50",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "RIO VERDE GO",
+        "grau_instrucao": "SUPERIOR COMPLETO",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "08/07/1987",
+        "profissao": "PSICOLOGO",
+        "identidade": "5072675",
+        "passaporte": null,
+        "orgao_emissor": "SPTC/GO Data do Cadastro : 23/03/2026 13:20:43",
+        "data_emissao_ci": null,
+        "data_cadastro": "23/03/2026 13:20:43",
+        "ultima_alteracao": "02/04/2026 11:33:26"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "EDGARD LIMA MOREIRA",
+          "data_nascimento": "05/08/1967"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "ROSALAINE ALVES MOREIRA",
+          "data_nascimento": "11/10/1967"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "TATIANE PEREIRA DA SILVA",
+          "data_nascimento": "21/08/1986"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "KELLYN LORRAYNE MOREIRA",
+          "data_nascimento": "06/05/2010"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ISAQUE MURIEL D. MOREIRA",
+          "data_nascimento": "24/10/2010"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "ASAF MIGUEL S. MOREIRA",
+          "data_nascimento": "12/08/2017"
+        }
+      ],
+      "historico": [
+        {
+          "data": "11/02/2017",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        },
+        {
+          "data": "23/03/2026",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 69,
+      "matricula": "1011",
+      "funcao": "Pastor",
+      "nome": "WELLINGTON COELHO DE SOUSA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nova Salém - CBN-GO",
+      "endereco": "RUA DAS MAGNÓLIAS, QD. 98, LOTE 11 PARQUE OESTE INDUSTR1 - GOIANIA - GO - BRA",
+      "cep": "74375-280",
+      "telefone": "(62) 3205-1242",
+      "email": "novasalem@outlook.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "128.975.901-49",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "Grau de Instrução : Não Consta",
+        "grau_instrucao": "Não Consta",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "20/02/1949",
+        "profissao": null,
+        "identidade": "201216",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "10/01/2000",
+        "ultima_alteracao": "24/07/2018 16:01:44"
+      },
+      "familiares": [
+        {
+          "parentesco": "Pai",
+          "nome": "OTAVIANO COELHO DE SOUSA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Mãe",
+          "nome": "EDILA PEREIRA DE SOUSA",
+          "data_nascimento": "01/01/1900"
+        },
+        {
+          "parentesco": "Cônjuge",
+          "nome": "MARLY ARAUJO DE SOUSA",
+          "data_nascimento": "19/05/1952"
+        },
+        {
+          "parentesco": "Filha",
+          "nome": "EDILA ARAUJO SOUSA",
+          "data_nascimento": "05/06/1976"
+        }
+      ],
+      "historico": [
+        {
+          "data": "08/12/1988",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "31/07/1993",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    }
+  ]
+}

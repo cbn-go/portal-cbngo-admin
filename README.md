@@ -1,3 +1,19 @@
+# Portal CBN-GO Admin
+
+Painel Administrativo da Convenção Batista Nacional do Estado de Goiás (CBN-GO), construído com Laravel 11, Filament v3 e RBAC.
+
+## Módulo Ormiban (Rol de Ministros)
+
+A carga inicial e atualização do rol de ministros ativos da Ormiban GO é realizada pelo comando Artisan:
+
+```bash
+php artisan ormiban:import-rol
+```
+
+O arquivo de origem padrão encontra-se em `database/data/FICHAS CADASTROS ATIVOS GO.json`. Para mais detalhes sobre o schema, normalizações e histórico ministerial, consulte a [Documentação do Módulo Ormiban](docs/ormiban.md).
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">

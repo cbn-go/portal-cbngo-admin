@@ -1,0 +1,172 @@
+{
+  "fonte": "FICHAS CADASTROS ATIVOS GO.pdf",
+  "total": 3,
+  "fichas": [
+    {
+      "pagina": 1,
+      "matricula": "9001",
+      "funcao": "Pastor",
+      "nome": "PASTOR TESTE ALFA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional de Goiânia - CBN-GO",
+      "endereco": "Rua Teste, Qd 1, Lt 2 - Setor Central - GOIANIA - GO - BRA",
+      "cep": "74000-000",
+      "telefone": "(62) 3000-1111",
+      "email": "pastor.alfa@exemplo.com",
+      "outros_telefones": [
+        {
+          "tipo": "CELULAR",
+          "ddd": "62",
+          "numero": "99999-1111"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "111.444.777-35",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "GOIANIA GO",
+        "grau_instrucao": "Superior Completo",
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "15/05/1975",
+        "profissao": "Pastor",
+        "identidade": "1234567",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": "10/02/1995",
+        "data_cadastro": "01/02/2005 10:00:00",
+        "ultima_alteracao": "15/08/2023 14:30:00"
+      },
+      "familiares": [
+        {
+          "parentesco": "Cônjuge",
+          "nome": "ESPOSA TESTE ALFA",
+          "data_nascimento": "20/08/1978"
+        },
+        {
+          "parentesco": "Filho",
+          "nome": "FILHO TESTE ALFA",
+          "data_nascimento": "10/12/2002"
+        },
+        {
+          "parentesco": "Pai",
+          "nome": "PAI TESTE ALFA"
+        }
+      ],
+      "historico": [
+        {
+          "data": "10/12/1999",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "20/06/2001",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": [
+        {
+          "funcao_igreja": "PRESIDENTE Igreja Batista Nacional de Goiânia",
+          "data_inicial": "01/01/2010",
+          "data_final": null
+        }
+      ]
+    },
+    {
+      "pagina": 2,
+      "matricula": "9002",
+      "funcao": "Missionário",
+      "nome": "MISSIONARIO TESTE BETA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Inexistente no Banco - CBN-GO",
+      "endereco": "Av Central, 100 - ANAPOLIS - GO - BRA",
+      "cep": "75000-000",
+      "telefone": "(62) 3000-2222",
+      "email": "missionario.beta@exemplo.com",
+      "outros_telefones": [],
+      "dados_pessoais": {
+        "cpf": "222.555.888-46",
+        "nacionalidade": "Brasileira",
+        "naturalidade": "ANAPOLIS GO",
+        "grau_instrucao": "Pós-graduação",
+        "estado_civil": "Solteiro(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "22/11/1988",
+        "profissao": "Missionário",
+        "identidade": "2345678",
+        "passaporte": null,
+        "orgao_emissor": "SSP/GO",
+        "data_emissao_ci": null,
+        "data_cadastro": "15/03/2015",
+        "ultima_alteracao": "10/01/2024"
+      },
+      "familiares": [
+        {
+          "parentesco": "Mãe",
+          "nome": "MAE TESTE BETA",
+          "data_nascimento": "01/01/1900"
+        }
+      ],
+      "historico": [
+        {
+          "data": "05/04/2012",
+          "codigo": "13",
+          "descricao": "FILIAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    },
+    {
+      "pagina": 3,
+      "matricula": "9003",
+      "funcao": "Pastor",
+      "nome": "PASTOR TESTE GAMA",
+      "status": "ATIVO(A)",
+      "seccional": "ORMIBAN GO",
+      "igreja": "Igreja Batista Nacional de Anápolis - CBN-GO",
+      "endereco": "Rua 10, Qd 20 - RIO VERDE - GO - BRA",
+      "cep": "75900-000",
+      "telefone": "(64) 3000-3333",
+      "email": null,
+      "outros_telefones": [
+        {
+          "tipo": "RESIDENCIAL",
+          "ddd": "64",
+          "numero": "3000-3334"
+        }
+      ],
+      "dados_pessoais": {
+        "cpf": "333.666.999-57",
+        "nacionalidade": "Brasileira",
+        "naturalidade": null,
+        "grau_instrucao": null,
+        "estado_civil": "Casado(a)",
+        "sexo": "Masculino",
+        "data_nascimento": "03/03/1960",
+        "profissao": null,
+        "identidade": null,
+        "passaporte": null,
+        "orgao_emissor": null,
+        "data_emissao_ci": null,
+        "data_cadastro": "10/05/2000",
+        "ultima_alteracao": "20/05/2020"
+      },
+      "familiares": [],
+      "historico": [
+        {
+          "data": "15/11/1985",
+          "codigo": "1",
+          "descricao": "DIPLOMADO"
+        },
+        {
+          "data": "12/10/1990",
+          "codigo": "2",
+          "descricao": "ORDENAÇÃO"
+        }
+      ],
+      "funcoes_ocupacionais": []
+    }
+  ]
+}
