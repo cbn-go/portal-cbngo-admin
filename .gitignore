@@ -23,3 +23,10 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Dados sensíveis de produção / Ormiban (LGPD)
+*FICHAS*
+*fichas*
+/storage/app/ormiban/
+/database/data/*.json
+!/database/data/ibge_go_municipios.json

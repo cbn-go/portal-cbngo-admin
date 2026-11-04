@@ -180,6 +180,14 @@ class Church extends Model
     }
 
     /**
+     * @return HasMany<Minister, $this>
+     */
+    public function ministers(): HasMany
+    {
+        return $this->hasMany(Minister::class);
+    }
+
+    /**
      * Atributos com imagens no disco de mídia que ganham versões WebP.
      *
      * @return list<string>
