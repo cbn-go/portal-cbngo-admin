@@ -34,6 +34,8 @@ class Login extends BaseLogin
 
     public ?string $firstAccessEmail = null;
 
+    public ?string $emailHint = null;
+
     public function mount(): void
     {
         parent::mount();
@@ -75,6 +77,7 @@ class Login extends BaseLogin
         $this->hasAuthFailed = false;
         $this->firstAccessCpf = null;
         $this->firstAccessEmail = null;
+        $this->emailHint = null;
         $this->refreshFormSchema();
     }
 
@@ -84,6 +87,7 @@ class Login extends BaseLogin
         $this->hasAuthFailed = false;
         $this->firstAccessCpf = null;
         $this->firstAccessEmail = null;
+        $this->emailHint = null;
         $this->refreshFormSchema();
     }
 
@@ -241,6 +245,7 @@ class Login extends BaseLogin
         }
 
         $this->firstAccessCpf = $digits;
+        $this->emailHint = $this->maskEmail((string) $user->email);
         $this->step = 'email';
         $this->refreshAttemptsRemaining();
         $this->refreshFormSchema();
@@ -343,6 +348,30 @@ class Login extends BaseLogin
         }
 
         return User::query()->where('cpf', $this->firstAccessCpf)->first();
+    }
+
+    private function maskEmail(string $email): string
+    {
+        $email = mb_strtolower(trim($email));
+        $at = mb_strrpos($email, '@');
+
+        if ($at === false || $at === 0) {
+            return $email;
+        }
+
+        $local = mb_substr($email, 0, $at);
+        $domain = mb_substr($email, $at + 1);
+        $length = mb_strlen($local);
+
+        if ($length <= 1) {
+            $maskedLocal = $local;
+        } else {
+            $maskedLocal = mb_substr($local, 0, 1)
+                .str_repeat('•', $length - 2)
+                .mb_substr($local, -1);
+        }
+
+        return $maskedLocal.'@'.$domain;
     }
 
     private function emailMatches(User $user, string $email): bool

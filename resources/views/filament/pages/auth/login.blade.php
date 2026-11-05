@@ -115,13 +115,24 @@
                     @if ($step === 'cpf')
                         Informe o CPF da sua ficha para começar o primeiro acesso.
                     @elseif ($step === 'email')
-                        Confirme o e-mail que a secretaria cadastrou.
+                        O e-mail cadastrado é <span class="font-semibold text-gray-900">{{ $emailHint }}</span>. Digite o endereço completo para confirmar.
                     @elseif ($step === 'password')
                         Crie uma senha com no mínimo 8 caracteres.
                     @else
                         Use o e-mail ou o CPF e a senha cadastrados pela secretaria da CBN-GO.
                     @endif
                 </p>
+                @if ($step === 'email')
+                    <p class="mt-3 text-sm text-gray-600">
+                        Não reconhece este e-mail? Peça ajuda à secretaria pelo
+                        <a
+                            href="mailto:{{ config('portal.contact_email', 'contato@cbngo.org.br') }}"
+                            class="font-semibold text-[#E81828] hover:text-[#c51422] underline"
+                        >
+                            {{ config('portal.contact_email', 'contato@cbngo.org.br') }}
+                        </a>.
+                    </p>
+                @endif
             </header>
 
             {{-- Alertas de Erro (Credenciais Inválidas / Conta Desativada / Primeiro acesso) --}}
