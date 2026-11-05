@@ -323,6 +323,43 @@ class AuthenticationAndRateLimitingTest extends TestCase
         $this->assertAuthenticatedAs($minister);
     }
 
+    public function test_first_access_with_email_in_cpf_field_asks_for_cpf(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        User::factory()->create([
+            'email' => 'reidnerpa@gmail.com',
+            'cpf' => '52998224725',
+            'password' => null,
+            'role' => UserRole::MINISTER,
+            'is_active' => true,
+            'must_set_password' => true,
+        ]);
+
+        Livewire::test(Login::class)
+            ->call('startFirstAccess')
+            ->fillForm(['cpf' => 'reidnerpa@gmail.com'])
+            ->call('continueFirstAccess')
+            ->assertHasErrors(['data.cpf' => 'Você informou um e-mail. Neste passo, use o CPF da ficha.'])
+            ->assertSet('step', 'cpf');
+
+        $this->assertGuest();
+    }
+
+    public function test_first_access_with_unknown_cpf_mentions_only_cpf(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        Livewire::test(Login::class)
+            ->call('startFirstAccess')
+            ->fillForm(['cpf' => '529.982.247-25'])
+            ->call('continueFirstAccess')
+            ->assertHasErrors(['data.cpf' => 'O CPF informado não confere com o cadastro.'])
+            ->assertSet('step', 'cpf');
+
+        $this->assertGuest();
+    }
+
     public function test_first_access_with_wrong_email_does_not_authenticate(): void
     {
         Filament::setCurrentPanel(Filament::getPanel('admin'));

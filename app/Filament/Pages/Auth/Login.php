@@ -222,6 +222,11 @@ class Login extends BaseLogin
 
     private function confirmCpf(string $cpf): null
     {
+        if (str_contains($cpf, '@')) {
+            $this->registerFailedAttempt();
+            $this->failFirstAccess('data.cpf', 'Você informou um e-mail. Neste passo, use o CPF da ficha.');
+        }
+
         $digits = Cpf::normalize($cpf);
         $user = ($digits !== null && Cpf::isValid($digits))
             ? User::query()->where('cpf', $digits)->first()
@@ -229,7 +234,7 @@ class Login extends BaseLogin
 
         if ($user === null) {
             $this->registerFailedAttempt();
-            $this->failFirstAccess('data.cpf', 'CPF ou e-mail não conferem com o cadastro.');
+            $this->failFirstAccess('data.cpf', 'O CPF informado não confere com o cadastro.');
         }
 
         if (! $user->is_active) {
