@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Filament\Ormiban\Widgets\AgeChartWidget;
 use App\Filament\Ormiban\Widgets\MinisterSummaryWidget;
 use App\Filament\Ormiban\Widgets\MinistryAgeChartWidget;
+use App\Filament\Ormiban\Widgets\OrdinationsByYearChartWidget;
 use App\Filament\Pages\Ormiban\Indicators;
 use App\Models\Minister;
 use App\Models\User;
@@ -102,6 +103,7 @@ class OrmibanIndicatorsTest extends TestCase
 
         Livewire::test(Indicators::class)
             ->assertSee('Idade de ministério')
+            ->assertSee('Ordenações por ano')
             ->assertDontSee('Idade de ordenação')
             ->assertDontSee('Com diplomação')
             ->assertSee('2 com status ativo no filtro')
@@ -124,6 +126,7 @@ class OrmibanIndicatorsTest extends TestCase
             MinisterSummaryWidget::class,
             AgeChartWidget::class,
             MinistryAgeChartWidget::class,
+            OrdinationsByYearChartWidget::class,
         ];
 
         foreach ($widgets as $widget) {

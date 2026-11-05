@@ -118,6 +118,55 @@ class MinisterDemographicsTest extends TestCase
         $this->assertNull($data->ordinationPercent);
         $this->assertSame(0, $data->ministryBands['Sem ordenação']);
         $this->assertArrayNotHasKey('Sem diplomação', $data->ministryBands);
+        $this->assertSame([], $data->ordinationsByYear);
+    }
+
+    public function test_ordinations_by_year_counts_each_event_and_fills_empty_years(): void
+    {
+        $pastor = $this->minister('Pastor', '1980-01-01');
+        $pastor->historyEvents()->create([
+            'occurred_on' => '1990-05-01',
+            'code' => '2',
+            'description' => 'ORDENAÇÃO',
+        ]);
+        $pastor->historyEvents()->create([
+            'occurred_on' => '1990-11-04',
+            'code' => '2',
+            'description' => 'ORDENAÇÃO',
+        ]);
+        $pastor->historyEvents()->create([
+            'occurred_on' => '1990-01-01',
+            'code' => '1',
+            'description' => 'DIPLOMADO',
+        ]);
+        $pastor->historyEvents()->create([
+            'occurred_on' => '2016-03-01',
+            'code' => '2',
+            'description' => 'ORDENAÇÃO',
+        ]);
+
+        $missionary = $this->minister('Missionário', '1970-01-01');
+        $missionary->historyEvents()->create([
+            'occurred_on' => '2001-01-01',
+            'code' => '2',
+            'description' => 'ORDENAÇÃO',
+        ]);
+
+        $data = app(MinisterDemographics::class)->summarize([]);
+
+        $this->assertSame(2, $data->ordinationsByYear['1990']);
+        $this->assertSame(1, $data->ordinationsByYear['2001']);
+        $this->assertSame(0, $data->ordinationsByYear['2015']);
+        $this->assertSame(1, $data->ordinationsByYear['2016']);
+        $this->assertSame(0, $data->ordinationsByYear['2026']);
+        $this->assertSame(1990, array_key_first($data->ordinationsByYear));
+        $this->assertSame(2026, array_key_last($data->ordinationsByYear));
+
+        $pastors = app(MinisterDemographics::class)->summarize(['function' => 'Pastor']);
+
+        $this->assertSame(2, $pastors->ordinationsByYear['1990']);
+        $this->assertSame(0, $pastors->ordinationsByYear['2001']);
+        $this->assertSame(1, $pastors->ordinationsByYear['2016']);
     }
 
     private function minister(string $function, ?string $birthDate, string $status = Minister::STATUS_ACTIVE): Minister

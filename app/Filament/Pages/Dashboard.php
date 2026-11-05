@@ -12,6 +12,7 @@ use App\Filament\Widgets\StatsOverviewWidget;
 use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Church;
+use App\Models\Minister;
 use App\Models\News;
 use App\Models\Notice;
 use App\Models\SocialProject;
@@ -101,8 +102,11 @@ class Dashboard extends BaseDashboard
                 'active_churches' => $activeChurches,
                 'cities_count' => $citiesCount,
                 'cities_subtitle' => $citiesSubtitle,
-                'pastors_count' => 23,
-                'pastors_subtitle' => '2 com credencial vencendo em novembro',
+                'pastors_count' => Minister::query()
+                    ->where('function', 'Pastor')
+                    ->where('status', Minister::STATUS_ACTIVE)
+                    ->count(),
+                'pastors_subtitle' => 'ativos no rol',
                 'contributions_month' => 'R$ 48.250',
                 'contributions_subtitle' => $contributionsSubtitle,
                 'total_pending' => $totalPending,

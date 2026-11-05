@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Ormiban\Widgets\AgeChartWidget;
 use App\Filament\Ormiban\Widgets\MinisterSummaryWidget;
 use App\Filament\Ormiban\Widgets\MinistryAgeChartWidget;
+use App\Filament\Ormiban\Widgets\OrdinationsByYearChartWidget;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Strategy\Widgets\AgeGroupChartWidget;
 use App\Filament\Strategy\Widgets\MunicipalityMapWidget;
@@ -64,6 +65,7 @@ class AdminPanelProvider extends PanelProvider
                 MinisterSummaryWidget::class,
                 AgeChartWidget::class,
                 MinistryAgeChartWidget::class,
+                OrdinationsByYearChartWidget::class,
             ])
             // Malha do IBGE para o mapa da Visão de Goiás, servida pelo próprio painel.
             ->authenticatedRoutes(function (): void {
