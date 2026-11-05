@@ -14,6 +14,7 @@ use App\Services\Strategy\MunicipalityMap;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 use Tests\Feature\Filament\Strategy\CreatesStrategyData;
 use Tests\TestCase;
@@ -57,6 +58,41 @@ class MinisterStrategyAccessTest extends TestCase
         foreach ($this->ormibanStrategyUrls($municipality) as $url) {
             $this->actingAs($ministerUser)->get($url)->assertSuccessful();
         }
+    }
+
+    public function test_strategy_overview_opens_for_a_minister_when_a_church_has_coordinates(): void
+    {
+        $path = sys_get_temp_dir().'/cbngo-ormiban-map-'.uniqid().'/goias-municipios.geojson';
+        File::ensureDirectoryExists(dirname($path));
+        File::put($path, (string) json_encode(['type' => 'FeatureCollection', 'features' => []]));
+        config()->set('strategy.map_path', $path);
+
+        $church = Church::factory()->create([
+            'name' => 'Igreja com coordenadas',
+            'is_active' => true,
+            'latitude' => -16.68,
+            'longitude' => -49.25,
+        ]);
+        $ministerUser = User::factory()->create([
+            'role' => UserRole::MINISTER,
+            'is_active' => true,
+            'must_set_password' => false,
+        ]);
+
+        Filament::setCurrentPanel(Filament::getPanel('ormiban'));
+
+        $markers = app(MunicipalityMap::class)->churches();
+
+        $this->assertNull($markers[0]['url']);
+        $this->assertFalse(Route::has('filament.ormiban.resources.churches.edit'));
+
+        $this->actingAs($ministerUser)
+            ->get('/ormiban/estrategia')
+            ->assertSuccessful()
+            ->assertDontSee('filament.ormiban.resources.churches.edit')
+            ->assertDontSee('/admin/churches/'.$church->id.'/edit');
+
+        File::deleteDirectory(dirname($path));
     }
 
     public function test_active_minister_can_fetch_strategy_geojson_in_ormiban_panel(): void

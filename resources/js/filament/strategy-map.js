@@ -118,8 +118,8 @@ export default function strategyMap({ geojsonUrl, leafletJs, leafletCss, municip
                     fillOpacity: 1,
                 })
                     .bindPopup(
-                        `<strong>${escapeHtml(church.name)}</strong><br>${escapeHtml(church.city)}<br>` +
-                            `<a href="${escapeHtml(church.url)}">Abrir cadastro</a>`,
+                        `<strong>${escapeHtml(church.name)}</strong><br>${escapeHtml(church.city)}` +
+                            (church.url ? `<br><a href="${escapeHtml(church.url)}">Abrir cadastro</a>` : ''),
                     )
                     .addTo(map)
             })
