@@ -7,8 +7,10 @@ use App\Enums\StrategyIndicator;
 use App\Filament\Resources\ChurchResource;
 use App\Filament\Resources\MunicipalityResource;
 use App\Models\Church;
+use Filament\Facades\Filament;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Dados do mapa coroplético do Painel de Estratégia: a malha baixada do IBGE,
@@ -83,7 +85,7 @@ class MunicipalityMap
     /**
      * Igrejas ativas com coordenadas, para os marcadores.
      *
-     * @return list<array{name: string, city: ?string, lat: float, lng: float, url: string}>
+     * @return list<array{name: string, city: ?string, lat: float, lng: float, url: ?string}>
      */
     public function churches(): array
     {
@@ -98,10 +100,26 @@ class MunicipalityMap
                 'city' => $church->city,
                 'lat' => (float) $church->latitude,
                 'lng' => (float) $church->longitude,
-                'url' => ChurchResource::getUrl('edit', ['record' => $church]),
+                'url' => $this->churchEditUrl($church),
             ])
             ->values()
             ->all();
+    }
+
+    /**
+     * O resource de igrejas só existe no admin. No Ormiban a rota não existe
+     * e montar o link derruba a Visão de Goiás.
+     */
+    private function churchEditUrl(Church $church): ?string
+    {
+        $panelId = Filament::getCurrentPanel()?->getId() ?? 'admin';
+        $route = "filament.{$panelId}.resources.churches.edit";
+
+        if (! Route::has($route)) {
+            return null;
+        }
+
+        return ChurchResource::getUrl('edit', ['record' => $church], panel: $panelId);
     }
 
     /**

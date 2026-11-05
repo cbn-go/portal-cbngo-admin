@@ -3,6 +3,7 @@
 namespace Tests\Feature\Filament\Strategy;
 
 use App\Enums\UserRole;
+use App\Filament\Resources\ChurchResource;
 use App\Filament\Strategy\Widgets\MunicipalityMapWidget;
 use App\Models\Church;
 use App\Models\User;
@@ -110,8 +111,13 @@ class MunicipalityMapTest extends TestCase
         Church::factory()->create(['municipality_id' => $municipality->id, 'name' => 'Sem coordenadas', 'is_active' => true, 'latitude' => null, 'longitude' => null]);
 
         $map = app(MunicipalityMap::class);
+        $markers = $map->churches();
 
-        $this->assertSame(['Com coordenadas'], array_column($map->churches(), 'name'));
+        $this->assertSame(['Com coordenadas'], array_column($markers, 'name'));
+        $this->assertSame(
+            ChurchResource::getUrl('edit', ['record' => Church::query()->where('name', 'Com coordenadas')->first()]),
+            $markers[0]['url'],
+        );
         $this->assertSame(1, $map->churchesWithoutCoordinates());
     }
 
