@@ -70,4 +70,18 @@ class Cpf
 
         return (string) preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $digits);
     }
+
+    /**
+     * Máscara para listagens: oculta o CPF e expõe só os dois últimos dígitos.
+     */
+    public static function mask(?string $cpf): ?string
+    {
+        $digits = self::normalize($cpf);
+
+        if ($digits === null) {
+            return null;
+        }
+
+        return '***.***.***-'.substr($digits, -2);
+    }
 }
