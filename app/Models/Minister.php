@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use Database\Factories\MinisterFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -48,6 +49,10 @@ class Minister extends Model
 {
     /** @use HasFactory<MinisterFactory> */
     use HasFactory;
+
+    public const STATUS_ACTIVE = 'ATIVO(A)';
+
+    public const STATUS_INACTIVE = 'INATIVO(A)';
 
     /**
      * @var list<string>
@@ -174,5 +179,64 @@ class Minister extends Model
         }
 
         return (int) $ordenacao->occurred_on->diffInYears(now());
+    }
+
+    public function isActiveOnRoll(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function activate(): void
+    {
+        $this->update(['status' => self::STATUS_ACTIVE]);
+        $this->user?->update(['is_active' => true]);
+    }
+
+    public function deactivate(): void
+    {
+        $this->update(['status' => self::STATUS_INACTIVE]);
+        $this->user?->update(['is_active' => false]);
+    }
+
+    /**
+     * Invalida a senha atual e exige definição no próximo login por CPF.
+     */
+    public function forcePasswordReset(): void
+    {
+        $this->user?->update([
+            'password' => null,
+            'must_set_password' => true,
+        ]);
+    }
+
+    /**
+     * Cria ou atualiza o usuário de acesso vinculado ao ministro.
+     */
+    public function syncAccessUser(): User
+    {
+        $payload = [
+            'name' => $this->name,
+            'email' => $this->email,
+            'cpf' => $this->cpf,
+            'role' => UserRole::MINISTER,
+            'is_active' => $this->isActiveOnRoll(),
+        ];
+
+        if ($this->user !== null) {
+            $this->user->update($payload);
+
+            return $this->user;
+        }
+
+        $user = User::query()->create([
+            ...$payload,
+            'password' => null,
+            'must_set_password' => true,
+        ]);
+
+        $this->update(['user_id' => $user->id]);
+        $this->setRelation('user', $user);
+
+        return $user;
     }
 }

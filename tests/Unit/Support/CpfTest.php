@@ -69,4 +69,12 @@ class CpfTest extends TestCase
         $this->assertNull(Cpf::format('123'));
         $this->assertNull(Cpf::format(null));
     }
+
+    public function test_masks_cpf_keeping_only_the_last_two_digits(): void
+    {
+        $this->assertSame('***.***.***-25', Cpf::mask('52998224725'));
+        $this->assertSame('***.***.***-25', Cpf::mask('529.982.247-25'));
+        $this->assertNull(Cpf::mask('123'));
+        $this->assertNull(Cpf::mask(null));
+    }
 }
