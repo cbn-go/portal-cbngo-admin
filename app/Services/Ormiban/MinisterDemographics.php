@@ -4,6 +4,7 @@ namespace App\Services\Ormiban;
 
 use App\DTOs\Ormiban\MinisterDemographicsData;
 use App\Models\Minister;
+use App\Models\MinisterHistoryEvent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
@@ -95,7 +96,48 @@ class MinisterDemographics
             ordinationPercent: $this->percent($withOrdination, $total),
             ageBands: $ageBands,
             ministryBands: $ministryBands,
+            ordinationsByYear: $this->ordinationsByYear($function, $status),
         );
+    }
+
+    /**
+     * @return array<int, int>
+     */
+    private function ordinationsByYear(?string $function, ?string $status): array
+    {
+        $dates = MinisterHistoryEvent::query()
+            ->where('code', '2')
+            ->whereHas('minister', function (Builder $query) use ($function, $status): void {
+                $query
+                    ->when($function !== null, fn (Builder $query): Builder => $query->where('function', $function))
+                    ->when($status !== null, fn (Builder $query): Builder => $query->where('status', $status));
+            })
+            ->pluck('occurred_on');
+
+        $timezone = (string) config('app.timezone');
+        $counts = [];
+
+        foreach ($dates as $date) {
+            if ($date === null || $date === '') {
+                continue;
+            }
+
+            $year = Carbon::parse($date, $timezone)->year;
+            $counts[$year] = ($counts[$year] ?? 0) + 1;
+        }
+
+        if ($counts === []) {
+            return [];
+        }
+
+        $currentYear = now()->timezone($timezone)->year;
+        $series = [];
+
+        for ($year = min(array_keys($counts)); $year <= $currentYear; $year++) {
+            $series[$year] = $counts[$year] ?? 0;
+        }
+
+        return $series;
     }
 
     private function filterValue(mixed $value): ?string

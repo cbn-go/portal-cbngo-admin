@@ -20,9 +20,14 @@ abstract class MinisterBandChartWidget extends ChartWidget
     protected int|string|array $columnSpan = 'full';
 
     /**
-     * @return array<string, int>
+     * @return array<int|string, int>
      */
     abstract protected function series(MinisterDemographicsData $data): array;
+
+    protected function datasetLabel(): string
+    {
+        return 'Ministros';
+    }
 
     protected function getData(): array
     {
@@ -31,7 +36,7 @@ abstract class MinisterBandChartWidget extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Ministros',
+                    'label' => $this->datasetLabel(),
                     'data' => array_values($series),
                     'backgroundColor' => '#e81828',
                     'borderRadius' => 4,

@@ -20,6 +20,7 @@ use App\Filament\Widgets\StatsOverviewWidget;
 use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Church;
+use App\Models\Minister;
 use App\Models\News;
 use App\Models\Notice;
 use App\Models\SocialProject;
@@ -248,6 +249,59 @@ class DashboardOverviewTest extends TestCase
 
         // Desativar ou deletar a igreja também invalida o cache
         $newChurch->delete();
+
+        $this->assertFalse(Cache::has(Dashboard::STATS_CACHE_KEY));
+    }
+
+    public function test_pastors_kpi_counts_active_pastors_and_ignores_the_mock_credential_text(): void
+    {
+        Minister::factory()->count(2)->create([
+            'function' => 'Pastor',
+            'status' => Minister::STATUS_ACTIVE,
+        ]);
+        Minister::factory()->create([
+            'function' => 'Pastor',
+            'status' => Minister::STATUS_INACTIVE,
+        ]);
+        Minister::factory()->create([
+            'function' => 'Missionário',
+            'status' => Minister::STATUS_ACTIVE,
+        ]);
+
+        $this->actingAs($this->superAdmin)
+            ->get('/admin')
+            ->assertSuccessful()
+            ->assertSeeInOrder(['Pastores no rol', '2', 'ativos no rol'])
+            ->assertDontSee('credencial vencendo');
+    }
+
+    public function test_pastors_kpi_cache_is_invalidated_when_a_minister_is_saved_or_deleted(): void
+    {
+        Minister::factory()->create([
+            'function' => 'Pastor',
+            'status' => Minister::STATUS_ACTIVE,
+        ]);
+
+        $this->actingAs($this->superAdmin)
+            ->get('/admin')
+            ->assertSuccessful()
+            ->assertSeeInOrder(['Pastores no rol', '1', 'ativos no rol']);
+
+        $this->assertTrue(Cache::has(Dashboard::STATS_CACHE_KEY));
+
+        $second = Minister::factory()->create([
+            'function' => 'Pastor',
+            'status' => Minister::STATUS_ACTIVE,
+        ]);
+
+        $this->assertFalse(Cache::has(Dashboard::STATS_CACHE_KEY));
+
+        $this->actingAs($this->superAdmin)
+            ->get('/admin')
+            ->assertSuccessful()
+            ->assertSeeInOrder(['Pastores no rol', '2', 'ativos no rol']);
+
+        $second->delete();
 
         $this->assertFalse(Cache::has(Dashboard::STATS_CACHE_KEY));
     }

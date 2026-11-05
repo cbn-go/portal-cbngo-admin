@@ -7,6 +7,7 @@ final readonly class MinisterDemographicsData
     /**
      * @param  array<string, int>  $ageBands
      * @param  array<string, int>  $ministryBands
+     * @param  array<int, int>  $ordinationsByYear
      */
     public function __construct(
         public int $total,
@@ -18,5 +19,6 @@ final readonly class MinisterDemographicsData
         public ?float $ordinationPercent,
         public array $ageBands,
         public array $ministryBands,
+        public array $ordinationsByYear,
     ) {}
 }

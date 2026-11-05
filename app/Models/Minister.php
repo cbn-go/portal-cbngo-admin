@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
+use App\Filament\Pages\Dashboard;
 use Database\Factories\MinisterFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @property int $id
@@ -53,6 +55,17 @@ class Minister extends Model
     public const STATUS_ACTIVE = 'ATIVO(A)';
 
     public const STATUS_INACTIVE = 'INATIVO(A)';
+
+    protected static function booted(): void
+    {
+        static::saved(function (): void {
+            Cache::forget(Dashboard::STATS_CACHE_KEY);
+        });
+
+        static::deleted(function (): void {
+            Cache::forget(Dashboard::STATS_CACHE_KEY);
+        });
+    }
 
     /**
      * @var list<string>
