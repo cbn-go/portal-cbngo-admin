@@ -2,13 +2,12 @@
 
 namespace App\Policies;
 
-use App\Enums\UserRole;
 use App\Models\SocialProject;
 use App\Models\User;
 
 /**
- * Projetos sociais: o representante gerencia os projetos da própria igreja e
- * envia para revisão; a administração gerencia todos e aprova a publicação.
+ * Projetos sociais: o representante e o ministro gerenciam os projetos da
+ * própria igreja e enviam para revisão; a administração gerencia todos e aprova.
  */
 class SocialProjectPolicy
 {
@@ -33,7 +32,7 @@ class SocialProjectPolicy
             return true;
         }
 
-        return $user->role === UserRole::CHURCH_REPRESENTATIVE && $user->church_id !== null;
+        return $this->managesChurch($user);
     }
 
     /**
@@ -45,9 +44,7 @@ class SocialProjectPolicy
             return true;
         }
 
-        return $user->role === UserRole::CHURCH_REPRESENTATIVE
-            && $user->church_id !== null
-            && $project->church_id === $user->church_id;
+        return $this->managesProject($user, $project);
     }
 
     /**
@@ -59,7 +56,7 @@ class SocialProjectPolicy
             return true;
         }
 
-        return $user->role === UserRole::CHURCH_REPRESENTATIVE && $user->church_id !== null;
+        return $this->managesChurch($user);
     }
 
     /**
@@ -71,9 +68,7 @@ class SocialProjectPolicy
             return true;
         }
 
-        return $user->role === UserRole::CHURCH_REPRESENTATIVE
-            && $user->church_id !== null
-            && $project->church_id === $user->church_id;
+        return $this->managesProject($user, $project);
     }
 
     /**
@@ -85,9 +80,19 @@ class SocialProjectPolicy
             return true;
         }
 
-        return $user->role === UserRole::CHURCH_REPRESENTATIVE
-            && $user->church_id !== null
-            && $project->church_id === $user->church_id;
+        return $this->managesProject($user, $project);
+    }
+
+    private function managesChurch(User $user): bool
+    {
+        return $user->contentChurchId() !== null;
+    }
+
+    private function managesProject(User $user, SocialProject $project): bool
+    {
+        $churchId = $user->contentChurchId();
+
+        return $churchId !== null && $project->church_id === $churchId;
     }
 
     /**

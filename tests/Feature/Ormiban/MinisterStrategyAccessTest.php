@@ -198,6 +198,10 @@ class MinisterStrategyAccessTest extends TestCase
             'church_id' => $otherChurch->id,
             'title' => 'Projeto Esperança',
         ]);
+        $ownProject = SocialProject::factory()->create([
+            'church_id' => $ownChurch->id,
+            'title' => 'Projeto da Paz',
+        ]);
 
         $user = User::factory()->create([
             'role' => UserRole::MINISTER,
@@ -220,7 +224,10 @@ class MinisterStrategyAccessTest extends TestCase
             ->assertSee('Segunda Igreja Batista de Anápolis')
             ->assertDontSee("/admin/churches/{$otherChurch->id}/edit")
             ->assertSee('Projeto Esperança')
-            ->assertDontSee("/admin/social-projects/{$socialProject->id}/edit");
+            ->assertDontSee("/admin/social-projects/{$socialProject->id}/edit")
+            ->assertDontSee("/ormiban/social-projects/{$socialProject->id}/edit")
+            ->assertSee('Projeto da Paz')
+            ->assertSee("/ormiban/social-projects/{$ownProject->id}/edit");
     }
 
     public function test_strategy_navigation_group_is_visible_in_ormiban_panel(): void

@@ -34,14 +34,34 @@ class SocialProjectScope implements Scope
             return;
         }
 
-        if ($user->role === UserRole::CHURCH_REPRESENTATIVE && $user->church_id !== null) {
-            $builder->where($model->getTable().'.church_id', $user->church_id);
+        if ($user->role === UserRole::CHURCH_REPRESENTATIVE) {
+            $churchId = $user->contentChurchId();
+
+            if ($churchId === null) {
+                $builder->whereRaw('1 = 0');
+
+                return;
+            }
+
+            $builder->where($model->getTable().'.church_id', $churchId);
 
             return;
         }
 
         if ($user->role === UserRole::MINISTER) {
-            $builder->where($model->getTable().'.status', PublishStatus::PUBLISHED);
+            $table = $model->getTable();
+            $churchId = $user->contentChurchId();
+
+            if ($churchId === null) {
+                $builder->where($table.'.status', PublishStatus::PUBLISHED);
+
+                return;
+            }
+
+            $builder->where(function (Builder $query) use ($table, $churchId): void {
+                $query->where($table.'.status', PublishStatus::PUBLISHED)
+                    ->orWhere($table.'.church_id', $churchId);
+            });
 
             return;
         }

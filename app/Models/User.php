@@ -127,6 +127,27 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasOne(Minister::class);
     }
 
+    /**
+     * Igreja cujos conteúdos locais este usuário gerencia.
+     * No ministro vale a ficha; users.church_id só cobre a conta sem ficha.
+     */
+    public function contentChurchId(): ?int
+    {
+        if ($this->role->isChurchRepresentative()) {
+            return $this->church_id;
+        }
+
+        if (! $this->role->isMinister()) {
+            return null;
+        }
+
+        if ($this->relationLoaded('minister') || $this->exists) {
+            return $this->minister?->church_id ?? $this->church_id;
+        }
+
+        return $this->church_id;
+    }
+
     public function hasAdminPanelAccess(): bool
     {
         return $this->is_active && $this->role->hasAdminPanelAccess();
