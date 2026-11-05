@@ -2,7 +2,7 @@
     <x-filament-panels::form wire:submit="save">
         {{ $this->form }}
 
-        @if ($this->church !== null)
+        @if (count($this->getFormActions()) > 0)
             <div class="mt-6 flex justify-end">
                 <x-filament-panels::form.actions
                     :actions="$this->getFormActions()"
