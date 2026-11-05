@@ -154,17 +154,20 @@ class Minister extends Model
     }
 
     /**
-     * Anos de ministério (tempo desde a diplomação).
+     * Anos completos desde a ordenação mais antiga (código 2).
      */
     public function yearsOfMinistry(): ?int
     {
-        $diploma = $this->diplomaEvent();
+        $ordenacao = $this->historyEvents()
+            ->where('code', '2')
+            ->orderBy('occurred_on')
+            ->first();
 
-        if ($diploma === null || $diploma->occurred_on === null) {
+        if ($ordenacao === null || $ordenacao->occurred_on === null) {
             return null;
         }
 
-        return (int) $diploma->occurred_on->diffInYears(now());
+        return (int) $ordenacao->occurred_on->diffInYears(now());
     }
 
     /**

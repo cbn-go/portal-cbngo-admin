@@ -8,6 +8,7 @@ use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
@@ -129,7 +130,7 @@ class AuthenticationAndRateLimitingTest extends TestCase
 
         Livewire::test(Login::class)
             ->fillForm([
-                'email' => 'autor@cbngo.org.br',
+                'identifier' => 'autor@cbngo.org.br',
                 'password' => 'password123',
             ])
             ->call('authenticate')
@@ -151,7 +152,7 @@ class AuthenticationAndRateLimitingTest extends TestCase
 
         Livewire::test(Login::class)
             ->fillForm([
-                'email' => 'editor@cbngo.org.br',
+                'identifier' => 'editor@cbngo.org.br',
                 'password' => 'password123',
             ])
             ->call('authenticate')
@@ -173,11 +174,11 @@ class AuthenticationAndRateLimitingTest extends TestCase
 
         Livewire::test(Login::class)
             ->fillForm([
-                'email' => 'bloqueado@cbngo.org.br',
+                'identifier' => 'bloqueado@cbngo.org.br',
                 'password' => 'password123',
             ])
             ->call('authenticate')
-            ->assertHasErrors(['data.email' => 'Sua conta está desativada. Entre em contato com a administração.']);
+            ->assertHasErrors(['data.identifier' => 'Sua conta está desativada. Entre em contato com a administração.']);
 
         $this->assertGuest();
     }
@@ -191,7 +192,7 @@ class AuthenticationAndRateLimitingTest extends TestCase
         for ($i = 0; $i < 5; $i++) {
             try {
                 $component->fillForm([
-                    'email' => 'wrong@email.com',
+                    'identifier' => 'wrong@email.com',
                     'password' => 'wrongpassword',
                 ])->call('authenticate');
             } catch (ValidationException) {
@@ -200,7 +201,7 @@ class AuthenticationAndRateLimitingTest extends TestCase
         }
 
         $component->fillForm([
-            'email' => 'wrong@email.com',
+            'identifier' => 'wrong@email.com',
             'password' => 'wrongpassword',
         ])->call('authenticate')
             ->assertNotified();
@@ -224,7 +225,8 @@ class AuthenticationAndRateLimitingTest extends TestCase
             $response->assertSee('Cada pessoa vê apenas os módulos liberados para a sua função.');
             $response->assertSee('Ambiente restrito a pessoas autorizadas pela CBN-GO.');
             $response->assertSee('Entrar no sistema');
-            $response->assertSee('Use o e-mail e a senha cadastrados pela secretaria da CBN-GO.');
+            $response->assertSee('Use o e-mail ou o CPF e a senha cadastrados pela secretaria da CBN-GO.');
+            $response->assertSee('Meu primeiro acesso');
             $response->assertSee('Voltar ao site');
             $response->assertSee('https://cbngo.org.br');
             $response->assertSee('Manter conectado');
@@ -243,15 +245,150 @@ class AuthenticationAndRateLimitingTest extends TestCase
 
         try {
             $component->fillForm([
-                'email' => 'wrong@email.com',
+                'identifier' => 'wrong@email.com',
                 'password' => 'wrongpassword',
             ])->call('authenticate');
         } catch (ValidationException) {
             // Expected validation failure
         }
 
-        $component->assertHasErrors(['data.email'])
-            ->assertSee('Não foi possível entrar. Confira o e-mail e a senha.')
+        $component->assertHasErrors(['data.identifier'])
+            ->assertSee('Não foi possível entrar. Confira o e-mail ou o CPF e a senha.')
             ->assertSee('tentativas restantes');
+    }
+
+    public function test_minister_logs_in_with_cpf_and_lands_on_ormiban(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        $minister = User::factory()->create([
+            'email' => 'ministro@cbngo.org.br',
+            'cpf' => '52998224725',
+            'password' => 'password123',
+            'role' => UserRole::MINISTER,
+            'is_active' => true,
+            'must_set_password' => false,
+        ]);
+
+        Livewire::test(Login::class)
+            ->fillForm([
+                'identifier' => '529.982.247-25',
+                'password' => 'password123',
+            ])
+            ->call('authenticate')
+            ->assertHasNoErrors()
+            ->assertRedirect(url('/ormiban'));
+
+        $this->assertAuthenticatedAs($minister);
+    }
+
+    public function test_first_access_with_matching_email_sets_password_and_logs_in(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        $minister = User::factory()->create([
+            'email' => 'ministro@cbngo.org.br',
+            'cpf' => '52998224725',
+            'password' => null,
+            'role' => UserRole::MINISTER,
+            'is_active' => true,
+            'must_set_password' => true,
+        ]);
+
+        Livewire::test(Login::class)
+            ->call('startFirstAccess')
+            ->fillForm(['cpf' => '529.982.247-25'])
+            ->call('continueFirstAccess')
+            ->assertHasNoErrors()
+            ->assertSet('step', 'email')
+            ->fillForm(['email' => 'Ministro@cbngo.org.br'])
+            ->call('continueFirstAccess')
+            ->assertHasNoErrors()
+            ->assertSet('step', 'password')
+            ->fillForm([
+                'password' => 'SenhaNova123',
+                'password_confirmation' => 'SenhaNova123',
+            ])
+            ->call('continueFirstAccess')
+            ->assertHasNoErrors()
+            ->assertRedirect(url('/ormiban'));
+
+        $minister->refresh();
+        $this->assertFalse($minister->must_set_password);
+        $this->assertTrue(Hash::check('SenhaNova123', (string) $minister->password));
+        $this->assertAuthenticatedAs($minister);
+    }
+
+    public function test_first_access_with_wrong_email_does_not_authenticate(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        User::factory()->create([
+            'email' => 'ministro@cbngo.org.br',
+            'cpf' => '52998224725',
+            'password' => null,
+            'role' => UserRole::MINISTER,
+            'is_active' => true,
+            'must_set_password' => true,
+        ]);
+
+        Livewire::test(Login::class)
+            ->call('startFirstAccess')
+            ->fillForm(['cpf' => '529.982.247-25'])
+            ->call('continueFirstAccess')
+            ->fillForm(['email' => 'outro@cbngo.org.br'])
+            ->call('continueFirstAccess')
+            ->assertHasErrors(['data.email' => 'CPF ou e-mail não conferem com o cadastro.'])
+            ->assertSet('step', 'email');
+
+        $this->assertGuest();
+    }
+
+    public function test_first_access_without_email_asks_for_the_secretariat(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        User::factory()->create([
+            'email' => null,
+            'cpf' => '52998224725',
+            'password' => null,
+            'role' => UserRole::MINISTER,
+            'is_active' => true,
+            'must_set_password' => true,
+        ]);
+
+        Livewire::test(Login::class)
+            ->call('startFirstAccess')
+            ->fillForm(['cpf' => '529.982.247-25'])
+            ->call('continueFirstAccess')
+            ->assertHasErrors(['data.cpf' => 'Sua ficha não tem e-mail. Entre em contato com a secretaria.'])
+            ->assertSet('step', 'cpf');
+
+        $this->assertGuest();
+    }
+
+    public function test_first_access_does_not_overwrite_an_existing_password(): void
+    {
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        $minister = User::factory()->create([
+            'email' => 'ministro@cbngo.org.br',
+            'cpf' => '52998224725',
+            'password' => 'password123',
+            'role' => UserRole::MINISTER,
+            'is_active' => true,
+            'must_set_password' => false,
+        ]);
+
+        Livewire::test(Login::class)
+            ->call('startFirstAccess')
+            ->fillForm(['cpf' => '529.982.247-25'])
+            ->call('continueFirstAccess')
+            ->assertHasErrors(['data.cpf' => 'Esta conta já tem senha. Use o login normal.'])
+            ->assertSet('step', 'cpf');
+
+        $minister->refresh();
+        $this->assertTrue(Hash::check('password123', (string) $minister->password));
+        $this->assertGuest();
     }
 }

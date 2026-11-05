@@ -109,18 +109,28 @@
         <div class="w-full max-w-[420px] mx-auto my-auto py-2">
             <header class="mb-6">
                 <h1 class="font-brand-title text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
-                    Entrar no sistema
+                    {{ $step === 'login' ? 'Entrar no sistema' : 'Meu primeiro acesso' }}
                 </h1>
                 <p class="mt-2 text-sm text-gray-600">
-                    Use o e-mail e a senha cadastrados pela secretaria da CBN-GO.
+                    @if ($step === 'cpf')
+                        Informe o CPF da sua ficha para começar o primeiro acesso.
+                    @elseif ($step === 'email')
+                        Confirme o e-mail que a secretaria cadastrou.
+                    @elseif ($step === 'password')
+                        Crie uma senha com no mínimo 8 caracteres.
+                    @else
+                        Use o e-mail ou o CPF e a senha cadastrados pela secretaria da CBN-GO.
+                    @endif
                 </p>
             </header>
 
-            {{-- Alertas de Erro (Credenciais Inválidas / Conta Desativada) --}}
+            {{-- Alertas de Erro (Credenciais Inválidas / Conta Desativada / Primeiro acesso) --}}
             @php
-                $emailError = $errors->first('data.email');
-                $isAccountInactive = ($emailError === 'Sua conta está desativada. Entre em contato com a administração.');
-                $showInvalidCredentialsAlert = $hasAuthFailed || ($errors->has('data.email') && ! $isAccountInactive);
+                $identifierError = $errors->first('data.identifier');
+                $firstAccessError = $errors->first('data.cpf') ?: $errors->first('data.email') ?: ($step !== 'login' ? $errors->first('data.password') : null);
+                $inactiveMessage = 'Sua conta está desativada. Entre em contato com a administração.';
+                $isAccountInactive = $identifierError === $inactiveMessage || $firstAccessError === $inactiveMessage;
+                $showInvalidCredentialsAlert = $step === 'login' && ($hasAuthFailed || ($errors->has('data.identifier') && ! $isAccountInactive));
             @endphp
 
             @if ($showInvalidCredentialsAlert)
@@ -135,7 +145,7 @@
                         </svg>
                         <div class="text-sm">
                             <p class="font-semibold text-[#c51422]">
-                                Não foi possível entrar. Confira o e-mail e a senha.
+                                Não foi possível entrar. Confira o e-mail ou o CPF e a senha.
                             </p>
                             @if ($attemptsRemaining !== null && $attemptsRemaining > 0)
                                 <p class="mt-1 text-xs text-red-700">
@@ -144,6 +154,16 @@
                             @endif
                         </div>
                     </div>
+                </div>
+            @endif
+
+            @if ($firstAccessError && ! $isAccountInactive)
+                <div
+                    role="alert"
+                    aria-live="assertive"
+                    class="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-red-900 shadow-sm"
+                >
+                    <p class="text-sm font-semibold text-[#c51422]">{{ $firstAccessError }}</p>
                 </div>
             @endif
 
@@ -167,32 +187,33 @@
             @endif
 
             {{-- Formulário de Autenticação --}}
-            <x-filament-panels::form id="form" wire:submit="authenticate">
+            <x-filament-panels::form id="form" wire:submit="{{ $step === 'login' ? 'authenticate' : 'continueFirstAccess' }}">
                 {{ $this->form }}
 
-                {{-- Linha com Checkbox 'Manter conectado' e Link 'Esqueci minha senha' alinhados na mesma linha --}}
-                <div class="flex items-center justify-between text-sm mt-3 mb-1">
-                    <label for="data.remember" class="inline-flex items-center gap-2 cursor-pointer select-none">
-                        <input
-                            id="data.remember"
-                            type="checkbox"
-                            wire:model="data.remember"
-                            tabindex="3"
-                            class="h-4 w-4 rounded border-2 border-gray-300 text-[#E81828] focus:ring-[#E81828] focus:ring-offset-0 cursor-pointer accent-[#E81828]"
-                        />
-                        <span class="text-sm font-medium text-gray-700">Manter conectado</span>
-                    </label>
+                @if ($step === 'login')
+                    <div class="flex items-center justify-between text-sm mt-3 mb-1">
+                        <label for="data.remember" class="inline-flex items-center gap-2 cursor-pointer select-none">
+                            <input
+                                id="data.remember"
+                                type="checkbox"
+                                wire:model="data.remember"
+                                tabindex="3"
+                                class="h-4 w-4 rounded border-2 border-gray-300 text-[#E81828] focus:ring-[#E81828] focus:ring-offset-0 cursor-pointer accent-[#E81828]"
+                            />
+                            <span class="text-sm font-medium text-gray-700">Manter conectado</span>
+                        </label>
 
-                    @if (filament()->hasPasswordReset())
-                        <a
-                            href="{{ filament()->getRequestPasswordResetUrl() }}"
-                            tabindex="4"
-                            class="text-sm font-medium text-[#E81828] hover:text-[#c51422] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E81828] rounded py-1"
-                        >
-                            Esqueci minha senha
-                        </a>
-                    @endif
-                </div>
+                        @if (filament()->hasPasswordReset())
+                            <a
+                                href="{{ filament()->getRequestPasswordResetUrl() }}"
+                                tabindex="4"
+                                class="text-sm font-medium text-[#E81828] hover:text-[#c51422] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E81828] rounded py-1"
+                            >
+                                Esqueci minha senha
+                            </a>
+                        @endif
+                    </div>
+                @endif
 
                 <div class="mt-4">
                     <x-filament-panels::form.actions
@@ -201,6 +222,24 @@
                     />
                 </div>
             </x-filament-panels::form>
+
+            @if ($step === 'login')
+                <button
+                    type="button"
+                    wire:click="startFirstAccess"
+                    class="mt-3 w-full min-h-[44px] text-base font-semibold text-[#E81828] bg-white border border-[#E81828] hover:bg-red-50 focus:ring-2 focus:ring-[#E81828] focus:ring-offset-2 transition-colors duration-150 rounded-lg"
+                >
+                    Meu primeiro acesso
+                </button>
+            @else
+                <button
+                    type="button"
+                    wire:click="backToLogin"
+                    class="mt-3 w-full min-h-[44px] text-sm font-semibold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg"
+                >
+                    Voltar ao login
+                </button>
+            @endif
 
             {{-- Aviso de Limite de Tentativas --}}
             <div class="mt-5 rounded-lg bg-gray-50 p-3 text-xs text-gray-500 border border-gray-200">

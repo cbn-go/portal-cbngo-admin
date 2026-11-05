@@ -5,7 +5,6 @@ namespace App\Filament\Pages\Ormiban;
 use App\Filament\Ormiban\Widgets\AgeChartWidget;
 use App\Filament\Ormiban\Widgets\MinisterSummaryWidget;
 use App\Filament\Ormiban\Widgets\MinistryAgeChartWidget;
-use App\Filament\Ormiban\Widgets\OrdinationAgeChartWidget;
 use App\Models\Minister;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -80,7 +79,6 @@ class Indicators extends Page
             MinisterSummaryWidget::class,
             AgeChartWidget::class,
             MinistryAgeChartWidget::class,
-            OrdinationAgeChartWidget::class,
         ];
     }
 }
