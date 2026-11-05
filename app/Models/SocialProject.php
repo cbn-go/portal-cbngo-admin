@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\ProjectCategory;
 use App\Enums\PublishStatus;
-use App\Enums\UserRole;
 use App\Models\Concerns\HasImageVariants;
 use App\Models\Scopes\SocialProjectScope;
 use App\Services\HtmlSanitizerService;
@@ -127,9 +126,11 @@ class SocialProject extends Model
             /** @var User|null $user */
             $user = Auth::user();
 
-            if ($user !== null && $user->role === UserRole::CHURCH_REPRESENTATIVE) {
-                if ($user->church_id !== null) {
-                    $project->church_id = $user->church_id;
+            if (self::editedByChurchMinister($user)) {
+                $churchId = $user->contentChurchId();
+
+                if ($churchId !== null) {
+                    $project->church_id = $churchId;
                 }
 
                 $project->user_id = $user->id;
@@ -159,7 +160,7 @@ class SocialProject extends Model
             /** @var User|null $user */
             $user = Auth::user();
 
-            if ($user === null || $user->role !== UserRole::CHURCH_REPRESENTATIVE) {
+            if (! self::editedByChurchMinister($user)) {
                 return;
             }
 
@@ -169,8 +170,8 @@ class SocialProject extends Model
                 }
             }
 
-            // Qualquer alteração do representante em um projeto publicado (ou a
-            // tentativa de publicar) volta para a revisão da administração.
+            // Qualquer alteração do ministro ou do representante em um projeto
+            // publicado (ou a tentativa de publicar) volta para a revisão.
             if (! in_array($project->status, self::REPRESENTATIVE_STATUSES, true)) {
                 $project->status = PublishStatus::PENDING_REVIEW;
                 $project->published_at = null;
@@ -313,11 +314,34 @@ class SocialProject extends Model
             return $query;
         }
 
-        if ($user->role === UserRole::CHURCH_REPRESENTATIVE && $user->church_id !== null) {
-            return $query->where('church_id', $user->church_id);
+        if ($user->role->isChurchRepresentative()) {
+            $churchId = $user->contentChurchId();
+
+            return $churchId === null
+                ? $query->whereRaw('1 = 0')
+                : $query->where('church_id', $churchId);
+        }
+
+        if ($user->role->isMinister()) {
+            $churchId = $user->contentChurchId();
+
+            if ($churchId === null) {
+                return $query->where('status', PublishStatus::PUBLISHED);
+            }
+
+            return $query->where(function (Builder $inner) use ($churchId): void {
+                $inner->where('status', PublishStatus::PUBLISHED)
+                    ->orWhere('church_id', $churchId);
+            });
         }
 
         return $query->whereRaw('1 = 0');
+    }
+
+    private static function editedByChurchMinister(?User $user): bool
+    {
+        return $user !== null
+            && ($user->role->isChurchRepresentative() || $user->role->isMinister());
     }
 
     /**

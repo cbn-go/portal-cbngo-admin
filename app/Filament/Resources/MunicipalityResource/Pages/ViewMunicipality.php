@@ -14,6 +14,7 @@ use App\Models\Church;
 use App\Models\Municipality;
 use App\Models\MunicipalityIndicator;
 use App\Models\SocialProject;
+use App\Models\User;
 use App\Services\Strategy\ChurchCoverageService;
 use App\Services\Strategy\StateIndicatorService;
 use Filament\Resources\Pages\ViewRecord;
@@ -142,6 +143,14 @@ class ViewMunicipality extends ViewRecord
 
         if ($panelId === 'admin' && auth()->user()?->role?->hasAdminPanelAccess()) {
             return SocialProjectResource::getUrl('edit', ['record' => $project]);
+        }
+
+        if ($panelId === 'ormiban') {
+            $user = auth()->user();
+
+            if ($user instanceof User && $user->contentChurchId() === $project->church_id) {
+                return SocialProjectResource::getUrl('edit', ['record' => $project]);
+            }
         }
 
         return null;

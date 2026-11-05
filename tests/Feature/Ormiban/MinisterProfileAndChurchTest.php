@@ -210,6 +210,38 @@ class MinisterProfileAndChurchTest extends TestCase
         $this->assertSame('Avenida Principal, 500', $church->address);
     }
 
+    public function test_auxiliary_pastor_updates_the_church_on_his_ficha(): void
+    {
+        $church = Church::factory()->create([
+            'name' => 'Igreja Batista Nacional da Paz',
+            'pastor_name' => 'Pastor Titular',
+            'phone' => '(62) 3333-0000',
+        ]);
+
+        $user = User::factory()->create([
+            'role' => UserRole::MINISTER,
+            'church_id' => null,
+            'is_active' => true,
+            'must_set_password' => false,
+        ]);
+
+        Minister::factory()->create([
+            'user_id' => $user->id,
+            'church_id' => $church->id,
+            'function' => 'Pastor',
+            'name' => 'Pastor Auxiliar',
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(EditMyChurch::class)
+            ->set('data.phone', '(62) 98888-7777')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertSame('(62) 98888-7777', $church->refresh()->phone);
+        $this->assertSame('Pastor Titular', $church->pastor_name);
+    }
+
     public function test_minister_cannot_update_church_belonging_to_another_pastor(): void
     {
         $churchA = Church::factory()->create(['name' => 'Igreja A']);

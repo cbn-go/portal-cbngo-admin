@@ -76,6 +76,28 @@ class SocialProjectPolicyTest extends TestCase
         $this->assertFalse($this->policy->forceDelete($representative, $own));
     }
 
+    public function test_minister_manages_only_the_church_recorded_on_the_account(): void
+    {
+        $minister = $this->makeUser(UserRole::MINISTER, 4);
+        $own = $this->makeProject(4);
+        $other = $this->makeProject(9);
+
+        $this->assertTrue($this->policy->viewAny($minister));
+        $this->assertTrue($this->policy->create($minister));
+        $this->assertTrue($this->policy->view($minister, $own));
+        $this->assertTrue($this->policy->update($minister, $own));
+        $this->assertTrue($this->policy->delete($minister, $own));
+        $this->assertFalse($this->policy->view($minister, $other));
+        $this->assertFalse($this->policy->update($minister, $other));
+        $this->assertFalse($this->policy->delete($minister, $other));
+        $this->assertFalse($this->policy->approve($minister, $own));
+        $this->assertFalse($this->policy->feature($minister, $own));
+
+        $unlinked = $this->makeUser(UserRole::MINISTER);
+        $this->assertFalse($this->policy->viewAny($unlinked));
+        $this->assertFalse($this->policy->create($unlinked));
+    }
+
     public function test_representative_without_church_and_authors_are_denied(): void
     {
         $project = $this->makeProject(1);

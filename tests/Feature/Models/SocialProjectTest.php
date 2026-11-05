@@ -5,6 +5,7 @@ namespace Tests\Feature\Models;
 use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\Church;
+use App\Models\Minister;
 use App\Models\SocialProject;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -153,5 +154,69 @@ class SocialProjectTest extends TestCase
         $this->actingAs(User::factory()->create(['role' => UserRole::CHURCH_REPRESENTATIVE, 'church_id' => $church->id, 'is_active' => true]));
 
         $this->assertSame([$mine->id], SocialProject::query()->pluck('id')->all());
+    }
+
+    public function test_minister_sees_published_projects_from_other_churches_and_every_status_of_his_own(): void
+    {
+        $church = Church::factory()->create();
+        $other = Church::factory()->create();
+        $ownDraft = SocialProject::factory()->create(['church_id' => $church->id]);
+        $otherPublished = SocialProject::factory()->published()->create(['church_id' => $other->id]);
+        $otherDraft = SocialProject::factory()->create(['church_id' => $other->id]);
+
+        $minister = User::factory()->create([
+            'role' => UserRole::MINISTER,
+            'church_id' => null,
+            'is_active' => true,
+        ]);
+        Minister::factory()->create([
+            'user_id' => $minister->id,
+            'church_id' => $church->id,
+            'function' => 'Pastor',
+        ]);
+
+        $this->actingAs($minister);
+
+        $visible = SocialProject::query()->pluck('id')->all();
+
+        $this->assertEqualsCanonicalizing([$ownDraft->id, $otherPublished->id], $visible);
+        $this->assertNotContains($otherDraft->id, $visible);
+        $this->assertEqualsCanonicalizing(
+            [$ownDraft->id, $otherPublished->id],
+            SocialProject::forUser($minister)->pluck('id')->all(),
+        );
+    }
+
+    public function test_minister_edit_of_published_project_returns_it_to_review(): void
+    {
+        $church = Church::factory()->create();
+        $minister = User::factory()->create([
+            'role' => UserRole::MINISTER,
+            'church_id' => null,
+            'is_active' => true,
+        ]);
+        Minister::factory()->create([
+            'user_id' => $minister->id,
+            'church_id' => $church->id,
+        ]);
+        $project = SocialProject::factory()->published()->featured()->create([
+            'church_id' => $church->id,
+            'review_notes' => null,
+        ]);
+
+        $this->actingAs($minister);
+        $project->update([
+            'summary' => 'Resumo atualizado pelo pastor.',
+            'church_id' => Church::factory()->create()->id,
+            'is_featured' => false,
+            'review_notes' => 'tentativa',
+        ]);
+
+        $project->refresh();
+        $this->assertSame($church->id, $project->church_id);
+        $this->assertSame(PublishStatus::PENDING_REVIEW, $project->status);
+        $this->assertNull($project->published_at);
+        $this->assertTrue($project->is_featured);
+        $this->assertNull($project->review_notes);
     }
 }

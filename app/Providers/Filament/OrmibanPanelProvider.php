@@ -9,6 +9,7 @@ use App\Filament\Ormiban\Pages\EditMyChurch;
 use App\Filament\Pages\Strategy\GoiasOverview;
 use App\Filament\Pages\Strategy\Methodology;
 use App\Filament\Resources\MunicipalityResource;
+use App\Filament\Resources\SocialProjectResource;
 use App\Filament\Strategy\Widgets\AgeGroupChartWidget;
 use App\Filament\Strategy\Widgets\MunicipalityMapWidget;
 use App\Filament\Strategy\Widgets\StrategyKpisWidget;
@@ -48,6 +49,7 @@ class OrmibanPanelProvider extends PanelProvider
             ])
             ->resources([
                 MunicipalityResource::class,
+                SocialProjectResource::class,
             ])
             ->navigationGroups([
                 'Estratégia',

@@ -10,6 +10,7 @@ use App\Models\SocialProject;
 use App\Models\User;
 use App\Support\MediaVariants;
 use Filament\Actions\Action;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -32,6 +33,11 @@ class SocialProjectResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-heart';
 
     protected static ?string $navigationGroup = 'Portal';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return Filament::getCurrentPanel()?->getId() === 'ormiban' ? null : 'Portal';
+    }
 
     protected static ?string $navigationLabel = 'Projetos Sociais';
 
@@ -222,7 +228,11 @@ class SocialProjectResource extends Resource
                                 /** @var User|null $user */
                                 $user = Auth::user();
 
-                                return $user?->church?->city;
+                                $churchId = $user?->contentChurchId();
+
+                                return $churchId === null
+                                    ? null
+                                    : Church::query()->whereKey($churchId)->value('city');
                             })
                             ->helperText('Preenchida com a cidade da igreja; altere se o projeto acontece em outra cidade.'),
                     ])

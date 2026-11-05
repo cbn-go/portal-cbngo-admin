@@ -10,6 +10,7 @@ use App\Filament\Resources\SocialProjectResource\Pages\CreateSocialProject;
 use App\Filament\Resources\SocialProjectResource\Pages\EditSocialProject;
 use App\Filament\Resources\SocialProjectResource\Pages\ListSocialProjects;
 use App\Models\Church;
+use App\Models\Minister;
 use App\Models\SocialProject;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -378,5 +379,89 @@ class SocialProjectResourceTest extends TestCase
         $this->assertStringContainsString('<p>Olá</p>', $description);
         $this->assertStringNotContainsString('<script', $description);
         $this->assertStringNotContainsString('javascript:', $description);
+    }
+
+    public function test_minister_creates_and_edits_projects_of_the_church_on_his_ficha(): void
+    {
+        $published = SocialProject::factory()->published()->create([
+            'church_id' => $this->goiania->id,
+            'summary' => 'Resumo publicado.',
+        ]);
+
+        Filament::setCurrentPanel(Filament::getPanel('ormiban'));
+        $minister = $this->ministerOf($this->goiania);
+
+        $this->actingAs($minister);
+
+        $this->get('/ormiban/social-projects')->assertSuccessful();
+
+        Livewire::test(CreateSocialProject::class)
+            ->assertFormFieldIsHidden('church_id')
+            ->assertFormSet(['city' => 'Goiânia'])
+            ->fillForm($this->formData([
+                'status' => PublishStatus::DRAFT->value,
+                'slug' => 'sopa-do-pastor',
+            ]))
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $project = SocialProject::query()->where('slug', 'sopa-do-pastor')->firstOrFail();
+
+        $this->assertSame($this->goiania->id, $project->church_id);
+        $this->assertSame($minister->id, $project->user_id);
+        $this->assertSame(PublishStatus::DRAFT, $project->status);
+
+        Livewire::test(EditSocialProject::class, ['record' => $published->getKey()])
+            ->fillForm(['summary' => 'Resumo revisado pelo pastor.'])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $published->refresh();
+        $this->assertSame('Resumo revisado pelo pastor.', $published->summary);
+        $this->assertSame(PublishStatus::PENDING_REVIEW, $published->status);
+        $this->assertFalse(SocialProject::query()->published()->whereKey($published->id)->exists());
+    }
+
+    public function test_minister_cannot_open_another_church_project_and_unlinked_minister_is_forbidden(): void
+    {
+        $draft = SocialProject::factory()->create(['church_id' => $this->anapolis->id]);
+        $published = SocialProject::factory()->published()->create(['church_id' => $this->anapolis->id]);
+        $minister = $this->ministerOf($this->goiania);
+
+        $this->actingAs($minister)->get("/ormiban/social-projects/{$draft->id}/edit")->assertNotFound();
+        $this->actingAs($minister)->get("/ormiban/social-projects/{$published->id}/edit")->assertForbidden();
+
+        $unlinked = User::factory()->create([
+            'role' => UserRole::MINISTER,
+            'church_id' => null,
+            'is_active' => true,
+            'must_set_password' => false,
+        ]);
+        Minister::factory()->create([
+            'user_id' => $unlinked->id,
+            'church_id' => null,
+            'function' => 'Pastor',
+        ]);
+
+        $this->actingAs($unlinked)->get('/ormiban/social-projects')->assertForbidden();
+    }
+
+    private function ministerOf(Church $church): User
+    {
+        $user = User::factory()->create([
+            'role' => UserRole::MINISTER,
+            'church_id' => null,
+            'is_active' => true,
+            'must_set_password' => false,
+        ]);
+
+        Minister::factory()->create([
+            'user_id' => $user->id,
+            'church_id' => $church->id,
+            'function' => 'Pastor',
+            'name' => 'Pastor Auxiliar',
+        ]);
+
+        return $user;
     }
 }
