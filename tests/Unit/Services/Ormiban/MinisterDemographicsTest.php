@@ -39,39 +39,41 @@ class MinisterDemographicsTest extends TestCase
         $this->assertSame(1, $data->ageBands['30–39']);
         $this->assertSame(29.3, $data->ageMean);
         $this->assertSame(29.0, $data->ageMedian);
-        $this->assertSame(4, $data->ordinationBands['Sem ordenação']);
-        $this->assertSame(4, $data->ministryBands['Sem diplomação']);
+        $this->assertSame(4, $data->ministryBands['Sem ordenação']);
     }
 
-    public function test_ministry_uses_the_oldest_diploma_and_ordination_keeps_missing_bucket(): void
+    public function test_ministry_uses_the_oldest_ordination_and_ignores_diploma(): void
     {
         $minister = $this->minister('Pastor', '1980-01-01');
         $minister->historyEvents()->create([
             'occurred_on' => '2016-11-04',
-            'code' => '1',
-            'description' => 'DIPLOMADO recente',
+            'code' => '2',
+            'description' => 'ORDENAÇÃO recente',
         ]);
         $minister->historyEvents()->create([
             'occurred_on' => '1990-11-04',
+            'code' => '2',
+            'description' => 'ORDENAÇÃO',
+        ]);
+        $minister->historyEvents()->create([
+            'occurred_on' => '1980-11-04',
             'code' => '1',
             'description' => 'DIPLOMADO',
         ]);
 
-        $withoutDiploma = $this->minister('Missionário', '1970-11-04');
-        $withoutDiploma->historyEvents()->create([
+        $withoutOrdination = $this->minister('Missionário', '1970-11-04');
+        $withoutOrdination->historyEvents()->create([
             'occurred_on' => '1986-11-04',
-            'code' => '2',
-            'description' => 'ORDENAÇÃO',
+            'code' => '1',
+            'description' => 'DIPLOMADO',
         ]);
 
         $data = app(MinisterDemographics::class)->summarize([]);
 
         $this->assertSame(0, $data->ministryBands['Menos de 30']);
         $this->assertSame(1, $data->ministryBands['30–39']);
-        $this->assertSame(1, $data->ministryBands['Sem diplomação']);
-        $this->assertSame(1, $data->ordinationBands['Sem ordenação']);
-        $this->assertSame(1, $data->ordinationBands['40–49']);
-        $this->assertSame(50.0, $data->diplomaPercent);
+        $this->assertSame(1, $data->ministryBands['Sem ordenação']);
+        $this->assertArrayNotHasKey('Sem diplomação', $data->ministryBands);
         $this->assertSame(50.0, $data->ordinationPercent);
     }
 
@@ -113,10 +115,9 @@ class MinisterDemographicsTest extends TestCase
         $this->assertSame(0, $data->activeCount);
         $this->assertNull($data->ageMean);
         $this->assertNull($data->ageMedian);
-        $this->assertNull($data->diplomaPercent);
         $this->assertNull($data->ordinationPercent);
-        $this->assertSame(0, $data->ministryBands['Sem diplomação']);
-        $this->assertSame(0, $data->ordinationBands['Sem ordenação']);
+        $this->assertSame(0, $data->ministryBands['Sem ordenação']);
+        $this->assertArrayNotHasKey('Sem diplomação', $data->ministryBands);
     }
 
     private function minister(string $function, ?string $birthDate, string $status = Minister::STATUS_ACTIVE): Minister

@@ -82,15 +82,7 @@ class EditMinisterProfile extends EditProfile
                         ->content(function () use ($minister): string {
                             $years = $minister->yearsOfMinistry();
 
-                            return $years !== null ? "{$years} anos (desde DIPLOMADO)" : 'Sem registro de diplomação';
-                        }),
-
-                    Forms\Components\Placeholder::make('ordination_time')
-                        ->label('Tempo de Ordenação')
-                        ->content(function () use ($minister): string {
-                            $years = $minister->yearsSinceOrdination();
-
-                            return $years !== null ? "{$years} anos (desde ORDENAÇÃO)" : 'Sem registro de ordenação';
+                            return $years !== null ? "{$years} anos (desde a ordenação)" : 'Sem registro de ordenação';
                         }),
                 ])
                 ->columns(2);

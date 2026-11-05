@@ -36,9 +36,6 @@ class MinisterSummaryWidget extends BaseWidget
             Stat::make('Mediana de idade', $this->years($data->ageMedian))
                 ->description('Anos completos')
                 ->color('gray'),
-            Stat::make('Com diplomação', $this->percent($data->diplomaPercent))
-                ->description('Do conjunto filtrado')
-                ->color('warning'),
             Stat::make('Com ordenação', $this->percent($data->ordinationPercent))
                 ->description('Do conjunto filtrado')
                 ->color('warning'),

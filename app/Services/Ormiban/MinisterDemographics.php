@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
 /**
- * Faixas de idade, ministério e ordenação do rol.
+ * Faixas de idade e de ministério do rol.
  *
  * A referência é o início do dia de hoje no fuso config('app.timezone').
- * Ministérios e ordenação usam a data mais antiga do código correspondente.
+ * O tempo de ministério usa a ordenação mais antiga (código 2).
  */
 class MinisterDemographics
 {
@@ -36,21 +36,16 @@ class MinisterDemographics
             ->when($function !== null, fn (Builder $query): Builder => $query->where('function', $function))
             ->when($status !== null, fn (Builder $query): Builder => $query->where('status', $status))
             ->withMin([
-                'historyEvents as diploma_on' => fn (Builder $query): Builder => $query->where('code', '1'),
-            ], 'occurred_on')
-            ->withMin([
                 'historyEvents as ordination_on' => fn (Builder $query): Builder => $query->where('code', '2'),
             ], 'occurred_on')
             ->get();
 
         $ageBands = $this->emptyBands('age_bands');
         $ministryBands = $this->emptyBands('ministry_bands');
-        $ministryBands[(string) config('ormiban.missing_diploma_label')] = 0;
-        $ordinationBands = $this->emptyBands('ordination_bands');
-        $ordinationBands[(string) config('ormiban.missing_ordination_label')] = 0;
+        $missingOrdination = (string) config('ormiban.missing_ordination_label');
+        $ministryBands[$missingOrdination] = 0;
 
         $ages = [];
-        $withDiploma = 0;
         $withOrdination = 0;
         $activeCount = 0;
         $pastorCount = 0;
@@ -76,25 +71,14 @@ class MinisterDemographics
                 }
             }
 
-            $ministryYears = $this->completedYears($minister->getAttribute('diploma_on'));
+            $ministryYears = $this->completedYears($minister->getAttribute('ordination_on'));
             if ($ministryYears === null) {
-                $ministryBands[(string) config('ormiban.missing_diploma_label')]++;
+                $ministryBands[$missingOrdination]++;
             } else {
-                $withDiploma++;
+                $withOrdination++;
                 $label = $this->bandLabel($ministryYears, 'ministry_bands');
                 if ($label !== null) {
                     $ministryBands[$label]++;
-                }
-            }
-
-            $ordinationYears = $this->completedYears($minister->getAttribute('ordination_on'));
-            if ($ordinationYears === null) {
-                $ordinationBands[(string) config('ormiban.missing_ordination_label')]++;
-            } else {
-                $withOrdination++;
-                $label = $this->bandLabel($ordinationYears, 'ordination_bands');
-                if ($label !== null) {
-                    $ordinationBands[$label]++;
                 }
             }
         }
@@ -108,11 +92,9 @@ class MinisterDemographics
             missionaryCount: $missionaryCount,
             ageMean: $this->mean($ages),
             ageMedian: $this->median($ages),
-            diplomaPercent: $this->percent($withDiploma, $total),
             ordinationPercent: $this->percent($withOrdination, $total),
             ageBands: $ageBands,
             ministryBands: $ministryBands,
-            ordinationBands: $ordinationBands,
         );
     }
 

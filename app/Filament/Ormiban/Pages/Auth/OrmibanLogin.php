@@ -30,12 +30,13 @@ class OrmibanLogin extends BaseLogin
 
     public function mount(): void
     {
-        parent::mount();
+        if (Filament::auth()->check()) {
+            parent::mount();
 
-        $this->data['remember'] = false;
+            return;
+        }
 
-        $key = $this->getRateLimitKey('authenticate', static::class);
-        $this->attemptsRemaining = max(0, RateLimiter::remaining($key, 5));
+        $this->redirect('/admin/login');
     }
 
     public function authenticate(): ?LoginResponse

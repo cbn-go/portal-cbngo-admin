@@ -132,25 +132,29 @@ class MinisterModelTest extends TestCase
             'cpf' => '55566677788',
         ]);
 
-        // Sem eventos cadastrados -> null
         $this->assertNull($minister->yearsOfMinistry());
         $this->assertNull($minister->yearsSinceOrdination());
 
-        // Diploma há 20 anos (10/12/2006)
         $minister->historyEvents()->create([
             'occurred_on' => '2006-11-04',
             'code' => '1',
             'description' => 'DIPLOMADO',
         ]);
 
-        // Ordenação há 15 anos (04/11/2011)
+        $this->assertNull($minister->yearsOfMinistry());
+
         $minister->historyEvents()->create([
             'occurred_on' => '2011-11-04',
+            'code' => '2',
+            'description' => 'ORDENAÇÃO recente',
+        ]);
+        $minister->historyEvents()->create([
+            'occurred_on' => '2001-11-04',
             'code' => '2',
             'description' => 'ORDENAÇÃO',
         ]);
 
-        $this->assertSame(20, $minister->yearsOfMinistry());
+        $this->assertSame(25, $minister->yearsOfMinistry());
         $this->assertSame(15, $minister->yearsSinceOrdination());
 
         Carbon::setTestNow();

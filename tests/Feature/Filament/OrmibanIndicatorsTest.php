@@ -6,7 +6,6 @@ use App\Enums\UserRole;
 use App\Filament\Ormiban\Widgets\AgeChartWidget;
 use App\Filament\Ormiban\Widgets\MinisterSummaryWidget;
 use App\Filament\Ormiban\Widgets\MinistryAgeChartWidget;
-use App\Filament\Ormiban\Widgets\OrdinationAgeChartWidget;
 use App\Filament\Pages\Ormiban\Indicators;
 use App\Models\Minister;
 use App\Models\User;
@@ -89,8 +88,8 @@ class OrmibanIndicatorsTest extends TestCase
         ]);
         $pastor->historyEvents()->create([
             'occurred_on' => '2001-05-20',
-            'code' => '1',
-            'description' => 'DIPLOMADO',
+            'code' => '2',
+            'description' => 'ORDENAÇÃO',
         ]);
 
         Minister::factory()->create([
@@ -103,7 +102,8 @@ class OrmibanIndicatorsTest extends TestCase
 
         Livewire::test(Indicators::class)
             ->assertSee('Idade de ministério')
-            ->assertSee('Idade de ordenação')
+            ->assertDontSee('Idade de ordenação')
+            ->assertDontSee('Com diplomação')
             ->assertSee('2 com status ativo no filtro')
             ->assertSee('50,0%')
             ->fillForm(['function' => 'Pastor'], 'filtersForm')
@@ -124,7 +124,6 @@ class OrmibanIndicatorsTest extends TestCase
             MinisterSummaryWidget::class,
             AgeChartWidget::class,
             MinistryAgeChartWidget::class,
-            OrdinationAgeChartWidget::class,
         ];
 
         foreach ($widgets as $widget) {
