@@ -24,6 +24,7 @@ use App\Policies\NewsPolicy;
 use App\Policies\NoticePolicy;
 use App\Policies\SocialProjectPolicy;
 use App\Policies\UserPolicy;
+use App\Services\Ormiban\MinisterDemographics;
 use App\Services\Strategy\StateIndicatorService;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Css;
@@ -47,6 +48,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Indicadores lidos uma vez por requisição nas telas do Painel de Estratégia.
         $this->app->scoped(StateIndicatorService::class);
+        $this->app->scoped(MinisterDemographics::class);
     }
 
     /**
