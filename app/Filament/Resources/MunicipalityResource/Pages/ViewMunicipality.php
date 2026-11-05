@@ -6,6 +6,7 @@ use App\DTOs\Strategy\MunicipalityCoverageData;
 use App\Enums\PriorityBand;
 use App\Enums\StrategyIndicator;
 use App\Filament\Concerns\HasStrategySourceFooter;
+use App\Filament\Ormiban\Pages\EditMyChurch;
 use App\Filament\Resources\ChurchResource;
 use App\Filament\Resources\MunicipalityResource;
 use App\Filament\Resources\SocialProjectResource;
@@ -117,14 +118,33 @@ class ViewMunicipality extends ViewRecord
             ->get();
     }
 
-    public function churchUrl(Church $church): string
+    public function churchUrl(Church $church): ?string
     {
-        return ChurchResource::getUrl('edit', ['record' => $church]);
+        $panelId = filament()->getCurrentPanel()?->getId();
+
+        if ($panelId === 'admin' && auth()->user()?->role?->hasAdminPanelAccess()) {
+            return ChurchResource::getUrl('edit', ['record' => $church]);
+        }
+
+        if ($panelId === 'ormiban') {
+            $user = auth()->user();
+            if ($user && ($user->church_id === $church->id || $user->minister?->church_id === $church->id)) {
+                return EditMyChurch::getUrl();
+            }
+        }
+
+        return null;
     }
 
-    public function socialProjectUrl(SocialProject $project): string
+    public function socialProjectUrl(SocialProject $project): ?string
     {
-        return SocialProjectResource::getUrl('edit', ['record' => $project]);
+        $panelId = filament()->getCurrentPanel()?->getId();
+
+        if ($panelId === 'admin' && auth()->user()?->role?->hasAdminPanelAccess()) {
+            return SocialProjectResource::getUrl('edit', ['record' => $project]);
+        }
+
+        return null;
     }
 
     /**

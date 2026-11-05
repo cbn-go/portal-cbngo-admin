@@ -38,7 +38,7 @@ class GoiasOverview extends Page
     {
         $user = auth()->user();
 
-        return $user !== null && $user->is_active && $user->role->hasAdminPanelAccess();
+        return $user !== null && $user->is_active && $user->role->canAccessStrategy();
     }
 
     public function getSubheading(): string

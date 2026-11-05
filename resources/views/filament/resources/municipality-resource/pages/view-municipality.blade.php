@@ -108,9 +108,14 @@
         @else
             <ul class="st-list">
                 @foreach ($churches as $church)
+                    @php($churchUrl = $this->churchUrl($church))
                     <li>
                         <div>
-                            <a href="{{ $this->churchUrl($church) }}" class="st-link">{{ $church->name }}</a>
+                            @if ($churchUrl)
+                                <a href="{{ $churchUrl }}" class="st-link">{{ $church->name }}</a>
+                            @else
+                                <span class="st-strong">{{ $church->name }}</span>
+                            @endif
                             <div class="text-xs text-gray-500">{{ $church->pastor_name ?: 'Pastor não informado' }}{{ $church->neighborhood ? ' · '.$church->neighborhood : '' }}</div>
                         </div>
                         <x-filament::badge :color="$church->is_active ? 'success' : 'gray'">
@@ -130,9 +135,14 @@
         @else
             <ul class="st-list">
                 @foreach ($projects as $project)
+                    @php($projectUrl = $this->socialProjectUrl($project))
                     <li>
                         <div>
-                            <a href="{{ $this->socialProjectUrl($project) }}" class="st-link">{{ $project->title }}</a>
+                            @if ($projectUrl)
+                                <a href="{{ $projectUrl }}" class="st-link">{{ $project->title }}</a>
+                            @else
+                                <span class="st-strong">{{ $project->title }}</span>
+                            @endif
                             <div class="text-xs text-gray-500">{{ $project->church?->name }}</div>
                         </div>
                         <x-filament::badge :color="$project->status->getColor()">{{ $project->status->getLabel() }}</x-filament::badge>

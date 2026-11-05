@@ -32,7 +32,15 @@ class ChurchPolicy
      */
     public function view(User $user, Church $church): bool
     {
-        return $user->role->hasAdminPanelAccess();
+        if ($user->role->hasAdminPanelAccess()) {
+            return true;
+        }
+
+        if ($user->role->isMinister()) {
+            return $user->church_id === $church->id || $user->minister?->church_id === $church->id;
+        }
+
+        return false;
     }
 
     /**
@@ -48,7 +56,15 @@ class ChurchPolicy
      */
     public function update(User $user, Church $church): bool
     {
-        return $user->role->hasAdminPanelAccess();
+        if ($user->role->hasAdminPanelAccess()) {
+            return true;
+        }
+
+        if ($user->role->isMinister()) {
+            return $user->church_id === $church->id || $user->minister?->church_id === $church->id;
+        }
+
+        return false;
     }
 
     /**

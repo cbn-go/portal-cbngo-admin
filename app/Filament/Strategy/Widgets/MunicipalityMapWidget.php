@@ -5,6 +5,7 @@ namespace App\Filament\Strategy\Widgets;
 use App\Services\Strategy\MunicipalityMap;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Widgets\Widget;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Mapa coroplético de Goiás na Visão de Goiás. A troca de camada acontece só
@@ -32,11 +33,13 @@ class MunicipalityMapWidget extends Widget
         }
 
         $municipalities = $map->municipalities();
+        $panelId = filament()->getCurrentPanel()?->getId() ?? 'admin';
+        $routeName = "filament.{$panelId}.strategy.map-geojson";
 
         return [
             'available' => true,
             'config' => [
-                'geojsonUrl' => route('filament.admin.strategy.map-geojson'),
+                'geojsonUrl' => route(Route::has($routeName) ? $routeName : 'filament.admin.strategy.map-geojson'),
                 'leafletJs' => FilamentAsset::getScriptSrc('leaflet'),
                 'leafletCss' => FilamentAsset::getStyleHref('leaflet'),
                 'municipalities' => $municipalities,

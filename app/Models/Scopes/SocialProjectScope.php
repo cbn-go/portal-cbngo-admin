@@ -2,6 +2,7 @@
 
 namespace App\Models\Scopes;
 
+use App\Enums\PublishStatus;
 use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,6 +36,12 @@ class SocialProjectScope implements Scope
 
         if ($user->role === UserRole::CHURCH_REPRESENTATIVE && $user->church_id !== null) {
             $builder->where($model->getTable().'.church_id', $user->church_id);
+
+            return;
+        }
+
+        if ($user->role === UserRole::MINISTER) {
+            $builder->where($model->getTable().'.status', PublishStatus::PUBLISHED);
 
             return;
         }
