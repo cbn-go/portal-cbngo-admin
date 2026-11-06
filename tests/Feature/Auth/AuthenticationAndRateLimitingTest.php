@@ -4,8 +4,10 @@ namespace Tests\Feature\Auth;
 
 use App\Enums\UserRole;
 use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Models\User;
 use Filament\Facades\Filament;
+use Filament\Notifications\Auth\ResetPassword as FilamentResetPassword;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -115,6 +117,90 @@ class AuthenticationAndRateLimitingTest extends TestCase
         Password::broker()->sendResetLink(['email' => $inactiveUser->email]);
 
         Notification::assertNotSentTo($inactiveUser, ResetPassword::class);
+    }
+
+    public function test_minister_password_reset_from_admin_sends_ormiban_link(): void
+    {
+        Notification::fake();
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        $minister = User::factory()->create([
+            'email' => 'ministro@cbngo.org.br',
+            'role' => UserRole::MINISTER,
+            'is_active' => true,
+        ]);
+
+        Livewire::test(RequestPasswordReset::class)
+            ->fillForm(['email' => 'ministro@cbngo.org.br'])
+            ->call('request');
+
+        Notification::assertSentTo(
+            $minister,
+            FilamentResetPassword::class,
+            fn (FilamentResetPassword $notification): bool => str_contains($notification->url, '/ormiban/password-reset/reset'),
+        );
+    }
+
+    public function test_author_password_reset_from_admin_sends_portal_link(): void
+    {
+        Notification::fake();
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        $author = User::factory()->create([
+            'email' => 'autor-reset@cbngo.org.br',
+            'role' => UserRole::AUTHOR,
+            'is_active' => true,
+        ]);
+
+        Livewire::test(RequestPasswordReset::class)
+            ->fillForm(['email' => 'autor-reset@cbngo.org.br'])
+            ->call('request');
+
+        Notification::assertSentTo(
+            $author,
+            FilamentResetPassword::class,
+            fn (FilamentResetPassword $notification): bool => str_contains($notification->url, '/portal/password-reset/reset'),
+        );
+    }
+
+    public function test_admin_password_reset_keeps_admin_link(): void
+    {
+        Notification::fake();
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        $editor = User::factory()->create([
+            'email' => 'editor-reset@cbngo.org.br',
+            'role' => UserRole::CONVENTION_EDITOR,
+            'is_active' => true,
+        ]);
+
+        Livewire::test(RequestPasswordReset::class)
+            ->fillForm(['email' => 'editor-reset@cbngo.org.br'])
+            ->call('request');
+
+        Notification::assertSentTo(
+            $editor,
+            FilamentResetPassword::class,
+            fn (FilamentResetPassword $notification): bool => str_contains($notification->url, '/admin/password-reset/reset'),
+        );
+    }
+
+    public function test_inactive_user_password_reset_form_does_not_notify(): void
+    {
+        Notification::fake();
+        Filament::setCurrentPanel(Filament::getPanel('admin'));
+
+        User::factory()->create([
+            'email' => 'inativo-reset@cbngo.org.br',
+            'role' => UserRole::MINISTER,
+            'is_active' => false,
+        ]);
+
+        Livewire::test(RequestPasswordReset::class)
+            ->fillForm(['email' => 'inativo-reset@cbngo.org.br'])
+            ->call('request');
+
+        Notification::assertNothingSent();
     }
 
     public function test_portal_user_authenticating_via_admin_login_is_redirected_to_portal(): void
