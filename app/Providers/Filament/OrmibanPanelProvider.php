@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Ormiban\Pages\Auth\OrmibanLogin;
 use App\Filament\Ormiban\Pages\Auth\SetInitialPassword;
+use App\Filament\Ormiban\Pages\Dashboard;
 use App\Filament\Ormiban\Pages\EditMinisterProfile;
 use App\Filament\Ormiban\Pages\EditMyChurch;
 use App\Filament\Pages\Strategy\GoiasOverview;
@@ -18,7 +19,6 @@ use App\Http\Middleware\EnsurePasswordIsSet;
 use App\Providers\Filament\Concerns\ConfiguresCbngoTheme;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Navigation\MenuItem;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Illuminate\Support\Facades\Route;
@@ -41,7 +41,7 @@ class OrmibanPanelProvider extends PanelProvider
                     ->icon('heroicon-o-user-circle'),
             ])
             ->pages([
-                Pages\Dashboard::class,
+                Dashboard::class,
                 SetInitialPassword::class,
                 EditMyChurch::class,
                 GoiasOverview::class,

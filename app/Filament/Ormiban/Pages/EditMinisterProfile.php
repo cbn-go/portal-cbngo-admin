@@ -3,6 +3,7 @@
 namespace App\Filament\Ormiban\Pages;
 
 use App\Enums\UserRole;
+use App\Models\Minister;
 use App\Models\User;
 use App\Support\Cpf;
 use Filament\Forms;
@@ -27,6 +28,24 @@ class EditMinisterProfile extends EditProfile
         return $user !== null && ($user->role === UserRole::MINISTER || $user->role === UserRole::SUPER_ADMIN);
     }
 
+    /**
+     * Tempo de ministério contado desde a ordenação (também usado na tela inicial).
+     */
+    public static function ministryTimeLabel(Minister $minister): string
+    {
+        $years = $minister->yearsOfMinistry();
+
+        return $years !== null ? "{$years} anos (desde a ordenação)" : 'Sem registro de ordenação';
+    }
+
+    /**
+     * Igreja vinculada à ficha ou, na falta dela, a informada no rol.
+     */
+    public static function churchLabel(Minister $minister): string
+    {
+        return $minister->church?->name ?? $minister->church_name ?? 'Não informada';
+    }
+
     public function form(Form $form): Form
     {
         /** @var User $user */
@@ -40,12 +59,7 @@ class EditMinisterProfile extends EditProfile
                 ->schema([
                     Forms\Components\Placeholder::make('no_minister_info')
                         ->label('')
-                        ->content(new HtmlString(
-                            '<div class="p-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-sm">
-                                <strong>Nenhuma ficha ministerial vinculada</strong> a este usuário.
-                                Se você é um ministro da Ormiban GO, entre em contato com a secretaria da CBN-GO para associar sua matrícula oficial.
-                            </div>'
-                        )),
+                        ->content(new HtmlString(view('filament.ormiban.partials.no-minister-notice')->render())),
                 ]);
         } else {
             $schema[] = Forms\Components\Section::make('Identificação Oficial no Rol (Somente Leitura)')
@@ -79,11 +93,7 @@ class EditMinisterProfile extends EditProfile
 
                     Forms\Components\Placeholder::make('ministry_time')
                         ->label('Tempo de Ministério')
-                        ->content(function () use ($minister): string {
-                            $years = $minister->yearsOfMinistry();
-
-                            return $years !== null ? "{$years} anos (desde a ordenação)" : 'Sem registro de ordenação';
-                        }),
+                        ->content(fn (): string => self::ministryTimeLabel($minister)),
                 ])
                 ->columns(2);
 
@@ -209,7 +219,7 @@ class EditMinisterProfile extends EditProfile
             $data['status'] = $minister->status;
             $data['function'] = $minister->function;
             $data['cpf'] = Cpf::format($minister->cpf);
-            $data['church_name'] = $minister->church?->name ?? $minister->church_name ?? 'Não informada';
+            $data['church_name'] = self::churchLabel($minister);
         }
 
         return $data;
