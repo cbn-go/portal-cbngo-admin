@@ -16,6 +16,7 @@ use App\Models\Minister;
 use App\Models\News;
 use App\Models\Notice;
 use App\Models\SocialProject;
+use App\Support\PanelGreeting;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Carbon;
@@ -33,27 +34,12 @@ class Dashboard extends BaseDashboard
 
     public function getTitle(): string|Htmlable
     {
-        $hour = (int) Carbon::now('America/Sao_Paulo')->format('H');
-
-        $greeting = match (true) {
-            $hour >= 5 && $hour < 12 => 'Bom dia',
-            $hour >= 12 && $hour < 18 => 'Boa tarde',
-            default => 'Boa noite',
-        };
-
-        $fullName = auth()->user()?->name ?? 'Administrador';
-        $firstName = Str::of($fullName)->trim()->explode(' ')->first();
-
-        return "{$greeting}, {$firstName}";
+        return PanelGreeting::greeting(auth()->user()?->name, 'Administrador');
     }
 
     public function getSubheading(): string|Htmlable|null
     {
-        $date = Carbon::now('America/Sao_Paulo')
-            ->locale('pt_BR')
-            ->translatedFormat('l, d \d\e F \d\e Y');
-
-        return ucfirst($date);
+        return PanelGreeting::today();
     }
 
     protected function getHeaderActions(): array
