@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\UserRole;
 use Database\Factories\UserFactory;
+use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
@@ -176,6 +177,36 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         };
 
         return url(filament()->getPanel($panelId)->getPath());
+    }
+
+    /**
+     * Painel em que o link de redefinição abre. Prefere o painel atual quando a
+     * pessoa pode entrar nele; senão, o painel padrão do papel.
+     */
+    public function panelForPasswordReset(): ?Panel
+    {
+        if (! $this->is_active) {
+            return null;
+        }
+
+        $current = Filament::getCurrentPanel();
+
+        if ($current instanceof Panel && $this->canAccessPanel($current)) {
+            return $current;
+        }
+
+        $panelId = match (true) {
+            $this->role->hasAdminPanelAccess() => 'admin',
+            $this->role->isMinister() => 'ormiban',
+            $this->role->hasPortalPanelAccess() => 'portal',
+            default => null,
+        };
+
+        if ($panelId === null) {
+            return null;
+        }
+
+        return Filament::getPanel($panelId);
     }
 
     public function getFilamentAvatarUrl(): ?string

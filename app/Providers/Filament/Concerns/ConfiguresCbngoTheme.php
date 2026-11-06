@@ -3,6 +3,7 @@
 namespace App\Providers\Filament\Concerns;
 
 use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\Auth\RequestPasswordReset;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -25,7 +26,7 @@ trait ConfiguresCbngoTheme
     {
         return $panel
             ->login(Login::class)
-            ->passwordReset()
+            ->passwordReset(RequestPasswordReset::class)
             // Logo oficial CBN | GO (kit CBN_ESTADUAIS). Paleta amostrada dos arquivos *-CORES.png: vermelho #E81828 + tinta #201820.
             ->brandLogo(fn () => asset('images/logo-cbngo.png'))
             ->darkModeBrandLogo(fn () => asset('images/logo-cbngo-dark.png'))
