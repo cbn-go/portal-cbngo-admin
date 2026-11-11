@@ -149,6 +149,13 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->church_id;
     }
 
+    public function contentChurch(): ?Church
+    {
+        $id = $this->contentChurchId();
+
+        return $id ? Church::find($id) : null;
+    }
+
     public function hasAdminPanelAccess(): bool
     {
         return $this->is_active && $this->role->hasAdminPanelAccess();

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ChurchType;
 use App\Filament\Pages\Dashboard;
 use App\Models\Concerns\HasImageVariants;
 use Database\Factories\ChurchFactory;
@@ -18,9 +19,12 @@ use Illuminate\Support\Str;
  * @property int $id
  * @property string $name
  * @property string $slug
+ * @property ChurchType $type
+ * @property int|null $parent_church_id
  * @property string|null $cnpj
  * @property string|null $registration_number
  * @property string|null $pastor_name
+ * @property int|null $leader_minister_id
  * @property int|null $municipality_id
  * @property string $city
  * @property string $state
@@ -40,6 +44,8 @@ use Illuminate\Support\Str;
  * @property bool $is_active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Church|null $parentChurch
+ * @property-read Minister|null $leaderMinister
  */
 class Church extends Model
 {
@@ -54,9 +60,12 @@ class Church extends Model
     protected $fillable = [
         'name',
         'slug',
+        'type',
+        'parent_church_id',
         'cnpj',
         'registration_number',
         'pastor_name',
+        'leader_minister_id',
         'municipality_id',
         'city',
         'state',
@@ -82,6 +91,7 @@ class Church extends Model
     protected function casts(): array
     {
         return [
+            'type' => ChurchType::class,
             'latitude' => 'decimal:7',
             'longitude' => 'decimal:7',
             'social_links' => 'array',
@@ -99,6 +109,17 @@ class Church extends Model
         });
 
         static::saving(function (Church $church): void {
+            if ($church->type === ChurchType::MISSION) {
+                $church->cnpj = null;
+
+                if (filled($church->leader_minister_id) && blank($church->pastor_name)) {
+                    $leader = $church->leaderMinister ?? Minister::find($church->leader_minister_id);
+                    if ($leader) {
+                        $church->pastor_name = $leader->name;
+                    }
+                }
+            }
+
             if (filled($church->municipality_id)) {
                 if ($church->isDirty('municipality_id') || blank($church->city)) {
                     $municipality = $church->municipality ?? Municipality::find($church->municipality_id);
@@ -185,6 +206,58 @@ class Church extends Model
     public function ministers(): HasMany
     {
         return $this->hasMany(Minister::class);
+    }
+
+    /**
+     * @return BelongsTo<Church, $this>
+     */
+    public function parentChurch(): BelongsTo
+    {
+        return $this->belongsTo(Church::class, 'parent_church_id');
+    }
+
+    /**
+     * @return HasMany<Church, $this>
+     */
+    public function missions(): HasMany
+    {
+        return $this->hasMany(Church::class, 'parent_church_id');
+    }
+
+    /**
+     * @return BelongsTo<Minister, $this>
+     */
+    public function leaderMinister(): BelongsTo
+    {
+        return $this->belongsTo(Minister::class, 'leader_minister_id');
+    }
+
+    /**
+     * @param  Builder<Church>  $query
+     * @return Builder<Church>
+     */
+    public function scopeIgrejas(Builder $query): Builder
+    {
+        return $query->where('type', ChurchType::CHURCH);
+    }
+
+    /**
+     * @param  Builder<Church>  $query
+     * @return Builder<Church>
+     */
+    public function scopeMissoes(Builder $query): Builder
+    {
+        return $query->where('type', ChurchType::MISSION);
+    }
+
+    public function isMission(): bool
+    {
+        return $this->type === ChurchType::MISSION;
+    }
+
+    public function isChurch(): bool
+    {
+        return $this->type === ChurchType::CHURCH;
     }
 
     /**

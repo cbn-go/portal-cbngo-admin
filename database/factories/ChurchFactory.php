@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ChurchType;
 use App\Models\Church;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,6 +18,9 @@ class ChurchFactory extends Factory
     {
         return [
             'name' => fake()->unique()->company(),
+            'type' => ChurchType::CHURCH,
+            'parent_church_id' => null,
+            'leader_minister_id' => null,
             'cnpj' => null,
             'registration_number' => null,
             'pastor_name' => fake()->name(),
@@ -40,5 +44,14 @@ class ChurchFactory extends Factory
             'logo' => null,
             'is_active' => true,
         ];
+    }
+
+    public function mission(?Church $parentChurch = null): static
+    {
+        return $this->state(fn (): array => [
+            'type' => ChurchType::MISSION,
+            'parent_church_id' => $parentChurch?->id ?? Church::factory()->create(['type' => ChurchType::CHURCH])->id,
+            'cnpj' => null,
+        ]);
     }
 }
