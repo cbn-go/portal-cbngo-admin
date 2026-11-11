@@ -24,7 +24,7 @@ class ChurchPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->hasAdminPanelAccess();
+        return $user->role->hasAdminPanelAccess() || $user->role->isMinister();
     }
 
     /**
@@ -37,7 +37,7 @@ class ChurchPolicy
         }
 
         if ($user->role->isMinister()) {
-            return $user->church_id === $church->id || $user->minister?->church_id === $church->id;
+            return $this->canMinisterAccessChurch($user, $church);
         }
 
         return false;
@@ -48,7 +48,15 @@ class ChurchPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->hasAdminPanelAccess();
+        if ($user->role->hasAdminPanelAccess()) {
+            return true;
+        }
+
+        if ($user->role->isMinister()) {
+            return $user->contentChurchId() !== null;
+        }
+
+        return false;
     }
 
     /**
@@ -61,7 +69,7 @@ class ChurchPolicy
         }
 
         if ($user->role->isMinister()) {
-            return $user->church_id === $church->id || $user->minister?->church_id === $church->id;
+            return $this->canMinisterAccessChurch($user, $church);
         }
 
         return false;
@@ -72,15 +80,48 @@ class ChurchPolicy
      */
     public function delete(User $user, Church $church): bool
     {
-        if (! $user->role->hasAdminPanelAccess()) {
-            return false;
+        if ($user->role->hasAdminPanelAccess()) {
+            if ($church->users()->exists() || $church->news()->exists()) {
+                return false;
+            }
+
+            return true;
         }
 
-        if ($church->users()->exists() || $church->news()->exists()) {
-            return false;
+        if ($user->role->isMinister() && $church->isMission()) {
+            $churchId = $user->contentChurchId();
+            if ($churchId !== null && $church->parent_church_id === $churchId) {
+                if ($church->users()->exists() || $church->news()->exists()) {
+                    return false;
+                }
+
+                return true;
+            }
         }
 
-        return true;
+        return false;
+    }
+
+    private function canMinisterAccessChurch(User $user, Church $church): bool
+    {
+        $churchId = $user->contentChurchId();
+
+        if ($churchId !== null && $church->id === $churchId) {
+            return true;
+        }
+
+        if ($church->isMission()) {
+            if ($churchId !== null && $church->parent_church_id === $churchId) {
+                return true;
+            }
+
+            $ministerId = $user->minister?->id;
+            if ($ministerId !== null && $church->leader_minister_id === $ministerId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

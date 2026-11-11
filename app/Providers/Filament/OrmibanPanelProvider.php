@@ -7,6 +7,7 @@ use App\Filament\Ormiban\Pages\Auth\SetInitialPassword;
 use App\Filament\Ormiban\Pages\Dashboard;
 use App\Filament\Ormiban\Pages\EditMinisterProfile;
 use App\Filament\Ormiban\Pages\EditMyChurch;
+use App\Filament\Ormiban\Resources\MissionResource;
 use App\Filament\Pages\Strategy\GoiasOverview;
 use App\Filament\Pages\Strategy\Methodology;
 use App\Filament\Resources\MunicipalityResource;
@@ -50,6 +51,7 @@ class OrmibanPanelProvider extends PanelProvider
             ->resources([
                 MunicipalityResource::class,
                 SocialProjectResource::class,
+                MissionResource::class,
             ])
             ->navigationGroups([
                 'Estratégia',

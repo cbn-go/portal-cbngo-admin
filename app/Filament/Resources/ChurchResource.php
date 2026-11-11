@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\ChurchType;
 use App\Filament\Resources\ChurchResource\Pages;
 use App\Models\Church;
+use App\Models\Minister;
 use App\Models\Municipality;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,6 +13,7 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class ChurchResource extends Resource
@@ -58,6 +61,27 @@ class ChurchResource extends Resource
                 Forms\Components\Section::make('Identificação da Congregação')
                     ->description('Dados oficiais e institucionais da igreja local filiada à CBN Goiás.')
                     ->schema([
+                        Forms\Components\Select::make('type')
+                            ->label('Tipo de Congregação')
+                            ->options(ChurchType::class)
+                            ->default(ChurchType::CHURCH)
+                            ->required()
+                            ->live(),
+
+                        Forms\Components\Select::make('parent_church_id')
+                            ->label('Igreja-Mãe')
+                            ->relationship(
+                                'parentChurch',
+                                'name',
+                                modifyQueryUsing: fn (Builder $query, ?Church $record) => $query->where('type', ChurchType::CHURCH)
+                                    ->when($record?->id, fn ($q, $id) => $q->where('id', '!=', $id))
+                            )
+                            ->searchable()
+                            ->preload()
+                            ->visible(fn (Forms\Get $get): bool => $get('type') === ChurchType::MISSION->value || $get('type') === ChurchType::MISSION)
+                            ->required(fn (Forms\Get $get): bool => $get('type') === ChurchType::MISSION->value || $get('type') === ChurchType::MISSION)
+                            ->helperText('Missões são vinculadas administrativamente à igreja-mãe.'),
+
                         Forms\Components\TextInput::make('name')
                             ->label('Razão Social / Nome Fantasia')
                             ->required()
@@ -82,15 +106,29 @@ class ChurchResource extends Resource
                             ->maxLength(18)
                             ->unique(Church::class, 'cnpj', ignoreRecord: true)
                             ->mask('99.999.999/9999-99')
-                            ->placeholder('00.000.000/0000-00'),
+                            ->placeholder('00.000.000/0000-00')
+                            ->visible(fn (Forms\Get $get): bool => $get('type') !== ChurchType::MISSION->value && $get('type') !== ChurchType::MISSION),
 
                         Forms\Components\TextInput::make('registration_number')
                             ->label('Registro Estatutário / ROL')
                             ->maxLength(50)
                             ->placeholder('Ex: ROL-2026-GO'),
 
+                        Forms\Components\Select::make('leader_minister_id')
+                            ->label('Ministro Líder / Responsável')
+                            ->relationship('leaderMinister', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(function (?int $state, Set $set): void {
+                                if ($state && ($minister = Minister::find($state))) {
+                                    $set('pastor_name', $minister->name);
+                                }
+                            })
+                            ->helperText('Ministro filiado à Ormiban responsável pela liderança.'),
+
                         Forms\Components\TextInput::make('pastor_name')
-                            ->label('Pastor Titular / Presidente')
+                            ->label('Pastor Titular / Presidente / Líder')
                             ->maxLength(255),
 
                         Forms\Components\FileUpload::make('logo')
@@ -266,11 +304,23 @@ class ChurchResource extends Resource
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Igreja')
+                    ->label('Igreja / Missão')
                     ->searchable()
                     ->sortable()
                     ->limit(35)
                     ->tooltip(fn (Church $record): string => $record->name),
+
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Tipo')
+                    ->badge()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('parentChurch.name')
+                    ->label('Igreja-Mãe')
+                    ->placeholder('—')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('city')
                     ->label('Cidade')
@@ -300,6 +350,14 @@ class ChurchResource extends Resource
             ])
             ->defaultSort('name', 'asc')
             ->filters([
+                Tables\Filters\SelectFilter::make('type')
+                    ->label('Tipo')
+                    ->options(ChurchType::class),
+                Tables\Filters\SelectFilter::make('parent_church_id')
+                    ->label('Igreja-Mãe')
+                    ->relationship('parentChurch', 'name')
+                    ->searchable()
+                    ->preload(),
                 Tables\Filters\SelectFilter::make('municipality_id')
                     ->label('Município')
                     ->relationship('municipality', 'name')
