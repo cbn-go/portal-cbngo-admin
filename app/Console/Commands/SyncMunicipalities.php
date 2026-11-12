@@ -135,27 +135,8 @@ class SyncMunicipalities extends Command
     {
         $this->line('Vinculando igrejas cadastradas aos municípios...');
 
-        $churches = Church::query()->get();
-        $linkedCount = 0;
-        $unmatched = [];
-
-        foreach ($churches as $church) {
-            $municipality = Municipality::findByNormalizedName($church->city);
-
-            if ($municipality) {
-                $church->updateQuietly([
-                    'municipality_id' => $municipality->id,
-                    'city' => $municipality->name,
-                ]);
-                $linkedCount++;
-            } else {
-                $unmatched[] = [
-                    'id' => $church->id,
-                    'name' => $church->name,
-                    'city' => $church->city ?? '(em branco)',
-                ];
-            }
-        }
+        // Revincula todas: corrige também igrejas que mudaram de cidade.
+        ['linked' => $linkedCount, 'unmatched' => $unmatched] = Church::linkToMunicipalities(onlyUnlinked: false);
 
         $this->info("✓ {$linkedCount} igrejas vinculadas aos seus respectivos municípios.");
 
@@ -164,7 +145,7 @@ class SyncMunicipalities extends Command
             $this->warn("⚠️  {$count} igreja(s) não puderam ser vinculadas a nenhum município de Goiás:");
             $this->table(
                 ['ID', 'Igreja', 'Cidade informada'],
-                array_map(fn (array $item): array => [$item['id'], $item['name'], $item['city']], $unmatched)
+                array_map(fn (Church $church): array => [$church->id, $church->name, $church->city ?? '(em branco)'], $unmatched)
             );
         }
     }
