@@ -44,3 +44,8 @@ php artisan ormiban:import-rol
 - **`ministers`**: Dados cadastrais principais, identificadores (CPF, RG, Matrícula), dados demográficos e FKs para `churches` e `users`.
 - **`minister_family_members`**: Cônjuges, filhos e pais dos ministros, com parentesco e data de nascimento.
 - **`minister_history_events`**: Linha do tempo de eventos ministeriais (`occurred_on`, `code`, `description`), base para o cálculo dos indicadores de tempo de ministério (DIPLOMADO) e ordenação (ORDENAÇÃO).
+
+## 4. Homologação Manual e Definition of Done (DoD)
+
+Para consultar o roteiro de testes manuais passo a passo, critérios de aceitação e a matriz completa de cobertura dos testes automatizados que fecham o Épico #68, consulte:
+👉 [Checklist de Homologação Manual e DoD — Épico #68](ormiban-dod.md)
