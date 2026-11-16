@@ -100,3 +100,26 @@ O seeder registra 14 categorias fundamentais de forma idempotente (`updateOrCrea
 - **Validação de Valor:** Lançamentos com valor menor ou igual a zero são rejeitados com `InvalidArgumentException`.
 - **Auditoria Transacional:** Quando um usuário autenticado cria ou altera uma transação, os campos `created_by` e `updated_by` são preenchidos automaticamente pelo hook `saving` do Eloquent.
 
+---
+
+## 6. Controle de Acesso Baseado em Papéis (RBAC)
+
+O controle de acesso ao módulo financeiro da JUBAN é regido por duas políticas principais: [`JubanTransactionPolicy`](file:///c:/Users/fboli/Projetos/cbn-go/portal-cbngo-admin/app/Policies/JubanTransactionPolicy.php) e [`JubanCategoryPolicy`](file:///c:/Users/fboli/Projetos/cbn-go/portal-cbngo-admin/app/Policies/JubanCategoryPolicy.php), registradas no [`AppServiceProvider`](file:///c:/Users/fboli/Projetos/cbn-go/portal-cbngo-admin/app/Providers/AppServiceProvider.php).
+
+### 6.1 Matriz de Personas e Permissões
+
+| Persona / Papel | Habilidades Autorizadas | Restrições Mandatórias |
+|---|---|---|
+| **Super Administrador** (`SUPER_ADMIN`) | `viewAny`, `view`, `create`, `update`, `delete` (soft), `restore`, `forceDelete`, `export` | Nenhuma. Acesso pleno de administração do sistema. |
+| **Tesouraria JUBAN** (`JUBAN_TREASURER`) | `viewAny`, `view`, `create`, `update`, `delete` (soft), `export` | Não possui permissão para `restore` nem `forceDelete` (trilha de auditoria preservada). |
+| **Secretaria da Convenção** (`CONVENTION_EDITOR`) | `viewAny`, `view`, `export`, `create` (cobertura), `update` (cobertura) | **Estritamente proibida de deletar** (`delete: false`, `restore: false`, `forceDelete: false`). |
+| **Demais Papéis** (`MINISTER`, `AUTHOR`, `CHURCH_REPRESENTATIVE`) | Nenhuma | Acesso 100% negado a todas as rotas e ações da JUBAN. |
+| **Usuários Inativos** (`is_active = false`) | Nenhuma | Bloqueio imediato no método `before()` de todas as políticas. |
+
+### 6.2 Premissas de Implementação e Transição
+1. **Papel Formal `JUBAN_TREASURER`:** Foi provisionado o caso `JUBAN_TREASURER = 'juban_treasurer'` no backed enum [`UserRole`](file:///c:/Users/fboli/Projetos/cbn-go/portal-cbngo-admin/app/Enums/UserRole.php), acompanhado dos helpers `isJubanTreasurer()`, `canManageJubanTreasury()` e `canViewJubanTreasury()`.
+2. **Cobertura Operacional pela Secretaria:** Enquanto os tesoureiros da JUBAN estiverem sendo provisionados no sistema, o `CONVENTION_EDITOR` (Secretaria Executiva) pode cobrir operacionalmente o lançamento e edição de transações, mantendo-se porém a restrição contábil fundamental: a Secretaria **nunca** pode excluir lançamentos do caixa.
+3. **Integridade de Categorias com Transações:** A política `JubanCategoryPolicy::delete` impede a exclusão física de categorias que já possuam lançamentos vinculados (`$category->transactions()->exists()`), reforçando a restrição de chave estrangeira (`restrictOnDelete`) do banco de dados.
+4. **Visibilidade de Menus Filament:** Os recursos e telas do Filament utilizam a verificação nativa `canViewAny()`, que delega para o `Gate::allows('viewAny', Model::class)`. Assim, os menus da JUBAN tornam-se visíveis exclusivamente para as personas autorizadas (`SUPER_ADMIN`, `JUBAN_TREASURER` e `CONVENTION_EDITOR`).
+
+
