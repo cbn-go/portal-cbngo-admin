@@ -84,6 +84,30 @@ class JubanPanelAccessTest extends TestCase
         $this->actingAs($user)->get('/juban/lancamentos')->assertForbidden();
     }
 
+    public function test_president_has_read_only_access_to_the_juban_panel_and_resources(): void
+    {
+        $user = User::factory()->create(['role' => UserRole::JUBAN_PRESIDENT, 'is_active' => true]);
+        $transaction = JubanTransaction::factory()->receita()->create();
+
+        $this->actingAs($user);
+
+        $this->get('/juban')->assertSuccessful();
+        $this->get(JubanTransactionResource::getUrl('index'))->assertSuccessful();
+        $this->get(JubanCategoryResource::getUrl('index'))->assertSuccessful();
+
+        $this->get(JubanTransactionResource::getUrl('create'))->assertForbidden();
+        $this->get(JubanTransactionResource::getUrl('edit', ['record' => $transaction]))->assertForbidden();
+        $this->get(JubanCategoryResource::getUrl('create'))->assertForbidden();
+        $this->get(JubanCategoryResource::getUrl('edit', ['record' => $transaction->category]))->assertForbidden();
+    }
+
+    public function test_inactive_president_is_forbidden(): void
+    {
+        $user = User::factory()->create(['role' => UserRole::JUBAN_PRESIDENT, 'is_active' => false]);
+
+        $this->actingAs($user)->get('/juban/lancamentos')->assertForbidden();
+    }
+
     public function test_guest_is_redirected_to_the_juban_login(): void
     {
         $this->get('/juban')->assertRedirect('/juban/login');
@@ -97,6 +121,16 @@ class JubanPanelAccessTest extends TestCase
         $this->assertSame('juban', $treasurer->panelForPasswordReset()?->getId());
 
         $this->actingAs($treasurer)->get('/admin')->assertForbidden();
+    }
+
+    public function test_president_lands_on_the_juban_panel_and_stays_out_of_admin(): void
+    {
+        $president = User::factory()->create(['role' => UserRole::JUBAN_PRESIDENT, 'is_active' => true]);
+
+        $this->assertStringEndsWith('/juban', $president->getDefaultPanelUrl());
+        $this->assertSame('juban', $president->panelForPasswordReset()?->getId());
+
+        $this->actingAs($president)->get('/admin')->assertForbidden();
     }
 
     public function test_secretary_keeps_admin_as_default_panel(): void

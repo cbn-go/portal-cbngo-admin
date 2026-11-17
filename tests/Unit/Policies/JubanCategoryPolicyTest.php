@@ -74,6 +74,19 @@ class JubanCategoryPolicyTest extends TestCase
         $this->assertFalse($this->policy->delete($secretary, $category));
     }
 
+    public function test_juban_president_can_view_categories_but_cannot_create_update_or_delete(): void
+    {
+        $president = $this->makeUser(UserRole::JUBAN_PRESIDENT);
+        $category = $this->makeCategory();
+
+        $this->assertTrue($this->policy->viewAny($president));
+        $this->assertTrue($this->policy->view($president, $category));
+
+        $this->assertFalse($this->policy->create($president));
+        $this->assertFalse($this->policy->update($president, $category));
+        $this->assertFalse($this->policy->delete($president, $category));
+    }
+
     public function test_other_roles_have_no_access_to_categories(): void
     {
         $roles = [

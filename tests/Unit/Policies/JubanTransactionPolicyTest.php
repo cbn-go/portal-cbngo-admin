@@ -85,6 +85,24 @@ class JubanTransactionPolicyTest extends TestCase
         $this->assertFalse($this->policy->forceDelete($secretary, $transaction));
     }
 
+    public function test_juban_president_can_view_and_export_but_cannot_create_update_or_delete(): void
+    {
+        $president = $this->makeUser(UserRole::JUBAN_PRESIDENT);
+        $transaction = $this->makeTransaction();
+
+        // Read-only access for auditing and closing
+        $this->assertTrue($this->policy->viewAny($president));
+        $this->assertTrue($this->policy->view($president, $transaction));
+        $this->assertTrue($this->policy->export($president));
+
+        // Strict mandate: President cannot manipulate cash transactions
+        $this->assertFalse($this->policy->create($president));
+        $this->assertFalse($this->policy->update($president, $transaction));
+        $this->assertFalse($this->policy->delete($president, $transaction));
+        $this->assertFalse($this->policy->restore($president, $transaction));
+        $this->assertFalse($this->policy->forceDelete($president, $transaction));
+    }
+
     public function test_other_roles_have_no_access_to_transactions(): void
     {
         $roles = [

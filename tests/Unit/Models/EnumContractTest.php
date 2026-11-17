@@ -26,12 +26,14 @@ class EnumContractTest extends TestCase
         $this->assertSame('Autor', UserRole::AUTHOR->getLabel());
         $this->assertSame('Representante de Igreja', UserRole::CHURCH_REPRESENTATIVE->getLabel());
         $this->assertSame('Tesouraria JUBAN', UserRole::JUBAN_TREASURER->getLabel());
+        $this->assertSame('Presidência JUBAN', UserRole::JUBAN_PRESIDENT->getLabel());
 
         $this->assertSame('danger', UserRole::SUPER_ADMIN->getColor());
         $this->assertSame('warning', UserRole::CONVENTION_EDITOR->getColor());
         $this->assertSame('info', UserRole::AUTHOR->getColor());
         $this->assertSame('success', UserRole::CHURCH_REPRESENTATIVE->getColor());
         $this->assertSame('info', UserRole::JUBAN_TREASURER->getColor());
+        $this->assertSame('primary', UserRole::JUBAN_PRESIDENT->getColor());
     }
 
     public function test_user_role_helper_methods(): void
@@ -41,6 +43,7 @@ class EnumContractTest extends TestCase
         $author = UserRole::AUTHOR;
         $churchRep = UserRole::CHURCH_REPRESENTATIVE;
         $treasurer = UserRole::JUBAN_TREASURER;
+        $president = UserRole::JUBAN_PRESIDENT;
 
         $this->assertTrue($superAdmin->isSuperAdmin());
         $this->assertFalse($superAdmin->isConventionEditor());
@@ -54,6 +57,12 @@ class EnumContractTest extends TestCase
         $this->assertTrue($treasurer->isJubanTreasurer());
         $this->assertTrue($treasurer->canManageJubanTreasury());
         $this->assertTrue($treasurer->canViewJubanTreasury());
+
+        $this->assertTrue($president->isJubanPresident());
+        $this->assertFalse($president->canManageJubanTreasury());
+        $this->assertTrue($president->canViewJubanTreasury());
+        $this->assertFalse($president->hasAdminPanelAccess());
+        $this->assertFalse($president->hasPortalPanelAccess());
 
         $this->assertTrue($author->isAuthor());
         $this->assertFalse($author->hasAdminPanelAccess());
