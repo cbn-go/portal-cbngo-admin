@@ -60,7 +60,10 @@ class ManagePasskeysTest extends TestCase
         $treasurer = User::factory()->create(['role' => UserRole::JUBAN_TREASURER, 'is_active' => true]);
         $president = User::factory()->create(['role' => UserRole::JUBAN_PRESIDENT, 'is_active' => true]);
 
-        $this->actingAs($treasurer)->get('/juban/passkeys')->assertSuccessful()->assertSee('Minhas passkeys');
+        $this->actingAs($treasurer)->get('/juban/passkeys')->assertSuccessful()->assertSee('Minhas passkeys')
+            // Sem ax-load o Alpine roda x-data antes do componente existir ("supported is not defined").
+            ->assertSee('ax-load-src=', false)
+            ->assertSee('components/passkey-register.js', false);
         $this->actingAs($president)->get('/juban/passkeys')->assertSuccessful()->assertSee('Minhas passkeys');
 
         $this->actingAs($treasurer);
@@ -104,13 +107,20 @@ class ManagePasskeysTest extends TestCase
         // Tentativa com senha errada
         Livewire::test(ManagePasskeys::class)
             ->call('startRegistration', 'Meu Notebook', 'senha-incorreta')
-            ->assertHasErrors(['password']);
+            ->assertHasErrors(['password'])
+            ->assertNotDispatched('init-webauthn-registration')
+            ->assertNotDispatched('close-modal');
 
         // Tentativa com senha correta
         Livewire::test(ManagePasskeys::class)
             ->call('startRegistration', 'Meu Notebook', 'senha-secreta-123')
             ->assertHasNoErrors()
-            ->assertDispatched('init-webauthn-registration');
+            ->assertDispatched('close-modal', id: 'register-passkey-modal')
+            ->assertDispatched(
+                'init-webauthn-registration',
+                fn (string $event, array $params): bool => $params['name'] === 'Meu Notebook'
+                    && is_string($params['options']['challenge'] ?? null),
+            );
 
         $this->assertNotNull(Cache::get("passkey_challenge_{$user->id}"));
     }
