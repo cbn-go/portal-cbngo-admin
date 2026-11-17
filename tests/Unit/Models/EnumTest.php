@@ -23,6 +23,7 @@ class EnumTest extends TestCase
         $this->assertSame('author', UserRole::AUTHOR->value);
         $this->assertSame('church_representative', UserRole::CHURCH_REPRESENTATIVE->value);
         $this->assertSame('juban_treasurer', UserRole::JUBAN_TREASURER->value);
+        $this->assertSame('juban_president', UserRole::JUBAN_PRESIDENT->value);
     }
 
     public function test_publish_status_backed_values(): void

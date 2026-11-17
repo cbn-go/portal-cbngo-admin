@@ -112,6 +112,7 @@ O controle de acesso ao módulo financeiro da JUBAN é regido por duas política
 |---|---|---|
 | **Super Administrador** (`SUPER_ADMIN`) | `viewAny`, `view`, `create`, `update`, `delete` (soft), `restore`, `forceDelete`, `export` | Nenhuma. Acesso pleno de administração do sistema. |
 | **Tesouraria JUBAN** (`JUBAN_TREASURER`) | `viewAny`, `view`, `create`, `update`, `delete` (soft), `export` | Não possui permissão para `restore` nem `forceDelete` (trilha de auditoria preservada). |
+| **Presidência JUBAN** (`JUBAN_PRESIDENT`) | `viewAny`, `view`, `export` | **Acesso estritamente somente-leitura** (`create: false`, `update: false`, `delete: false`, `restore: false`, `forceDelete: false`). Visualiza o resumo de caixa, listagem de lançamentos/categorias e exporta CSV para auditoria e prestação de contas. |
 | **Secretaria da Convenção** (`CONVENTION_EDITOR`) | `viewAny`, `view`, `export`, `create` (cobertura), `update` (cobertura) | **Estritamente proibida de deletar** (`delete: false`, `restore: false`, `forceDelete: false`). |
 | **Demais Papéis** (`MINISTER`, `AUTHOR`, `CHURCH_REPRESENTATIVE`) | Nenhuma | Acesso 100% negado a todas as rotas e ações da JUBAN. |
 | **Usuários Inativos** (`is_active = false`) | Nenhuma | Bloqueio imediato no método `before()` de todas as políticas. |
@@ -125,8 +126,8 @@ O controle de acesso ao módulo financeiro da JUBAN é regido por duas política
 ### 6.3 Painel `/juban` (Tesouraria JUBAN)
 O CRUD da tesouraria (#96) fica num painel Filament próprio, `App\Providers\Filament\JubanPanelProvider` (`id`/`path` = `juban`), separado do `admin`, para que a tesouraria não enxergue os demais módulos da convenção.
 
-- **Quem entra:** `UserRole::hasJubanPanelAccess()` = `canViewJubanTreasury()` → `SUPER_ADMIN`, `JUBAN_TREASURER` e `CONVENTION_EDITOR`. Os outros papéis e os usuários inativos recebem 403.
-- **Painel padrão:** `JUBAN_TREASURER` cai em `/juban` após o login e no link de redefinição de senha (`getDefaultPanelUrl()` / `panelForPasswordReset()`). SuperAdmin e Secretaria continuam com `/admin` como padrão e acessam `/juban` pelo endereço.
+- **Quem entra:** `UserRole::hasJubanPanelAccess()` = `canViewJubanTreasury()` → `SUPER_ADMIN`, `JUBAN_TREASURER`, `JUBAN_PRESIDENT` e `CONVENTION_EDITOR`. Os outros papéis e os usuários inativos recebem 403.
+- **Painel padrão:** `JUBAN_TREASURER` e `JUBAN_PRESIDENT` caem em `/juban` após o login e no link de redefinição de senha (`getDefaultPanelUrl()` / `panelForPasswordReset()`). SuperAdmin e Secretaria continuam com `/admin` como padrão e acessam `/juban` pelo endereço.
 - **Recursos** (`app/Filament/Juban/Resources`):
   - `JubanTransactionResource` (`/juban/lancamentos`): tipo, valor (> 0), data (obrigatória), categoria (só as ativas compatíveis com o tipo; validação no servidor contra categoria incompatível), descrição, forma de pagamento, referência/documento e observações. Busca por descrição, categoria e referência; filtros por período, tipo e categoria. `created_by` é preenchido no create. Exclusão lógica para SuperAdmin e tesouraria; restaurar e lixeira só para o SuperAdmin.
   - `JubanCategoryResource` (`/juban/categorias`): nome, código único, natureza (receita/despesa/ambos), descrição e ativa/inativa. Categorias com lançamentos não podem ser excluídas; desative-as.
@@ -140,7 +141,7 @@ A página inicial do painel (`App\Filament\Juban\Pages\Dashboard`, "Resumo de ca
 - **Gastos por mês e por categoria** (`CashByCategoryWidget`): uma barra por mês do período (até 24, em milhares de reais quando o maior mês passa de R$ 1.000) e as categorias de despesa com valor, % e barra de proporção. Ao lado, a receita por categoria. Uma categoria "ambos" aparece nos dois.
 - **Fora do escopo por enquanto:** os cards "Último relatório" e "Ofícios aguardando resposta" do design, e a cor de barra por status de relatório ao Conselho Fiscal, dependem de módulos que ainda não existem.
 - **Consistência:** os mesmos critérios da listagem (`whereDate` e exclusão lógica respeitada); lançamentos excluídos não entram no resumo.
-- **Acesso:** o mesmo do painel (SuperAdmin, tesouraria JUBAN e Secretaria; a Secretaria lança e edita, mas não exclui).
+- **Acesso:** o mesmo do painel (SuperAdmin, tesouraria JUBAN, presidência JUBAN e Secretaria; a Secretaria lança e edita, a presidência tem acesso somente-leitura, e ninguém exceto SuperAdmin e tesoureiro exclui).
 
 ### 6.5 Exportação de Lançamentos em CSV (#98)
 A listagem de lançamentos (`/juban/lancamentos`) conta com uma ação de cabeçalho da tabela para exportação direta em formato CSV (`App\Services\Juban\JubanTransactionExportService`):
@@ -148,5 +149,5 @@ A listagem de lançamentos (`/juban/lancamentos`) conta com uma ação de cabeç
 - **Filtros Respeitados:** A exportação utiliza `HasTable::getFilteredTableQuery()`, garantindo que todos os filtros ativos na tela (intervalo de datas, tipo, categoria contábil, termo de busca e lixeira para administradores) sejam refletidos com exatidão no arquivo gerado.
 - **Padrão pt-BR:** Geração com BOM UTF-8 (`\xEF\xBB\xBF`) e delimitador ponto e vírgula (`;`), permitindo abertura direta e sem quebras no Microsoft Excel e LibreOffice.
 - **Colunas:** Data (`d/m/Y`), Tipo (`Receita`/`Despesa`), Categoria, Descrição, Valor formatado em BRL (`Valor (R$)`), Valor decimal numérico para fórmulas contábeis (`Valor Contábil`), Forma de Pagamento, Documento/Referência e Usuário responsável.
-- **Autorização:** Ação vinculada à habilidade `export` da `JubanTransactionPolicy` (permitida para `SUPER_ADMIN`, `JUBAN_TREASURER` e `CONVENTION_EDITOR`).
+- **Autorização:** Ação vinculada à habilidade `export` da `JubanTransactionPolicy` (permitida para `SUPER_ADMIN`, `JUBAN_TREASURER`, `JUBAN_PRESIDENT` e `CONVENTION_EDITOR`).
 
