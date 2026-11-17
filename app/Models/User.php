@@ -121,6 +121,14 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     }
 
     /**
+     * @return HasMany<Passkey, $this>
+     */
+    public function passkeys(): HasMany
+    {
+        return $this->hasMany(Passkey::class);
+    }
+
+    /**
      * @return HasOne<Minister, $this>
      */
     public function minister(): HasOne
