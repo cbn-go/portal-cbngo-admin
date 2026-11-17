@@ -130,3 +130,12 @@ O CRUD da tesouraria (#96) fica num painel Filament próprio, `App\Providers\Fil
 - **Recursos** (`app/Filament/Juban/Resources`):
   - `JubanTransactionResource` (`/juban/lancamentos`): tipo, valor (> 0), data (obrigatória), categoria (só as ativas compatíveis com o tipo; validação no servidor contra categoria incompatível), descrição, forma de pagamento, referência/documento e observações. Busca por descrição, categoria e referência; filtros por período, tipo e categoria. `created_by` é preenchido no create. Exclusão lógica para SuperAdmin e tesouraria; restaurar e lixeira só para o SuperAdmin.
   - `JubanCategoryResource` (`/juban/categorias`): nome, código único, natureza (receita/despesa/ambos), descrição e ativa/inativa. Categorias com lançamentos não podem ser excluídas; desative-as.
+
+### 6.4 Resumo de caixa (página inicial do `/juban`)
+A página inicial do painel (`App\Filament\Juban\Pages\Dashboard`, "Resumo de caixa", #97) mostra o caixa do período escolhido. Os números vêm de um único serviço, `App\Services\Juban\CashSummary`.
+
+- **Período:** filtros "De" e "Até", inclusivos sobre `occurred_on`. O padrão é sempre o mês corrente: o período escolhido fica só na URL, não na sessão.
+- **Totais** (`CashSummaryStatsWidget`): Receitas, Despesas e **Saldo** = receitas − despesas, em R$ pt-BR. O card de saldo abre a lista de lançamentos com o mesmo filtro de período, para conferência.
+- **Por categoria** (`CashByCategoryWidget`): para cada tipo, as categorias com número de lançamentos, valor e % do total do tipo. Uma categoria "ambos" aparece uma vez em cada tipo.
+- **Consistência:** os mesmos critérios da listagem (`whereDate` e exclusão lógica respeitada); lançamentos excluídos não entram no resumo.
+- **Acesso:** o mesmo do painel (SuperAdmin, tesouraria JUBAN e Secretaria, esta em leitura).
