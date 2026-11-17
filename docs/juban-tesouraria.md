@@ -132,10 +132,12 @@ O CRUD da tesouraria (#96) fica num painel Filament próprio, `App\Providers\Fil
   - `JubanCategoryResource` (`/juban/categorias`): nome, código único, natureza (receita/despesa/ambos), descrição e ativa/inativa. Categorias com lançamentos não podem ser excluídas; desative-as.
 
 ### 6.4 Resumo de caixa (página inicial do `/juban`)
-A página inicial do painel (`App\Filament\Juban\Pages\Dashboard`, "Resumo de caixa", #97) mostra o caixa do período escolhido. Os números vêm de um único serviço, `App\Services\Juban\CashSummary`.
+A página inicial do painel (`App\Filament\Juban\Pages\Dashboard`, "Resumo de caixa", #97) mostra o caixa do período escolhido, no layout da tela da tesouraria do design (saudação e data, cards brancos, gastos por mês e por categoria). Os números vêm de um único serviço, `App\Services\Juban\CashSummary`.
 
-- **Período:** filtros "De" e "Até", inclusivos sobre `occurred_on`. O padrão é sempre o mês corrente: o período escolhido fica só na URL, não na sessão.
-- **Totais** (`CashSummaryStatsWidget`): Receitas, Despesas e **Saldo** = receitas − despesas, em R$ pt-BR. O card de saldo abre a lista de lançamentos com o mesmo filtro de período, para conferência.
-- **Por categoria** (`CashByCategoryWidget`): para cada tipo, as categorias com número de lançamentos, valor e % do total do tipo. Uma categoria "ambos" aparece uma vez em cada tipo.
+- **Cabeçalho:** saudação e data (`PanelGreeting`), botões "Ver lançamentos" e "Novo lançamento" (este só para quem pode criar).
+- **Período:** filtros "De" e "Até", inclusivos sobre `occurred_on`. O padrão é sempre o ano corrente: o período escolhido fica só na URL, não na sessão. Os títulos dizem "em 2026", "em outubro de 2026" ou "de dd/mm/aaaa a dd/mm/aaaa".
+- **Cards** (`CashSummaryStatsWidget`): Gastos, Receita e **Saldo** = receita − gastos, em R$ pt-BR. O número de lançamentos no card de saldo abre a lista com o mesmo filtro de período, para conferência.
+- **Gastos por mês e por categoria** (`CashByCategoryWidget`): uma barra por mês do período (até 24, em milhares de reais quando o maior mês passa de R$ 1.000) e as categorias de despesa com valor, % e barra de proporção. Ao lado, a receita por categoria. Uma categoria "ambos" aparece nos dois.
+- **Fora do escopo por enquanto:** os cards "Último relatório" e "Ofícios aguardando resposta" do design, e a cor de barra por status de relatório ao Conselho Fiscal, dependem de módulos que ainda não existem.
 - **Consistência:** os mesmos critérios da listagem (`whereDate` e exclusão lógica respeitada); lançamentos excluídos não entram no resumo.
-- **Acesso:** o mesmo do painel (SuperAdmin, tesouraria JUBAN e Secretaria, esta em leitura).
+- **Acesso:** o mesmo do painel (SuperAdmin, tesouraria JUBAN e Secretaria; a Secretaria lança e edita, mas não exclui).

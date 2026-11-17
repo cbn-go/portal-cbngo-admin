@@ -14,6 +14,8 @@ use Illuminate\Support\Carbon;
  */
 class CashSummary
 {
+    public const MAX_MONTHS = 24;
+
     public function forPeriod(Carbon $from, Carbon $until): CashSummaryResult
     {
         $from = $from->copy()->startOfDay();
@@ -64,6 +66,7 @@ class CashSummary
             ->all();
 
         $receitas = round($totals[JubanTransactionType::RECEITA->value], 2);
+        $monthly = $this->monthlyTotals($from, $until, JubanTransactionType::DESPESA);
         $despesas = round($totals[JubanTransactionType::DESPESA->value], 2);
 
         return new CashSummaryResult(
@@ -74,19 +77,60 @@ class CashSummary
             saldo: round($receitas - $despesas, 2),
             count: $count,
             categories: $categories,
+            monthlyDespesas: $monthly,
         );
     }
 
     /**
-     * Período a partir dos filtros da página (datas `from`/`until`); mês atual por padrão.
+     * Total de um tipo em cada mês do período (meses sem lançamento entram com zero).
+     *
+     * @return list<array{month: Carbon, total: float}>
+     */
+    private function monthlyTotals(Carbon $from, Carbon $until, JubanTransactionType $type): array
+    {
+        $monthExpression = match ((new JubanTransaction)->getConnection()->getDriverName()) {
+            'sqlite' => "strftime('%Y-%m', occurred_on)",
+            'pgsql' => "to_char(occurred_on, 'YYYY-MM')",
+            default => "DATE_FORMAT(occurred_on, '%Y-%m')",
+        };
+
+        $totals = $this->periodQuery($from, $until)
+            ->where('type', $type->value)
+            ->selectRaw("{$monthExpression} as aggregate_month, SUM(amount) as aggregate_total")
+            ->groupByRaw($monthExpression)
+            ->toBase()
+            ->pluck('aggregate_total', 'aggregate_month');
+
+        $months = [];
+        $cursor = $from->copy()->startOfMonth();
+        $last = $until->copy()->startOfMonth();
+
+        // Até 24 barras: em períodos maiores, ficam os meses mais recentes.
+        if ($cursor->diffInMonths($last) >= self::MAX_MONTHS) {
+            $cursor = $last->copy()->subMonths(self::MAX_MONTHS - 1);
+        }
+
+        while ($cursor->lte($last)) {
+            $months[] = [
+                'month' => $cursor->copy(),
+                'total' => round((float) ($totals[$cursor->format('Y-m')] ?? 0), 2),
+            ];
+            $cursor->addMonth();
+        }
+
+        return $months;
+    }
+
+    /**
+     * Período a partir dos filtros da página (datas `from`/`until`); ano corrente por padrão.
      *
      * @param  array<string, mixed>|null  $filters
      * @return array{Carbon, Carbon}
      */
     public static function periodFromFilters(?array $filters): array
     {
-        $from = filled($filters['from'] ?? null) ? Carbon::parse((string) $filters['from']) : now()->startOfMonth();
-        $until = filled($filters['until'] ?? null) ? Carbon::parse((string) $filters['until']) : now()->endOfMonth();
+        $from = filled($filters['from'] ?? null) ? Carbon::parse((string) $filters['from']) : now()->startOfYear();
+        $until = filled($filters['until'] ?? null) ? Carbon::parse((string) $filters['until']) : now()->endOfYear();
 
         if ($until->lt($from)) {
             [$from, $until] = [$until, $from];

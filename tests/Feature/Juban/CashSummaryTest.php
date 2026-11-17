@@ -152,13 +152,35 @@ class CashSummaryTest extends TestCase
         );
     }
 
-    public function test_period_from_filters_defaults_to_current_month_and_orders_dates(): void
+    public function test_monthly_despesas_fill_empty_months_and_ignore_receitas(): void
+    {
+        $this->lancamento(JubanTransactionType::DESPESA, $this->eventos, '1200.00', '2026-01-10');
+        $this->lancamento(JubanTransactionType::DESPESA, $this->viagens, '300.50', '2026-01-25');
+        $this->lancamento(JubanTransactionType::DESPESA, $this->eventos, '99.90', '2026-03-31');
+        $this->lancamento(JubanTransactionType::RECEITA, $this->ofertas, '5000.00', '2026-02-02');
+
+        $summary = $this->summarize('2026-01-01', '2026-03-31');
+
+        $this->assertSame(['2026-01', '2026-02', '2026-03'], array_map(fn (array $m): string => $m['month']->format('Y-m'), $summary->monthlyDespesas));
+        $this->assertSame([1500.5, 0.0, 99.9], array_column($summary->monthlyDespesas, 'total'));
+        $this->assertSame(3, $summary->countOf(JubanTransactionType::DESPESA));
+        $this->assertSame(1, $summary->countOf(JubanTransactionType::RECEITA));
+    }
+
+    public function test_period_title_names_full_years_and_months(): void
+    {
+        $this->assertSame('em 2026', $this->summarize('2026-01-01', '2026-12-31')->periodTitle());
+        $this->assertSame('em outubro de 2026', $this->summarize('2026-10-01', '2026-10-31')->periodTitle());
+        $this->assertSame('de 05/10/2026 a 31/10/2026', $this->summarize('2026-10-05', '2026-10-31')->periodTitle());
+    }
+
+    public function test_period_from_filters_defaults_to_current_year_and_orders_dates(): void
     {
         Carbon::setTestNow('2026-11-17 10:00:00');
 
         [$from, $until] = CashSummary::periodFromFilters(null);
-        $this->assertSame('2026-11-01', $from->toDateString());
-        $this->assertSame('2026-11-30', $until->toDateString());
+        $this->assertSame('2026-01-01', $from->toDateString());
+        $this->assertSame('2026-12-31', $until->toDateString());
 
         [$from, $until] = CashSummary::periodFromFilters(['from' => '2026-10-31', 'until' => '2026-10-01']);
         $this->assertSame('2026-10-01', $from->toDateString());
