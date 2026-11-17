@@ -2,6 +2,7 @@
 
 use App\Providers\AppServiceProvider;
 use App\Providers\Filament\AdminPanelProvider;
+use App\Providers\Filament\JubanPanelProvider;
 use App\Providers\Filament\OrmibanPanelProvider;
 use App\Providers\Filament\PortalPanelProvider;
 
@@ -10,4 +11,5 @@ return [
     AdminPanelProvider::class,
     PortalPanelProvider::class,
     OrmibanPanelProvider::class,
+    JubanPanelProvider::class,
 ];

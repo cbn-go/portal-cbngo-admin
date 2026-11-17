@@ -171,6 +171,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             'admin' => $this->hasAdminPanelAccess(),
             'portal' => $this->role->hasPortalPanelAccess(),
             'ormiban' => $this->role->hasOrmibanPanelAccess(),
+            'juban' => $this->role->hasJubanPanelAccess(),
             default => false,
         };
     }
@@ -180,6 +181,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         $panelId = match (true) {
             $this->role->hasAdminPanelAccess() => 'admin',
             $this->role->isMinister() => 'ormiban',
+            $this->role->isJubanTreasurer() => 'juban',
             default => 'portal',
         };
 
@@ -205,6 +207,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         $panelId = match (true) {
             $this->role->hasAdminPanelAccess() => 'admin',
             $this->role->isMinister() => 'ormiban',
+            $this->role->isJubanTreasurer() => 'juban',
             $this->role->hasPortalPanelAccess() => 'portal',
             default => null,
         };
