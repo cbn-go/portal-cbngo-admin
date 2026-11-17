@@ -6,6 +6,7 @@ use App\Enums\JubanPaymentMethod;
 use App\Enums\JubanTransactionType;
 use App\Filament\Juban\Resources\JubanTransactionResource\Pages;
 use App\Models\JubanCategory;
+use App\Models\JubanReport;
 use App\Models\JubanTransaction;
 use App\Services\Juban\JubanTransactionExportService;
 use Closure;
@@ -75,7 +76,14 @@ class JubanTransactionResource extends Resource
                             ->native(false)
                             ->displayFormat('d/m/Y')
                             ->default(now())
-                            ->required(),
+                            ->required()
+                            ->rules([
+                                fn (): Closure => function (string $attribute, mixed $value, Closure $fail): void {
+                                    if ($value && JubanReport::isDateLocked($value)) {
+                                        $fail('O período contábil selecionado está fechado para relatório trimestral e não aceita novos lançamentos ou alterações.');
+                                    }
+                                },
+                            ]),
 
                         Forms\Components\Select::make('category_id')
                             ->label('Categoria')

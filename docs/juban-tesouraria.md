@@ -167,4 +167,39 @@ O painel da JUBAN conta com gerenciamento de credenciais FIDO2 / WebAuthn na pá
   - Componente Alpine nativo (`passkey-register.js`) publicado com `filament:assets` sem dependências npm.
   - Usuários autorizados visualizam, renomeiam e removem exclusivamente as próprias credenciais.
 
+---
+
+### 6.7 Fechamento Trimestral, Snapshot, PDF e Trava Contábil (#110)
+O fluxo de prestação de contas da JUBAN exige o congelamento formal dos números ao fim de cada trimestre calendário (Q1: Jan-Mar, Q2: Abr-Jun, Q3: Jul-Set, Q4: Out-Dez) através da tela **"Relatórios Contábeis"** (`/juban/relatorios`):
+
+- **Tabela `juban_reports` e Model `JubanReport`:**
+  - Armazena `year`, `quarter`, `period_from`, `period_until`, `status`, `snapshot` (JSON), `pdf_path`, `pdf_sha256`, `closed_by`, `closed_at`, `reopened_by`, `reopened_at` e `reopen_reason`.
+  - Unicidade pelo par `[year, quarter]`.
+  - Estados (`App\Enums\JubanReportStatus`):
+    - `AGUARDANDO_TESOURARIA = 'aguardando_tesouraria'` (fechado, aguardando assinatura da tesouraria via passkey #111)
+    - `AGUARDANDO_PRESIDENCIA = 'aguardando_presidencia'` (aguardando assinatura da presidência via passkey #112)
+    - `ASSINADO = 'assinado'` (concluído com ambas as assinaturas digitais)
+    - `REABERTO = 'reaberto'` (destravado para correções excepcionais)
+- **Serviço de Fechamento (`App\Services\Juban\QuarterlyClosingService`):**
+  - **Regra de Término do Trimestre:** O fechamento só pode ser executado após o encerramento cronológico do período (`Carbon::now()->isAfter($periodUntil)`).
+  - **Geração de Snapshot Imutável:** Captura o fechamento consolidado pelo `CashSummary::forPeriod()`, incluindo totais de receita, despesa e saldo, discriminativo por categoria contábil, evolução mensal de despesas e a listagem integral de transações com data, tipo, valor e categoria.
+  - **Geração de Documento PDF e Hash SHA-256:**
+    - Renderização via biblioteca `barryvdh/laravel-dompdf` (`pdf/juban/quarterly-report.blade.php`).
+    - Contém cabeçalho oficial CBN-GO / JUBAN, período contábil, resumo financeiro, discriminativo por categorias e tabela completa de movimentações.
+    - O conteúdo binário do PDF é gravado em disco privado (`local/reports/juban/...`) e seu hash criptográfico `SHA-256` é indexado no registro para garantia de integridade contra adulterações.
+- **Trava Contábil (Lock):**
+  - Enquanto existir um relatório ativo (`status != 'reaberto'`) cobrindo uma data (`JubanReport::isDateLocked($date)`):
+    - **Inclusão:** O formulário do Filament (`JubanTransactionResource`) valida o campo `occurred_on` e rejeita qualquer data pertencente a trimestre fechado.
+    - **Edição e Exclusão:** `JubanTransactionPolicy::update()`, `delete()`, `restore()` e `forceDelete()` retornam `false`, bloqueando modificações retroativas na base contábil já homologada.
+- **Reabertura Excepcional:**
+  - Permitida **exclusivamente para o Super Administrador** (`SUPER_ADMIN`).
+  - Permitida apenas enquanto o relatório **não estiver integralmente assinado** (`status !== ASSINADO`).
+  - Ao reabrir, o PDF armazenado é excluído fisicamente, o status passa a `reaberto`, o hash é limpo e são registrados o usuário responsável, timestamp e justificativa textual, destravando o período para correções operacionais.
+- **Interface Filament (`JubanReportResource`):**
+  - Listagem com ano/trimestre, período, badge de status, saldo consolidado e auditoria de fechamento.
+  - Ação "Fechar trimestre" no cabeçalho com seleção de ano e trimestre.
+  - Ação "Baixar PDF" para download direto do relatório gerado.
+  - Ação "Reabrir trimestre" (visível apenas para SuperAdmin em relatórios não assinados) com modal solicitando o motivo da reabertura.
+
+
 
