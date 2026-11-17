@@ -27,14 +27,14 @@ class JubanReportFactory extends Factory
             1 => "{$year}-01-01",
             2 => "{$year}-04-01",
             3 => "{$year}-07-01",
-            4 => "{$year}-10-01",
+            default => "{$year}-10-01",
         };
 
         $periodUntil = match ($quarter) {
             1 => "{$year}-03-31",
             2 => "{$year}-06-30",
             3 => "{$year}-09-30",
-            4 => "{$year}-12-31",
+            default => "{$year}-12-31",
         };
 
         return [
