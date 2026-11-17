@@ -2,8 +2,10 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Juban\Pages\Dashboard;
+use App\Filament\Juban\Widgets\CashByCategoryWidget;
+use App\Filament\Juban\Widgets\CashSummaryStatsWidget;
 use App\Providers\Filament\Concerns\ConfiguresCbngoTheme;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\View\PanelsRenderHook;
@@ -29,6 +31,12 @@ class JubanPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 'Tesouraria',
+            ])
+            // Widgets do resumo de caixa: registrados aqui para o Livewire (senão volta 419);
+            // a página inicial escolhe quais exibir em getWidgets().
+            ->widgets([
+                CashSummaryStatsWidget::class,
+                CashByCategoryWidget::class,
             ])
             ->darkMode(false)
             ->sidebarWidth('16rem')
