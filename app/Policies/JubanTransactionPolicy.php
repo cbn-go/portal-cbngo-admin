@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\JubanReport;
 use App\Models\JubanTransaction;
 use App\Models\User;
 
@@ -48,6 +49,10 @@ class JubanTransactionPolicy
      */
     public function update(User $user, JubanTransaction $transaction): bool
     {
+        if (JubanReport::isDateLocked($transaction->occurred_on)) {
+            return false;
+        }
+
         return $user->role->canManageJubanTreasury();
     }
 
@@ -57,6 +62,10 @@ class JubanTransactionPolicy
      */
     public function delete(User $user, JubanTransaction $transaction): bool
     {
+        if (JubanReport::isDateLocked($transaction->occurred_on)) {
+            return false;
+        }
+
         return $user->role->isSuperAdmin() || $user->role->isJubanTreasurer();
     }
 
@@ -65,6 +74,10 @@ class JubanTransactionPolicy
      */
     public function restore(User $user, JubanTransaction $transaction): bool
     {
+        if (JubanReport::isDateLocked($transaction->occurred_on)) {
+            return false;
+        }
+
         return $user->role->isSuperAdmin();
     }
 
@@ -73,6 +86,10 @@ class JubanTransactionPolicy
      */
     public function forceDelete(User $user, JubanTransaction $transaction): bool
     {
+        if (JubanReport::isDateLocked($transaction->occurred_on)) {
+            return false;
+        }
+
         return $user->role->isSuperAdmin();
     }
 
