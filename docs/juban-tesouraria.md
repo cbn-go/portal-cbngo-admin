@@ -151,3 +151,20 @@ A listagem de lançamentos (`/juban/lancamentos`) conta com uma ação de cabeç
 - **Colunas:** Data (`d/m/Y`), Tipo (`Receita`/`Despesa`), Categoria, Descrição, Valor formatado em BRL (`Valor (R$)`), Valor decimal numérico para fórmulas contábeis (`Valor Contábil`), Forma de Pagamento, Documento/Referência e Usuário responsável.
 - **Autorização:** Ação vinculada à habilidade `export` da `JubanTransactionPolicy` (permitida para `SUPER_ADMIN`, `JUBAN_TREASURER`, `JUBAN_PRESIDENT` e `CONVENTION_EDITOR`).
 
+---
+
+### 6.6 Autenticação Forte e Passkeys WebAuthn (#109)
+O painel da JUBAN conta com gerenciamento de credenciais FIDO2 / WebAuthn na página **"Minhas passkeys"** (`/juban/passkeys`, grupo `Segurança`), permitindo que tesoureiro e presidente cadastrem a biometria do próprio aparelho (Windows Hello, Touch ID, Face ID ou chave de segurança física):
+
+- **Tabela `passkeys`:** Armazena `user_id`, `name`, `credential_id` (base64url único), `public_key` (chave pública COSE), `sign_count`, `transports` (json), `aaguid`, `backup_eligible` e `last_used_at`.
+- **Cerimônia Criptográfica Estrita (`App\Services\WebAuthn\WebAuthnRegistrationService`):**
+  - **RP ID:** Calculado pelo host do `APP_URL`.
+  - **User Verification Obrigatório:** A cerimônia exige verificação de usuário (`userVerification: required`) e valida estritamente a flag UV no `authData`.
+  - **Attestation:** `none` (suporte a None, Packed, Apple e FIDO U2F).
+  - **Challenge Único:** Challenge randômico de 32 bytes gerado com TTL de 5 minutos e invalidado imediatamente no primeiro uso (anti-replay).
+- **Interface e Segurança:**
+  - Exigência de confirmação prévia da senha da conta antes de iniciar a captura biométrica no dispositivo.
+  - Componente Alpine nativo (`passkey-register.js`) publicado com `filament:assets` sem dependências npm.
+  - Usuários autorizados visualizam, renomeiam e removem exclusivamente as próprias credenciais.
+
+

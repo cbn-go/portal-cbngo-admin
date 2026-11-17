@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Juban\Pages\Dashboard;
+use App\Filament\Juban\Pages\ManagePasskeys;
 use App\Filament\Juban\Widgets\CashByCategoryWidget;
 use App\Filament\Juban\Widgets\CashSummaryStatsWidget;
 use App\Providers\Filament\Concerns\ConfiguresCbngoTheme;
@@ -28,9 +29,11 @@ class JubanPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Juban/Resources'), for: 'App\\Filament\\Juban\\Resources')
             ->pages([
                 Dashboard::class,
+                ManagePasskeys::class,
             ])
             ->navigationGroups([
                 'Tesouraria',
+                'Segurança',
             ])
             // Widgets do resumo de caixa: registrados aqui para o Livewire (senão volta 419);
             // a página inicial escolhe quais exibir em getWidgets().

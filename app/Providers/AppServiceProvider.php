@@ -80,6 +80,7 @@ class AppServiceProvider extends ServiceProvider
             Css::make('leaflet', resource_path('vendor/leaflet/leaflet.css'))->loadedOnRequest(),
             Js::make('leaflet', resource_path('vendor/leaflet/leaflet.js'))->loadedOnRequest(),
             AlpineComponent::make('strategy-map', resource_path('js/filament/strategy-map.js')),
+            AlpineComponent::make('passkey-register', resource_path('js/filament/passkey-register.js')),
         ]);
     }
 }

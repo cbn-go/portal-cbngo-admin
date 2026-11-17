@@ -11,7 +11,8 @@
         "intervention/image": "^3",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
-        "symfony/html-sanitizer": "^7.1"
+        "symfony/html-sanitizer": "^7.1",
+        "web-auth/webauthn-lib": "5.3.9"
     },
 
     "require-dev": {
