@@ -74,10 +74,10 @@ class ManagePasskeys extends Page
         $this->name = $name;
         $this->password = '';
 
-        $this->dispatch('init-webauthn-registration', [
-            'options' => $options,
-            'name' => $name,
-        ]);
+        $this->dispatch('close-modal', id: 'register-passkey-modal');
+
+        // Argumentos nomeados: no navegador viram event.detail.options e event.detail.name.
+        $this->dispatch('init-webauthn-registration', options: $options, name: $name);
     }
 
     /**

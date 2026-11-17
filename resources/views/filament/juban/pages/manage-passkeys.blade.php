@@ -1,11 +1,23 @@
 <x-filament-panels::page>
-    <div x-data="passkeyRegister()" class="space-y-6">
-        {{-- Aviso se navegador não suportar WebAuthn --}}
-        <div x-show="!supported" x-cloak class="p-4 rounded-xl bg-danger-50 dark:bg-danger-950/50 border border-danger-200 dark:border-danger-800 text-danger-700 dark:text-danger-300 flex items-start gap-3">
-            <x-heroicon-o-exclamation-triangle class="w-6 h-6 shrink-0 mt-0.5" />
-            <div>
-                <h4 class="font-semibold text-sm">Navegador ou dispositivo incompatível</h4>
-                <p class="text-sm mt-1">Seu navegador atual não possui suporte à API WebAuthn/Passkeys. Para assinar relatórios, utilize um navegador moderno como Chrome, Safari ou Edge em um dispositivo com suporte a biometria ou chave física.</p>
+    <div class="space-y-6">
+        {{--
+            Componente Alpine carregado sob demanda (ax-load) e isolado com wire:ignore:
+            os re-renders do Livewire não podem reescrever o estado do x-show, senão o
+            aviso de incompatibilidade reaparece e os modais ficam presos na tela.
+        --}}
+        <div
+            wire:ignore
+            x-ignore
+            ax-load
+            ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('passkey-register') }}"
+            x-data="passkeyRegister()"
+        >
+            <div x-show="!supported" x-cloak class="p-4 rounded-xl bg-danger-50 dark:bg-danger-950/50 border border-danger-200 dark:border-danger-800 text-danger-700 dark:text-danger-300 flex items-start gap-3">
+                <x-heroicon-o-exclamation-triangle class="w-6 h-6 shrink-0 mt-0.5" />
+                <div>
+                    <h4 class="font-semibold text-sm">Navegador ou dispositivo incompatível</h4>
+                    <p class="text-sm mt-1">Seu navegador atual não possui suporte à API WebAuthn/Passkeys. Para assinar relatórios, utilize um navegador moderno como Chrome, Safari ou Edge em um dispositivo com suporte a biometria ou chave física.</p>
+                </div>
             </div>
         </div>
 
@@ -106,7 +118,7 @@
                             <x-slot name="heading">Renomear Passkey</x-slot>
                             <x-slot name="description">Altere o rótulo identificador do seu dispositivo.</x-slot>
 
-                            <div x-data="{ newName: '{{ $passkey->name }}' }" class="space-y-4">
+                            <div x-data="{ newName: @js($passkey->name) }" class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Novo nome</label>
                                     <input
@@ -172,7 +184,7 @@
                     <x-filament::button
                         color="primary"
                         x-bind:disabled="!regPassword"
-                        x-on:click="$wire.startRegistration(regName, regPassword); $dispatch('close-modal', { id: 'register-passkey-modal' })"
+                        x-on:click="$wire.startRegistration(regName, regPassword)"
                     >
                         Continuar para Biometria
                     </x-filament::button>
