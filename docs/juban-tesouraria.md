@@ -141,3 +141,12 @@ A página inicial do painel (`App\Filament\Juban\Pages\Dashboard`, "Resumo de ca
 - **Fora do escopo por enquanto:** os cards "Último relatório" e "Ofícios aguardando resposta" do design, e a cor de barra por status de relatório ao Conselho Fiscal, dependem de módulos que ainda não existem.
 - **Consistência:** os mesmos critérios da listagem (`whereDate` e exclusão lógica respeitada); lançamentos excluídos não entram no resumo.
 - **Acesso:** o mesmo do painel (SuperAdmin, tesouraria JUBAN e Secretaria; a Secretaria lança e edita, mas não exclui).
+
+### 6.5 Exportação de Lançamentos em CSV (#98)
+A listagem de lançamentos (`/juban/lancamentos`) conta com uma ação de cabeçalho da tabela para exportação direta em formato CSV (`App\Services\Juban\JubanTransactionExportService`):
+
+- **Filtros Respeitados:** A exportação utiliza `HasTable::getFilteredTableQuery()`, garantindo que todos os filtros ativos na tela (intervalo de datas, tipo, categoria contábil, termo de busca e lixeira para administradores) sejam refletidos com exatidão no arquivo gerado.
+- **Padrão pt-BR:** Geração com BOM UTF-8 (`\xEF\xBB\xBF`) e delimitador ponto e vírgula (`;`), permitindo abertura direta e sem quebras no Microsoft Excel e LibreOffice.
+- **Colunas:** Data (`d/m/Y`), Tipo (`Receita`/`Despesa`), Categoria, Descrição, Valor formatado em BRL (`Valor (R$)`), Valor decimal numérico para fórmulas contábeis (`Valor Contábil`), Forma de Pagamento, Documento/Referência e Usuário responsável.
+- **Autorização:** Ação vinculada à habilidade `export` da `JubanTransactionPolicy` (permitida para `SUPER_ADMIN`, `JUBAN_TREASURER` e `CONVENTION_EDITOR`).
+
