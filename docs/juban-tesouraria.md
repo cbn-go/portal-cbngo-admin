@@ -122,4 +122,11 @@ O controle de acesso ao módulo financeiro da JUBAN é regido por duas política
 3. **Integridade de Categorias com Transações:** A política `JubanCategoryPolicy::delete` impede a exclusão física de categorias que já possuam lançamentos vinculados (`$category->transactions()->exists()`), reforçando a restrição de chave estrangeira (`restrictOnDelete`) do banco de dados.
 4. **Visibilidade de Menus Filament:** Os recursos e telas do Filament utilizam a verificação nativa `canViewAny()`, que delega para o `Gate::allows('viewAny', Model::class)`. Assim, os menus da JUBAN tornam-se visíveis exclusivamente para as personas autorizadas (`SUPER_ADMIN`, `JUBAN_TREASURER` e `CONVENTION_EDITOR`).
 
+### 6.3 Painel `/juban` (Tesouraria JUBAN)
+O CRUD da tesouraria (#96) fica num painel Filament próprio, `App\Providers\Filament\JubanPanelProvider` (`id`/`path` = `juban`), separado do `admin`, para que a tesouraria não enxergue os demais módulos da convenção.
 
+- **Quem entra:** `UserRole::hasJubanPanelAccess()` = `canViewJubanTreasury()` → `SUPER_ADMIN`, `JUBAN_TREASURER` e `CONVENTION_EDITOR`. Os outros papéis e os usuários inativos recebem 403.
+- **Painel padrão:** `JUBAN_TREASURER` cai em `/juban` após o login e no link de redefinição de senha (`getDefaultPanelUrl()` / `panelForPasswordReset()`). SuperAdmin e Secretaria continuam com `/admin` como padrão e acessam `/juban` pelo endereço.
+- **Recursos** (`app/Filament/Juban/Resources`):
+  - `JubanTransactionResource` (`/juban/lancamentos`): tipo, valor (> 0), data (obrigatória), categoria (só as ativas compatíveis com o tipo; validação no servidor contra categoria incompatível), descrição, forma de pagamento, referência/documento e observações. Busca por descrição, categoria e referência; filtros por período, tipo e categoria. `created_by` é preenchido no create. Exclusão lógica para SuperAdmin e tesouraria; restaurar e lixeira só para o SuperAdmin.
+  - `JubanCategoryResource` (`/juban/categorias`): nome, código único, natureza (receita/despesa/ambos), descrição e ativa/inativa. Categorias com lançamentos não podem ser excluídas; desative-as.
