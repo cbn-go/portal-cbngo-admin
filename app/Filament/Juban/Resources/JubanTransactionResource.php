@@ -7,6 +7,7 @@ use App\Enums\JubanTransactionType;
 use App\Filament\Juban\Resources\JubanTransactionResource\Pages;
 use App\Models\JubanCategory;
 use App\Models\JubanTransaction;
+use App\Services\Juban\JubanTransactionExportService;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,11 +15,13 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class JubanTransactionResource extends Resource
 {
@@ -214,6 +217,19 @@ class JubanTransactionResource extends Resource
 
                 Tables\Filters\TrashedFilter::make()
                     ->visible(fn (): bool => static::canSeeTrashed()),
+            ])
+            ->headerActions([
+                Tables\Actions\Action::make('export')
+                    ->label('Exportar CSV')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('gray')
+                    ->visible(fn (): bool => auth()->user()?->can('export', JubanTransaction::class) ?? false)
+                    ->action(function (HasTable $livewire, JubanTransactionExportService $service): StreamedResponse {
+                        /** @var Builder<JubanTransaction> $query */
+                        $query = $livewire->getFilteredTableQuery();
+
+                        return $service->exportCsv($query);
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
