@@ -201,5 +201,36 @@ O fluxo de prestação de contas da JUBAN exige o congelamento formal dos númer
   - Ação "Baixar PDF" para download direto do relatório gerado.
   - Ação "Reabrir trimestre" (visível apenas para SuperAdmin em relatórios não assinados) com modal solicitando o motivo da reabertura.
 
+---
+
+### 6.8 Assinatura Digital do Relatório com Passkey (#111)
+Para garantir autenticidade jurídica, integridade física e não-repúdio das contas homologadas, os relatórios trimestrais fechados são assinados digitalmente através de passkeys (FIDO2 / WebAuthn):
+
+- **Tabela `juban_report_signatures` e Model `JubanReportSignature`:**
+  - Armazena `report_id`, `user_id`, `role` (`tesouraria`, `presidencia`), `passkey_id`, `nonce`, `challenge`, `client_data_json`, `authenticator_data`, `signature`, `pdf_sha256`, `signed_at`, `ip` e `user_agent`.
+  - Unicidade pelo par `[report_id, role]`.
+- **Challenge Criptográfico Estrito:**
+  - O challenge é gerado com validade de 5 minutos e consumo único no primeiro uso (anti-replay):
+    $$\text{Challenge} = \text{SHA-256}("cbngo:juban-report:v1|\{report\_id\}|\{pdf\_sha256\}|\{user\_id\}|\{papel\}|\{nonce\}") \quad (\text{nonce de 32 bytes hex})$$
+- **Ordem Rígida de Assinaturas e Segregação de Funções:**
+  - **1ª Assinatura (Tesouraria):** papel `tesouraria`, executada por usuário com papel `JUBAN_TREASURER` (ou `SUPER_ADMIN` agindo como tesouraria). Relatório deve estar no status `aguardando_tesouraria`. Transiciona para `aguardando_presidencia`.
+  - **2ª Assinatura (Presidência):** papel `presidencia`, executada por usuário com papel `JUBAN_PRESIDENT`. Relatório deve estar no status `aguardando_presidencia`.
+  - **Regra de Não-Acumulação:** A mesma pessoa (`user_id`) é estritamente proibida de assinar nos dois papéis para o mesmo relatório, impedindo autofiscalização mesmo que um usuário acumule permissões administrativas.
+  - **Conclusão:** Ao receber a assinatura da presidência (ambas as assinaturas registradas), o status do `JubanReport` é atualizado para `assinado` (`JubanReportStatus::ASSINADO`).
+- **Verificação de Integridade Física do PDF:**
+  - Antes de emitir o challenge ou aceitar a assinatura, o hash SHA-256 do arquivo PDF físico armazenado em disco privado é recalculado e comparado com `pdf_sha256`. Qualquer divergência bloqueia a assinatura.
+- **Validação WebAuthn (`App\Services\Juban\JubanReportSigningService`):**
+  - Exige passkey cadastrada pertencente ao próprio usuário autenticado.
+  - Exigência estrita de verificação de usuário (**User Verification - UV obrigatório** no `authenticatorData`).
+  - Validação de RP ID e Origin.
+  - Atualização do contador de assinaturas (`sign_count`) e timestamp de último uso.
+- **Reverificação Criptográfica Independente (`App\Services\Juban\IndependentSignatureVerifier`):**
+  - Permite auditar e validar a autenticidade de qualquer assinatura armazenada **sem utilizar a biblioteca `webauthn-lib`**:
+    1. Reconstitui o challenge a partir da fórmula canônica `cbngo:juban-report:v1|...` e compara com o challenge gravado e o campo dentro de `clientDataJSON`.
+    2. Valida o bit UV no `authenticatorData`.
+    3. Converte a chave pública COSE armazenada na `Passkey` em padrão PEM `SubjectPublicKeyInfo` (EC P-256).
+    4. Executa verificação criptográfica com `openssl_verify($authenticatorDataRaw . hash('sha256', $clientDataJSONRaw, true), $signatureRaw, $publicKeyPem, OPENSSL_ALGO_SHA256)`.
+
+
 
 
