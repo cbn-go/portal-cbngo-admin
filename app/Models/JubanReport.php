@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use App\Enums\JubanReportStatus;
+use App\Enums\JubanSigningRole;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Database\Factories\JubanReportFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property int $id
@@ -29,6 +33,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon|null $updated_at
  * @property-read User|null $closedBy
  * @property-read User|null $reopenedBy
+ * @property-read Collection<int, JubanReportSignature> $signatures
+ * @property-read JubanReportSignature|null $treasurySignature
+ * @property-read JubanReportSignature|null $presidencySignature
  */
 class JubanReport extends Model
 {
@@ -82,6 +89,32 @@ class JubanReport extends Model
     public function reopenedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reopened_by');
+    }
+
+    /**
+     * @return HasMany<JubanReportSignature, $this>
+     */
+    public function signatures(): HasMany
+    {
+        return $this->hasMany(JubanReportSignature::class, 'report_id');
+    }
+
+    /**
+     * @return HasOne<JubanReportSignature, $this>
+     */
+    public function treasurySignature(): HasOne
+    {
+        return $this->hasOne(JubanReportSignature::class, 'report_id')
+            ->where('role', JubanSigningRole::TESOURARIA);
+    }
+
+    /**
+     * @return HasOne<JubanReportSignature, $this>
+     */
+    public function presidencySignature(): HasOne
+    {
+        return $this->hasOne(JubanReportSignature::class, 'report_id')
+            ->where('role', JubanSigningRole::PRESIDENCIA);
     }
 
     /**
