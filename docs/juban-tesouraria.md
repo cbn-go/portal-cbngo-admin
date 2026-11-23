@@ -231,6 +231,26 @@ Para garantir autenticidade jurídica, integridade física e não-repúdio das c
     3. Converte a chave pública COSE armazenada na `Passkey` em padrão PEM `SubjectPublicKeyInfo` (EC P-256).
     4. Executa verificação criptográfica com `openssl_verify($authenticatorDataRaw . hash('sha256', $clientDataJSONRaw, true), $signatureRaw, $publicKeyPem, OPENSSL_ALGO_SHA256)`.
 
+---
+
+### 6.9 Telas de Relatórios, Linha do Tempo e Comprovante de Assinaturas (#112)
+O gerenciamento dos relatórios trimestrais conta com interface completa de detalhamento, conferência e assinatura biométrica:
+
+- **Página de Detalhe do Relatório (`ViewJubanReport` em `/juban/relatorios/{record}`):**
+  - **Resumo Financeiro:** Exibe cards destacados com Receitas, Despesas, Saldo Líquido, Contagem de Lançamentos e o Hash SHA-256 do relatório.
+  - **Linha do Tempo de Homologação (Timeline):** Apresenta o ciclo auditável em 3 etapas sequenciais: Fechamento Contábil $\rightarrow$ Assinatura da Tesouraria $\rightarrow$ Assinatura da Presidência, com data/hora, assinante e dispositivo/passkey utilizado (ou indicação de pendência / reabertura).
+  - **Ação Inteligente "Assinar com passkey":**
+    - Visível exclusivamente quando é a vez do usuário autenticado (`AGUARDANDO_TESOURARIA` para tesoureiro, `AGUARDANDO_PRESIDENCIA` para presidente).
+    - Exibe aviso destacado caso o usuário não possua passkeys cadastradas, com link de redirecionamento para `/juban/passkeys`.
+    - Componente Alpine nativo `passkey-sign.js` integrado à API WebAuthn do navegador para assinatura direta no computador ou celular (iOS Safari, Android Chrome).
+    - Tratamento de exceções e cancelamentos biométricos com mensagens claras em pt-BR.
+- **Comprovante Oficial de Assinaturas (Página e PDF Dedicado):**
+  - Seção com trilha técnica de auditoria: papel, titular, data e hora (`d/m/Y H:i:s`), passkey/AAGUID, IP de auditoria e challenge SHA-256.
+  - Serviço `App\Services\Juban\SignatureReceiptPdfService` que gera documento PDF oficial do comprovante de assinaturas (`pdf/juban/signature-receipt.blade.php`) via DomPDF para download.
+- **Ferramenta de Conferência de Autenticidade do PDF:**
+  - Ação modal "Conferir PDF": permite o envio de um arquivo PDF para recálculo do hash SHA-256 e conferência imediata com o relatório assinado, emitindo alerta de confirmação de autenticidade ou aviso de adulteração/divergência.
+
+
 
 
 
