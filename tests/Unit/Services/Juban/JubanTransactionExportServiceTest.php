@@ -33,6 +33,7 @@ class JubanTransactionExportServiceTest extends TestCase
             'Valor Contábil',
             'Forma de Pagamento',
             'Documento / Ref',
+            'Comprovante',
             'Lançado por',
         ];
 
@@ -62,6 +63,7 @@ class JubanTransactionExportServiceTest extends TestCase
             'description' => 'Coffee break tarde',
             'payment_method' => null,
             'document_ref' => null,
+            'receipt_path' => 'juban/receipts/recibo-coffee.pdf',
             'created_by' => null,
         ]);
 
@@ -74,7 +76,8 @@ class JubanTransactionExportServiceTest extends TestCase
         $this->assertSame('1250.50', $rowReceita[5]);
         $this->assertSame('PIX', $rowReceita[6]);
         $this->assertSame('PIX-123456', $rowReceita[7]);
-        $this->assertSame('Tesoureiro Lucas', $rowReceita[8]);
+        $this->assertSame('Não', $rowReceita[8]);
+        $this->assertSame('Tesoureiro Lucas', $rowReceita[9]);
 
         $rowDespesa = $this->service->mapRow($despesa);
         $this->assertSame('18/05/2026', $rowDespesa[0]);
@@ -85,7 +88,8 @@ class JubanTransactionExportServiceTest extends TestCase
         $this->assertSame('-320.00', $rowDespesa[5]);
         $this->assertSame('', $rowDespesa[6]);
         $this->assertSame('', $rowDespesa[7]);
-        $this->assertSame('-', $rowDespesa[8]);
+        $this->assertSame('Sim', $rowDespesa[8]);
+        $this->assertSame('-', $rowDespesa[9]);
     }
 
     public function test_generate_csv_content_includes_bom_and_properly_escapes_csv(): void
@@ -104,7 +108,7 @@ class JubanTransactionExportServiceTest extends TestCase
         $this->assertStringStartsWith("\xEF\xBB\xBF", $csv);
 
         // Deve conter o cabeçalho separado por ponto e vírgula
-        $this->assertStringContainsString('Data;Tipo;Categoria;Descrição;"Valor (R$)";"Valor Contábil";"Forma de Pagamento";"Documento / Ref";"Lançado por"', $csv);
+        $this->assertStringContainsString('Data;Tipo;Categoria;Descrição;"Valor (R$)";"Valor Contábil";"Forma de Pagamento";"Documento / Ref";Comprovante;"Lançado por"', $csv);
 
         // Deve escapar o texto com aspas duplas
         $this->assertStringContainsString('Eventos ""Especiais""', $csv);

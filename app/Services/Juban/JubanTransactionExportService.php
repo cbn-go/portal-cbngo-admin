@@ -24,6 +24,7 @@ class JubanTransactionExportService
             'Valor Contábil',
             'Forma de Pagamento',
             'Documento / Ref',
+            'Comprovante',
             'Lançado por',
         ];
     }
@@ -55,6 +56,7 @@ class JubanTransactionExportService
             $valorContabil,
             $transaction->payment_method !== null ? $transaction->payment_method->getLabel() : '',
             $transaction->document_ref ?? '',
+            $transaction->hasReceipt() ? 'Sim' : 'Não',
             $transaction->creator !== null ? $transaction->creator->name : '-',
         ];
     }

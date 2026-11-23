@@ -126,6 +126,24 @@ class JubanTransactionResource extends Resource
                             ->maxLength(100)
                             ->placeholder('Nº do recibo, nota fiscal ou comprovante'),
 
+                        Forms\Components\FileUpload::make('receipt_path')
+                            ->label('Comprovante')
+                            ->helperText('Opcional. Anexe recibo, nota fiscal ou comprovante (PDF, PNG, JPG até 10MB).')
+                            ->disk(config('media.disk'))
+                            ->directory('juban/receipts')
+                            ->visibility('public')
+                            ->maxSize(10240)
+                            ->acceptedFileTypes([
+                                'application/pdf',
+                                'image/jpeg',
+                                'image/png',
+                                'image/webp',
+                            ])
+                            ->openable()
+                            ->downloadable()
+                            ->visible(fn (Get $get): bool => static::typeFromState($get('type')) === JubanTransactionType::DESPESA)
+                            ->columnSpanFull(),
+
                         Forms\Components\Textarea::make('notes')
                             ->label('Observações')
                             ->rows(3)
@@ -174,6 +192,14 @@ class JubanTransactionResource extends Resource
                 Tables\Columns\TextColumn::make('document_ref')
                     ->label('Referência')
                     ->searchable()
+                    ->toggleable(),
+
+                Tables\Columns\IconColumn::make('receipt_path')
+                    ->label('Comprovante')
+                    ->icon(fn (?string $state): ?string => filled($state) ? 'heroicon-m-paper-clip' : null)
+                    ->color('gray')
+                    ->tooltip(fn (?string $state): ?string => filled($state) ? 'Ver comprovante' : null)
+                    ->url(fn (JubanTransaction $record): ?string => $record->receiptUrl(), shouldOpenInNewTab: true)
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('creator.name')
@@ -240,6 +266,12 @@ class JubanTransactionResource extends Resource
                     }),
             ])
             ->actions([
+                Tables\Actions\Action::make('downloadReceipt')
+                    ->label('Comprovante')
+                    ->icon('heroicon-m-paper-clip')
+                    ->color('gray')
+                    ->url(fn (JubanTransaction $record): ?string => $record->receiptUrl(), shouldOpenInNewTab: true)
+                    ->visible(fn (JubanTransaction $record): bool => $record->hasReceipt()),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
