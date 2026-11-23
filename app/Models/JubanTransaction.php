@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use InvalidArgumentException;
 
 /**
@@ -23,6 +24,7 @@ use InvalidArgumentException;
  * @property string $description
  * @property JubanPaymentMethod|null $payment_method
  * @property string|null $document_ref
+ * @property string|null $receipt_path
  * @property string|null $notes
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -51,6 +53,7 @@ class JubanTransaction extends Model
         'description',
         'payment_method',
         'document_ref',
+        'receipt_path',
         'notes',
         'created_by',
         'updated_by',
@@ -164,5 +167,19 @@ class JubanTransaction extends Model
         $numericAmount = (float) $this->amount;
 
         return $this->isReceita() ? $numericAmount : -$numericAmount;
+    }
+
+    public function hasReceipt(): bool
+    {
+        return filled($this->receipt_path);
+    }
+
+    public function receiptUrl(): ?string
+    {
+        if (! $this->hasReceipt() || $this->receipt_path === null) {
+            return null;
+        }
+
+        return Storage::disk(config('media.disk'))->url($this->receipt_path);
     }
 }

@@ -42,6 +42,7 @@ Armazena as entradas (receitas) e saídas (despesas) de caixa.
 | `description` | `VARCHAR(255)` | Histórico descritivo do lançamento (ex: "Inscrição Retiro de Carnaval - 30 jovens PIB Goiânia") |
 | `payment_method` | `VARCHAR(30)` (nullable) | Forma de liquidação: `pix`, `transferencia`, `dinheiro`, `cartao_debito`, `cartao_credito`, `boleto`, `cheque`, `outro` |
 | `document_ref` | `VARCHAR(100)` (nullable) | Número de documento fiscal, recibo ou código de transação bancária |
+| `receipt_path` | `VARCHAR(500)` (nullable) | Caminho relativo do comprovante/recibo anexado no disco de mídia (`juban/receipts/...`) |
 | `notes` | `TEXT` (nullable) | Observações e detalhes internos para a tesouraria/secretaria |
 | `created_by` | `BIGINT UNSIGNED` (nullable) | Chave estrangeira para `users.id` do operador que registrou o lançamento |
 | `updated_by` | `BIGINT UNSIGNED` (nullable) | Chave estrangeira para `users.id` do último operador que alterou o lançamento |
@@ -129,7 +130,7 @@ O CRUD da tesouraria (#96) fica num painel Filament próprio, `App\Providers\Fil
 - **Quem entra:** `UserRole::hasJubanPanelAccess()` = `canViewJubanTreasury()` → `SUPER_ADMIN`, `JUBAN_TREASURER`, `JUBAN_PRESIDENT` e `CONVENTION_EDITOR`. Os outros papéis e os usuários inativos recebem 403.
 - **Painel padrão:** `JUBAN_TREASURER` e `JUBAN_PRESIDENT` caem em `/juban` após o login e no link de redefinição de senha (`getDefaultPanelUrl()` / `panelForPasswordReset()`). SuperAdmin e Secretaria continuam com `/admin` como padrão e acessam `/juban` pelo endereço.
 - **Recursos** (`app/Filament/Juban/Resources`):
-  - `JubanTransactionResource` (`/juban/lancamentos`): tipo, valor (> 0), data (obrigatória), categoria (só as ativas compatíveis com o tipo; validação no servidor contra categoria incompatível), descrição, forma de pagamento, referência/documento e observações. Busca por descrição, categoria e referência; filtros por período, tipo e categoria. `created_by` é preenchido no create. Exclusão lógica para SuperAdmin e tesouraria; restaurar e lixeira só para o SuperAdmin.
+  - `JubanTransactionResource` (`/juban/lancamentos`): tipo, valor (> 0), data (obrigatória), categoria (só as ativas compatíveis com o tipo; validação no servidor contra categoria incompatível), descrição, forma de pagamento, referência/documento, comprovante opcional para despesas (PDF/imagens até 10MB no disco de mídia com visualização/download direto) e observações. Busca por descrição, categoria e referência; filtros por período, tipo e categoria. `created_by` é preenchido no create. Exclusão lógica para SuperAdmin e tesouraria; restaurar e lixeira só para o SuperAdmin.
   - `JubanCategoryResource` (`/juban/categorias`): nome, código único, natureza (receita/despesa/ambos), descrição e ativa/inativa. Categorias com lançamentos não podem ser excluídas; desative-as.
 
 ### 6.4 Resumo de caixa (página inicial do `/juban`)
