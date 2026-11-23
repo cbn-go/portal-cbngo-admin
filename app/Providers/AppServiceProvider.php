@@ -84,6 +84,7 @@ class AppServiceProvider extends ServiceProvider
             Js::make('leaflet', resource_path('vendor/leaflet/leaflet.js'))->loadedOnRequest(),
             AlpineComponent::make('strategy-map', resource_path('js/filament/strategy-map.js')),
             AlpineComponent::make('passkey-register', resource_path('js/filament/passkey-register.js')),
+            AlpineComponent::make('passkey-sign', resource_path('js/filament/passkey-sign.js')),
         ]);
     }
 }

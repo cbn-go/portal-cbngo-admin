@@ -83,6 +83,8 @@ class JubanReportResource extends Resource
             ])
             ->defaultSort('year', 'desc')
             ->actions([
+                Tables\Actions\ViewAction::make(),
+
                 Action::make('downloadPdf')
                     ->label('Baixar PDF')
                     ->icon('heroicon-m-arrow-down-tray')
@@ -128,6 +130,7 @@ class JubanReportResource extends Resource
     {
         return [
             'index' => Pages\ListJubanReports::route('/'),
+            'view' => Pages\ViewJubanReport::route('/{record}'),
         ];
     }
 }
