@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $id
  * @property int $report_id
+ * @property int|null $opinion_id
  * @property int $user_id
  * @property JubanSigningRole $role
  * @property int $passkey_id
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $client_data_json
  * @property string $authenticator_data
  * @property string $signature
+ * @property string|null $divergent_vote
  * @property string $pdf_sha256
  * @property Carbon $signed_at
  * @property string|null $ip
@@ -27,6 +29,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read JubanReport $report
+ * @property-read JubanReportOpinion|null $opinion
  * @property-read User $user
  * @property-read Passkey $passkey
  */
@@ -37,6 +40,7 @@ class JubanReportSignature extends Model
 
     protected $fillable = [
         'report_id',
+        'opinion_id',
         'user_id',
         'role',
         'passkey_id',
@@ -45,6 +49,7 @@ class JubanReportSignature extends Model
         'client_data_json',
         'authenticator_data',
         'signature',
+        'divergent_vote',
         'pdf_sha256',
         'signed_at',
         'ip',
@@ -68,6 +73,14 @@ class JubanReportSignature extends Model
     public function report(): BelongsTo
     {
         return $this->belongsTo(JubanReport::class, 'report_id');
+    }
+
+    /**
+     * @return BelongsTo<JubanReportOpinion, $this>
+     */
+    public function opinion(): BelongsTo
+    {
+        return $this->belongsTo(JubanReportOpinion::class, 'opinion_id');
     }
 
     /**

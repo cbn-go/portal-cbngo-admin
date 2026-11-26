@@ -11,7 +11,9 @@ use App\Models\JubanReportInquiry;
 use App\Models\JubanTransaction;
 use App\Models\User;
 use App\Services\FiscalCouncil\FiscalCouncilOpinionService;
+use App\Services\FiscalCouncil\FiscalCouncilOpinionSigningService;
 use App\Services\FiscalCouncil\JubanReportInquiryService;
+use App\Services\Juban\Exceptions\JubanSigningException;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Notifications\Notification;
@@ -19,15 +21,58 @@ use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Throwable;
 
 /**
  * @property JubanReport $record
  */
 class ViewJubanReport extends ViewRecord
 {
+    public ?string $divergentVote = null;
+
     protected static string $resource = JubanReportResource::class;
 
     protected static string $view = 'filament.fiscal-council.resources.juban-report-resource.pages.view-juban-report';
+
+    public function canSignOpinion(): bool
+    {
+        /** @var User|null $user */
+        $user = auth()->user();
+
+        if (! $user || ! $user->is_active) {
+            return false;
+        }
+
+        $opinion = $this->record->opinion;
+        if (! $opinion || ! $opinion->isIssued()) {
+            return false;
+        }
+
+        // Não pode assinar novamente se já assinou este parecer
+        if ($opinion->signatures()->where('user_id', $user->id)->exists()) {
+            return false;
+        }
+
+        // Deve ser indicado no parecer
+        $opinion->loadMissing('members.member');
+        $isIndicated = $opinion->members->contains(fn ($m) => $m->member->user_id === $user->id);
+        if (! $isIndicated) {
+            return false;
+        }
+
+        // Segregação de funções: não pode ter assinado como Tesouraria ou Presidência
+        if ($this->record->signatures()->where('user_id', $user->id)->whereNull('opinion_id')->exists()) {
+            return false;
+        }
+
+        // Mandato ativo
+        $member = FiscalCouncilMember::where('user_id', $user->id)->first();
+        if (! $member || ! $member->active || ! $member->isTermActive()) {
+            return false;
+        }
+
+        return true;
+    }
 
     public function canAskInquiry(): bool
     {
@@ -370,6 +415,37 @@ class ViewJubanReport extends ViewRecord
                     $this->record->refresh();
                 }),
 
+            Action::make('signOpinion')
+                ->label('Assinar Parecer com Passkey')
+                ->icon('heroicon-m-finger-print')
+                ->color('success')
+                ->visible(fn (): bool => $this->canSignOpinion())
+                ->form([
+                    Forms\Components\Textarea::make('divergent_vote')
+                        ->label('Voto com Ressalva / Divergência (opcional)')
+                        ->placeholder('Se concordar integralmente com o parecer, deixe este campo em branco. Caso tenha divergência quanto ao voto ou ressalva pontual, registre aqui sua manifestação individual.')
+                        ->rows(3),
+                ])
+                ->modalHeading('Assinatura Eletrônica do Parecer Fiscal')
+                ->modalDescription('Você está prestes a assinar o Parecer Fiscal com sua passkey (WebAuthn). Esta assinatura possui validade jurídica plena (Lei 14.063/2020) e ficará registrada permanentemente no manifesto.')
+                ->action(function (array $data): void {
+                    $this->startOpinionSigning($data['divergent_vote'] ?? null);
+                }),
+
+            Action::make('downloadSignedOpinionPdf')
+                ->label('Baixar Via Assinada (PDF)')
+                ->icon('heroicon-m-arrow-down-tray')
+                ->color('success')
+                ->visible(fn (): bool => (bool) ($this->record->opinion?->signed_pdf_path && Storage::disk('local')->exists($this->record->opinion->signed_pdf_path)))
+                ->action(function (): StreamedResponse {
+                    $filename = "parecer-fiscal-assinado-juban-{$this->record->year}-q{$this->record->quarter}".($this->record->version > 1 ? "-v{$this->record->version}" : '').'.pdf';
+
+                    /** @var string $pdfPath */
+                    $pdfPath = (string) $this->record->opinion->signed_pdf_path;
+
+                    return Storage::disk('local')->download($pdfPath, $filename);
+                }),
+
             Action::make('cancelOpinion')
                 ->label('Cancelar Emissão')
                 ->icon('heroicon-m-arrow-uturn-left')
@@ -460,5 +536,93 @@ class ViewJubanReport extends ViewRecord
 
                 $this->record->refresh();
             });
+    }
+
+    public function startOpinionSigning(?string $divergentVote = null): void
+    {
+        $this->divergentVote = $divergentVote;
+
+        /** @var User|null $user */
+        $user = auth()->user();
+        $opinion = $this->record->opinion;
+
+        if (! $user || ! $opinion || ! $opinion->isIssued()) {
+            Notification::make()
+                ->title('Parecer fiscal indisponível para assinatura.')
+                ->warning()
+                ->send();
+
+            return;
+        }
+
+        $signingService = app(FiscalCouncilOpinionSigningService::class);
+
+        try {
+            $options = $signingService->generateSigningOptions($opinion, $user);
+            $role = $signingService->determineSigningRole($opinion, $user);
+
+            $this->dispatch('init-webauthn-signing', options: $options, role: $role->value);
+        } catch (JubanSigningException $e) {
+            Notification::make()
+                ->title('Não foi possível iniciar a assinatura')
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     */
+    public function finishSigning(array $payload): void
+    {
+        /** @var User|null $user */
+        $user = auth()->user();
+        $opinion = $this->record->opinion;
+
+        if (! $user || ! $opinion) {
+            Notification::make()
+                ->title('Parecer não encontrado.')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        $signingService = app(FiscalCouncilOpinionSigningService::class);
+
+        try {
+            $signingService->verifyAndSign(
+                $opinion,
+                $user,
+                $payload,
+                $this->divergentVote,
+                request()->ip(),
+                request()->userAgent()
+            );
+
+            Notification::make()
+                ->title('Parecer assinado com sucesso!')
+                ->body('Sua assinatura digital com passkey foi homologada e registrada.')
+                ->success()
+                ->send();
+
+            $this->record->refresh();
+        } catch (Throwable $e) {
+            Notification::make()
+                ->title('Falha ao processar assinatura com passkey')
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+
+    public function handleSigningError(string $message): void
+    {
+        Notification::make()
+            ->title('Assinatura não concluída')
+            ->body($message)
+            ->warning()
+            ->send();
     }
 }

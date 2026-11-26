@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property Carbon|null $issued_at
  * @property string|null $pdf_path
  * @property string|null $pdf_sha256
+ * @property string|null $signed_pdf_path
+ * @property string|null $signed_pdf_sha256
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read JubanReport $report
@@ -36,6 +38,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read Collection<int, JubanReportOpinionMember> $vogalMembers
  * @property-read Collection<int, JubanReportOpinionHistory> $histories
  * @property-read Collection<int, JubanReportOpinionComment> $comments
+ * @property-read Collection<int, JubanReportSignature> $signatures
  */
 class JubanReportOpinion extends Model
 {
@@ -54,6 +57,8 @@ class JubanReportOpinion extends Model
         'issued_at',
         'pdf_path',
         'pdf_sha256',
+        'signed_pdf_path',
+        'signed_pdf_sha256',
     ];
 
     /**
@@ -129,6 +134,14 @@ class JubanReportOpinion extends Model
         return $this->hasMany(JubanReportOpinionComment::class, 'opinion_id')->latest();
     }
 
+    /**
+     * @return HasMany<JubanReportSignature, $this>
+     */
+    public function signatures(): HasMany
+    {
+        return $this->hasMany(JubanReportSignature::class, 'opinion_id');
+    }
+
     public function isDraft(): bool
     {
         return $this->status === JubanReportOpinionStatus::DRAFT;
@@ -187,7 +200,11 @@ class JubanReportOpinion extends Model
 
     public function hasSignatures(): bool
     {
-        // Se houver assinaturas em juban_report_signatures (ou coluna opinion_id)
-        return false;
+        return $this->signatures()->exists();
+    }
+
+    public function isQuorumComplete(): bool
+    {
+        return $this->signatures()->count() >= 3;
     }
 }

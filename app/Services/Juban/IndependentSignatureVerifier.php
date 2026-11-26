@@ -21,14 +21,22 @@ class IndependentSignatureVerifier
     public function verify(JubanReportSignature $signature): array
     {
         // 1. Recomposição canônica do challenge
-        $canonicalInput = "cbngo:juban-report:v1|{$signature->report_id}|{$signature->pdf_sha256}|{$signature->user_id}|{$signature->role->value}|{$signature->nonce}";
+        if ($signature->opinion_id) {
+            $reportSha = $signature->report?->pdf_sha256 ?? '';
+            $canonicalInput = "cbngo:juban-opinion:v1|{$signature->report_id}|{$reportSha}|{$signature->opinion_id}|{$signature->pdf_sha256}|{$signature->user_id}|{$signature->role->value}|{$signature->nonce}";
+            $canonicalPrefix = 'cbngo:juban-opinion:v1';
+        } else {
+            $canonicalInput = "cbngo:juban-report:v1|{$signature->report_id}|{$signature->pdf_sha256}|{$signature->user_id}|{$signature->role->value}|{$signature->nonce}";
+            $canonicalPrefix = 'cbngo:juban-report:v1';
+        }
+
         $expectedChallengeHex = hash('sha256', $canonicalInput);
         $expectedChallengeBinary = hash('sha256', $canonicalInput, true);
 
         if (! hash_equals($expectedChallengeHex, $signature->challenge)) {
             return [
                 'valid' => false,
-                'reason' => 'O challenge gravado não corresponde à fórmula canônica cbngo:juban-report:v1.',
+                'reason' => "O challenge gravado não corresponde à fórmula canônica {$canonicalPrefix}.",
                 'details' => [
                     'expected' => $expectedChallengeHex,
                     'actual' => $signature->challenge,

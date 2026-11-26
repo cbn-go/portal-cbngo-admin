@@ -1,5 +1,21 @@
 <x-filament-panels::page>
     <div class="space-y-6">
+        {{-- Componente Alpine WebAuthn para assinatura com passkey --}}
+        <div
+            wire:ignore
+            x-ignore
+            ax-load
+            ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('passkey-sign') }}"
+            x-data="passkeySign()"
+        >
+            <div x-show="!supported" x-cloak class="p-4 rounded-xl bg-danger-50 dark:bg-danger-950/50 border border-danger-200 dark:border-danger-800 text-danger-700 dark:text-danger-300 flex items-start gap-3">
+                <x-heroicon-o-exclamation-triangle class="w-6 h-6 shrink-0 mt-0.5" />
+                <div>
+                    <h4 class="font-semibold text-sm">Navegador ou dispositivo sem suporte a WebAuthn</h4>
+                    <p class="text-sm mt-1">Seu navegador atual não suporta autenticação com passkey. Para assinar, utilize um navegador moderno em um dispositivo com suporte biométrico ou chave física.</p>
+                </div>
+            </div>
+        </div>
         {{-- Cabeçalho do Relatório e Status --}}
         <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -246,8 +262,65 @@
                     {{-- Hash do Parecer quando emitido --}}
                     @if ($opinion->pdf_sha256)
                         <div class="bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-                            <span class="text-xs font-semibold text-gray-500 uppercase block">Hash Criptográfico do Parecer (SHA-256)</span>
+                            <span class="text-xs font-semibold text-gray-500 uppercase block">Hash Criptográfico do Parecer Emitido (SHA-256)</span>
                             <code class="text-xs text-gray-800 dark:text-gray-200 font-mono break-all select-all block mt-0.5">{{ $opinion->pdf_sha256 }}</code>
+                        </div>
+                    @endif
+
+                    {{-- Via Assinada Completa --}}
+                    @if ($opinion->signed_pdf_sha256)
+                        <div class="bg-success-50/50 dark:bg-success-950/20 border border-success-200 dark:border-success-800 rounded-lg p-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-success-700 dark:text-success-400 uppercase block">Via Assinada Homologada (SHA-256)</span>
+                                <x-filament::badge color="success">Quórum Completo</x-filament::badge>
+                            </div>
+                            <code class="text-xs text-gray-800 dark:text-gray-200 font-mono break-all select-all block mt-0.5">{{ $opinion->signed_pdf_sha256 }}</code>
+                        </div>
+                    @endif
+
+                    {{-- Assinaturas Coletadas do Conselho Fiscal --}}
+                    @if ($opinion->signatures()->exists())
+                        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-semibold text-gray-500 uppercase block">
+                                    Assinaturas Coletadas do Conselho Fiscal ({{ $opinion->signatures->count() }}/3)
+                                </span>
+                                @if ($opinion->isQuorumComplete())
+                                    <x-filament::badge color="success">Quórum de 3 Votos Concluído</x-filament::badge>
+                                @else
+                                    <x-filament::badge color="warning">Aguardando Coleta de Assinaturas</x-filament::badge>
+                                @endif
+                            </div>
+
+                            <div class="space-y-3">
+                                @foreach ($opinion->signatures()->with(['user', 'passkey'])->get() as $sig)
+                                    <div class="p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 border-b border-gray-200 dark:border-gray-700 pb-1.5 mb-2">
+                                            <span class="font-bold text-gray-900 dark:text-white text-sm">
+                                                {{ $sig->role->getLabel() }}: {{ $sig->user->name }}
+                                            </span>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">
+                                                Assinado em {{ $sig->signed_at->format('d/m/Y \à\s H:i:s') }}
+                                            </span>
+                                        </div>
+
+                                        @if ($sig->divergent_vote)
+                                            <div class="p-2 mb-2 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded text-xs text-amber-800 dark:text-amber-200">
+                                                <strong>Voto Divergente / Ressalva Registrada:</strong><br>
+                                                {{ $sig->divergent_vote }}
+                                            </div>
+                                        @endif
+
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs text-gray-600 dark:text-gray-300">
+                                            <div><strong>Dispositivo/Passkey:</strong> {{ $sig->passkey?->name ?? 'Passkey FIDO2' }}</div>
+                                            <div><strong>IP:</strong> {{ $sig->ip ?? 'N/A' }}</div>
+                                            <div class="sm:col-span-2 font-mono break-all text-gray-500">
+                                                <strong>Challenge Canônico:</strong> {{ $sig->challenge }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     @endif
 
