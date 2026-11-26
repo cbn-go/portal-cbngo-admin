@@ -137,7 +137,7 @@ class IndependentSignatureVerifier
         }
 
         $dataToVerify = $authDataRaw.hash('sha256', $clientDataJSONRaw, true);
-        $verifyResult = openssl_verify($dataToVerify, $rawSignature, $publicKeyPem, OPENSSL_ALGO_SHA256);
+        $verifyResult = @openssl_verify($dataToVerify, $rawSignature, $publicKeyPem, OPENSSL_ALGO_SHA256);
 
         if ($verifyResult !== 1) {
             return [
@@ -176,7 +176,18 @@ class IndependentSignatureVerifier
             $x = $coseNormalized[-2] ?? null;
             $y = $coseNormalized[-3] ?? null;
 
-            if (! is_string($x) || ! is_string($y) || strlen($x) !== 32 || strlen($y) !== 32) {
+            if (! is_string($x) || ! is_string($y)) {
+                throw new JubanSigningException('Coordenadas EC inválidas na chave pública.');
+            }
+
+            if (strlen($x) < 32) {
+                $x = str_pad($x, 32, "\0", STR_PAD_LEFT);
+            }
+            if (strlen($y) < 32) {
+                $y = str_pad($y, 32, "\0", STR_PAD_LEFT);
+            }
+
+            if (strlen($x) !== 32 || strlen($y) !== 32) {
                 throw new JubanSigningException('Coordenadas EC inválidas na chave pública.');
             }
 

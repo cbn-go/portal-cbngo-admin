@@ -47,8 +47,8 @@ class JubanReportSigningFeatureTest extends TestCase
 
         $key = openssl_pkey_new($configArgs);
         $details = openssl_pkey_get_details($key);
-        $x = $details['ec']['x'];
-        $y = $details['ec']['y'];
+        $x = str_pad($details['ec']['x'], 32, "\0", STR_PAD_LEFT);
+        $y = str_pad($details['ec']['y'], 32, "\0", STR_PAD_LEFT);
 
         $coseKeyMap = MapObject::create()
             ->add(UnsignedIntegerObject::create(1), UnsignedIntegerObject::create(2))

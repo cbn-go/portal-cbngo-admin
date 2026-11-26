@@ -47,8 +47,8 @@ class IndependentSignatureVerifierTest extends TestCase
 
         $key = openssl_pkey_new($configArgs);
         $details = openssl_pkey_get_details($key);
-        $x = $details['ec']['x'];
-        $y = $details['ec']['y'];
+        $x = str_pad($details['ec']['x'], 32, "\0", STR_PAD_LEFT);
+        $y = str_pad($details['ec']['y'], 32, "\0", STR_PAD_LEFT);
 
         $coseKeyMap = MapObject::create()
             ->add(UnsignedIntegerObject::create(1), UnsignedIntegerObject::create(2))
@@ -163,5 +163,33 @@ class IndependentSignatureVerifierTest extends TestCase
 
         $this->assertFalse($result['valid']);
         $this->assertEquals('A flag de verificação de usuário (UV) não está ativa no authenticatorData.', $result['reason']);
+    }
+
+    public function test_independent_verification_pads_ec_coordinates_when_less_than_32_bytes(): void
+    {
+        $scenario = $this->createValidSignedScenario();
+        $signature = $scenario['signatureModel'];
+        $x = $scenario['x'];
+        $y = $scenario['y'];
+
+        $coseKeyMap = MapObject::create()
+            ->add(UnsignedIntegerObject::create(1), UnsignedIntegerObject::create(2))
+            ->add(UnsignedIntegerObject::create(3), NegativeIntegerObject::create(-7))
+            ->add(NegativeIntegerObject::create(-1), UnsignedIntegerObject::create(1))
+            ->add(NegativeIntegerObject::create(-2), ByteStringObject::create(substr($x, 1)))
+            ->add(NegativeIntegerObject::create(-3), ByteStringObject::create($y));
+
+        $signature->passkey->update([
+            'public_key' => Base64UrlSafe::encodeUnpadded((string) $coseKeyMap),
+        ]);
+
+        $result = $this->verifier->verify($signature->fresh());
+
+        if ($x[0] === "\0") {
+            $this->assertTrue($result['valid']);
+        } else {
+            $this->assertFalse($result['valid']);
+            $this->assertEquals('Assinatura criptográfica inválida para a chave pública fornecida.', $result['reason']);
+        }
     }
 }
