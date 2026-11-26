@@ -33,6 +33,7 @@ class FiscalCouncilPanelProvider extends PanelProvider
                 'Pareceres & Relatórios',
                 'Segurança',
             ])
+            ->databaseNotifications()
             ->darkMode(false)
             ->sidebarWidth('16rem')
             ->font('Plus Jakarta Sans')

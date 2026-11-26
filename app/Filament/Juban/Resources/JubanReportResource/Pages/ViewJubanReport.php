@@ -200,6 +200,42 @@ class ViewJubanReport extends ViewRecord
                             ->send();
                     }
                 }),
+
+            Action::make('create_new_version')
+                ->label('Criar Nova Versão')
+                ->icon('heroicon-m-arrow-path-rounded-square')
+                ->color('warning')
+                ->visible(fn (): bool => auth()->user()?->can('createNewVersion', $this->record) ?? false)
+                ->requiresConfirmation()
+                ->modalHeading('Abrir Nova Versão após Reprovação')
+                ->modalDescription('Uma nova versão será aberta (em status Reaberto), permitindo à Tesouraria ajustar os lançamentos do trimestre. A versão atual reprovada e seu PDF permanecerão intactos no histórico.')
+                ->form([
+                    Forms\Components\Textarea::make('reason')
+                        ->label('Motivo / Justificativa da nova versão')
+                        ->required()
+                        ->placeholder('Descreva os ajustes solicitados pelo Conselho Fiscal que serão realizados...'),
+                ])
+                ->action(function (array $data): void {
+                    $service = app(QuarterlyClosingService::class);
+
+                    try {
+                        $newVersion = $service->createNewVersionAfterRejection($this->record, auth()->user(), (string) $data['reason']);
+
+                        Notification::make()
+                            ->title("Nova versão v{$newVersion->version} criada com sucesso!")
+                            ->body('Os lançamentos foram destravados para correções pela Tesouraria.')
+                            ->success()
+                            ->send();
+
+                        $this->redirect(JubanReportResource::getUrl('index'));
+                    } catch (QuarterlyClosingException $e) {
+                        Notification::make()
+                            ->title('Não foi possível criar nova versão')
+                            ->body($e->getMessage())
+                            ->danger()
+                            ->send();
+                    }
+                }),
         ];
     }
 

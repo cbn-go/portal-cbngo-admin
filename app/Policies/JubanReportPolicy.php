@@ -49,8 +49,19 @@ class JubanReportPolicy
     public function reopen(User $user, JubanReport $report): bool
     {
         return $user->role->isSuperAdmin()
-            && $report->status !== JubanReportStatus::ASSINADO
-            && $report->status !== JubanReportStatus::AGUARDANDO_CONSELHO_FISCAL
-            && $report->status !== JubanReportStatus::REABERTO;
+            && in_array($report->status, [
+                JubanReportStatus::AGUARDANDO_TESOURARIA,
+                JubanReportStatus::AGUARDANDO_PRESIDENCIA,
+            ], true);
+    }
+
+    public function createNewVersion(User $user, JubanReport $report): bool
+    {
+        return $user->role->isSuperAdmin()
+            && $report->status === JubanReportStatus::REPROVADO
+            && ! JubanReport::where('year', $report->year)
+                ->where('quarter', $report->quarter)
+                ->where('version', '>', $report->version)
+                ->exists();
     }
 }
