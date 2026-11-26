@@ -321,7 +321,7 @@ class JubanReportSigningServiceTest extends TestCase
         $sigPresident = $this->service->verifyAndSign($report->fresh(), $president, JubanSigningRole::PRESIDENCIA, $payloadP);
 
         $this->assertEquals(JubanSigningRole::PRESIDENCIA, $sigPresident->role);
-        $this->assertEquals(JubanReportStatus::ASSINADO, $report->fresh()->status);
+        $this->assertEquals(JubanReportStatus::AGUARDANDO_CONSELHO_FISCAL, $report->fresh()->status);
         $this->assertEquals(2, $report->fresh()->signatures()->count());
     }
 }

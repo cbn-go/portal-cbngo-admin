@@ -4,10 +4,13 @@ namespace App\Services\Juban;
 
 use App\Enums\JubanReportStatus;
 use App\Enums\JubanSigningRole;
+use App\Enums\UserRole;
+use App\Models\FiscalCouncilMember;
 use App\Models\JubanReport;
 use App\Models\JubanReportSignature;
 use App\Models\Passkey;
 use App\Models\User;
+use App\Notifications\JubanReportArrivedToFiscalCouncilNotification;
 use App\Services\Juban\Exceptions\JubanSigningException;
 use CBOR\Decoder;
 use CBOR\Normalizable;
@@ -19,6 +22,7 @@ use Cose\Algorithm\Signature\Signature;
 use Cose\Key\Key;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use ParagonIE\ConstantTime\Base64UrlSafe;
 use Throwable;
@@ -222,7 +226,26 @@ class JubanReportSigningService
             if ($role === JubanSigningRole::TESOURARIA) {
                 $report->update(['status' => JubanReportStatus::AGUARDANDO_PRESIDENCIA]);
             } elseif ($role === JubanSigningRole::PRESIDENCIA) {
-                $report->update(['status' => JubanReportStatus::ASSINADO]);
+                $report->update(['status' => JubanReportStatus::AGUARDANDO_CONSELHO_FISCAL]);
+
+                // Notifica os membros ativos do Conselho Fiscal
+                $activeMemberUsers = FiscalCouncilMember::query()
+                    ->active()
+                    ->with('user')
+                    ->get()
+                    ->pluck('user')
+                    ->filter(fn ($u) => $u instanceof User && $u->is_active);
+
+                $roleUsers = User::query()
+                    ->where('role', UserRole::FISCAL_COUNCIL)
+                    ->where('is_active', true)
+                    ->get();
+
+                $fiscalCouncilUsers = $activeMemberUsers->merge($roleUsers)->unique('id')->values();
+
+                if ($fiscalCouncilUsers->isNotEmpty()) {
+                    Notification::send($fiscalCouncilUsers, new JubanReportArrivedToFiscalCouncilNotification($report));
+                }
             }
 
             return $signature;

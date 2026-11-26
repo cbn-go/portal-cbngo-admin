@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int $id
  * @property int $year
  * @property int $quarter
+ * @property int $version
  * @property Carbon $period_from
  * @property Carbon $period_until
  * @property JubanReportStatus $status
@@ -45,6 +46,7 @@ class JubanReport extends Model
     protected $fillable = [
         'year',
         'quarter',
+        'version',
         'period_from',
         'period_until',
         'status',
@@ -66,6 +68,7 @@ class JubanReport extends Model
         return [
             'year' => 'integer',
             'quarter' => 'integer',
+            'version' => 'integer',
             'period_from' => 'date',
             'period_until' => 'date',
             'status' => JubanReportStatus::class,
@@ -128,9 +131,16 @@ class JubanReport extends Model
 
         $targetDate = Carbon::parse($date)->toDateString();
 
-        return static::where('status', '!=', JubanReportStatus::REABERTO)
+        $latestReport = static::query()
             ->whereDate('period_from', '<=', $targetDate)
             ->whereDate('period_until', '>=', $targetDate)
-            ->exists();
+            ->orderByDesc('version')
+            ->first();
+
+        if (! $latestReport) {
+            return false;
+        }
+
+        return $latestReport->status->isLocked();
     }
 }

@@ -40,6 +40,7 @@ class JubanReportFactory extends Factory
         return [
             'year' => $year,
             'quarter' => $quarter,
+            'version' => 1,
             'period_from' => $periodFrom,
             'period_until' => $periodUntil,
             'status' => JubanReportStatus::AGUARDANDO_TESOURARIA,

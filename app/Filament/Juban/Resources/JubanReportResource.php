@@ -44,7 +44,7 @@ class JubanReportResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('quarter_label')
                     ->label('Trimestre')
-                    ->state(fn (JubanReport $record): string => "{$record->year} - Q{$record->quarter}")
+                    ->state(fn (JubanReport $record): string => "{$record->year} - Q{$record->quarter}".($record->version > 1 ? " (v{$record->version})" : ''))
                     ->weight('bold')
                     ->searchable(query: function ($query, string $search) {
                         return $query->where('year', 'like', "%{$search}%");
@@ -120,6 +120,31 @@ class JubanReportResource extends Resource
                         Notification::make()
                             ->title('Trimestre reaberto com sucesso!')
                             ->body('Os lançamentos do período foram destravados para edições.')
+                            ->success()
+                            ->send();
+                    }),
+
+                Action::make('create_new_version')
+                    ->label('Criar Nova Versão')
+                    ->icon('heroicon-m-arrow-path-rounded-square')
+                    ->color('warning')
+                    ->visible(fn (JubanReport $record): bool => auth()->user()?->can('createNewVersion', $record) ?? false)
+                    ->requiresConfirmation()
+                    ->modalHeading('Abrir Nova Versão após Reprovação')
+                    ->modalDescription('Uma nova versão será aberta (em status Reaberto), permitindo à Tesouraria ajustar os lançamentos do trimestre. A versão atual reprovada e seu PDF permanecerão intactos no histórico.')
+                    ->form([
+                        Forms\Components\Textarea::make('reason')
+                            ->label('Motivo / Justificativa da nova versão')
+                            ->required()
+                            ->placeholder('Descreva os ajustes solicitados pelo Conselho Fiscal que serão realizados...'),
+                    ])
+                    ->action(function (JubanReport $record, array $data): void {
+                        $service = app(QuarterlyClosingService::class);
+                        $newVersion = $service->createNewVersionAfterRejection($record, auth()->user(), (string) $data['reason']);
+
+                        Notification::make()
+                            ->title("Nova versão v{$newVersion->version} criada com sucesso!")
+                            ->body('Os lançamentos foram destravados para correções pela Tesouraria.')
                             ->success()
                             ->send();
                     }),

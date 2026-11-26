@@ -158,7 +158,7 @@ class JubanReportSigningFeatureTest extends TestCase
             'Chrome Desktop'
         );
 
-        $this->assertEquals(JubanReportStatus::ASSINADO, $report->fresh()->status);
+        $this->assertEquals(JubanReportStatus::AGUARDANDO_CONSELHO_FISCAL, $report->fresh()->status);
         $this->assertDatabaseHas('juban_report_signatures', [
             'id' => $sigP->id,
             'report_id' => $report->id,

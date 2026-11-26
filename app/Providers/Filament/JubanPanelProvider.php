@@ -35,6 +35,7 @@ class JubanPanelProvider extends PanelProvider
                 'Tesouraria',
                 'Segurança',
             ])
+            ->databaseNotifications()
             // Widgets do resumo de caixa: registrados aqui para o Livewire (senão volta 419);
             // a página inicial escolhe quais exibir em getWidgets().
             ->widgets([

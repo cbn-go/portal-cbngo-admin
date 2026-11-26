@@ -37,8 +37,12 @@ class QuarterlyClosingService
         }
 
         // 2. Não fecha trimestre duplicado
-        $existing = JubanReport::where('year', $year)->where('quarter', $quarter)->first();
-        if ($existing && $existing->status !== JubanReportStatus::REABERTO) {
+        $latest = JubanReport::where('year', $year)
+            ->where('quarter', $quarter)
+            ->orderByDesc('version')
+            ->first();
+
+        if ($latest && $latest->status !== JubanReportStatus::REABERTO) {
             throw new QuarterlyClosingException("O trimestre Q{$quarter}/{$year} já foi fechado.");
         }
 
@@ -113,9 +117,8 @@ class QuarterlyClosingService
         ];
 
         // 4. Cria ou atualiza o registro do relatório
-        $report = JubanReport::updateOrCreate(
-            ['year' => $year, 'quarter' => $quarter],
-            [
+        if ($latest && $latest->status === JubanReportStatus::REABERTO) {
+            $latest->update([
                 'period_from' => $periodFrom,
                 'period_until' => $periodUntil,
                 'status' => JubanReportStatus::AGUARDANDO_TESOURARIA,
@@ -125,15 +128,33 @@ class QuarterlyClosingService
                 'reopened_by' => null,
                 'reopened_at' => null,
                 'reopen_reason' => null,
-            ]
-        );
+            ]);
+            $report = $latest;
+        } else {
+            $report = JubanReport::create([
+                'year' => $year,
+                'quarter' => $quarter,
+                'version' => 1,
+                'period_from' => $periodFrom,
+                'period_until' => $periodUntil,
+                'status' => JubanReportStatus::AGUARDANDO_TESOURARIA,
+                'snapshot' => $snapshot,
+                'closed_by' => $closedBy->id,
+                'closed_at' => now(),
+                'reopened_by' => null,
+                'reopened_at' => null,
+                'reopen_reason' => null,
+            ]);
+        }
 
         // 5. Gera o PDF do relatório
         $pdf = Pdf::loadView('pdf.juban.quarterly-report', ['report' => $report])
             ->setPaper('a4', 'portrait');
 
         $pdfBytes = $pdf->output();
-        $pdfPath = "juban-reports/{$year}-q{$quarter}-relatorio.pdf";
+        $pdfPath = $report->version > 1
+            ? "juban-reports/{$year}-q{$quarter}-v{$report->version}-relatorio.pdf"
+            : "juban-reports/{$year}-q{$quarter}-relatorio.pdf";
 
         Storage::disk('local')->put($pdfPath, $pdfBytes);
         $pdfSha256 = hash('sha256', $pdfBytes);
@@ -152,8 +173,11 @@ class QuarterlyClosingService
             throw new QuarterlyClosingException('Apenas o Super Administrador pode reabrir um trimestre fechado.');
         }
 
-        if ($report->status === JubanReportStatus::ASSINADO) {
-            throw new QuarterlyClosingException('Relatórios já assinados por ambas as partes não podem ser reabertos.');
+        if (! in_array($report->status, [
+            JubanReportStatus::AGUARDANDO_TESOURARIA,
+            JubanReportStatus::AGUARDANDO_PRESIDENCIA,
+        ], true)) {
+            throw new QuarterlyClosingException('A reabertura só é permitida antes da assinatura da presidência. Relatórios já assinados por ambas as partes não podem ser reabertos.');
         }
 
         if ($report->pdf_path && Storage::disk('local')->exists($report->pdf_path)) {
@@ -165,6 +189,46 @@ class QuarterlyClosingService
             'pdf_path' => null,
             'pdf_sha256' => null,
             'reopened_by' => $reopenedBy->id,
+            'reopened_at' => now(),
+            'reopen_reason' => $reason,
+        ]);
+    }
+
+    /**
+     * Abre uma nova versão do trimestre após reprovação pelo Conselho Fiscal.
+     */
+    public function createNewVersionAfterRejection(JubanReport $rejectedReport, User $creator, string $reason): JubanReport
+    {
+        if (! $creator->role->isSuperAdmin()) {
+            throw new QuarterlyClosingException('Apenas o Super Administrador pode abrir uma nova versão após reprovação.');
+        }
+
+        if ($rejectedReport->status !== JubanReportStatus::REPROVADO) {
+            throw new QuarterlyClosingException('Uma nova versão só pode ser criada após a reprovação do relatório.');
+        }
+
+        $hasHigherVersion = JubanReport::where('year', $rejectedReport->year)
+            ->where('quarter', $rejectedReport->quarter)
+            ->where('version', '>', $rejectedReport->version)
+            ->exists();
+
+        if ($hasHigherVersion) {
+            throw new QuarterlyClosingException('Já existe uma nova versão criada para este trimestre.');
+        }
+
+        $newVersionNumber = $rejectedReport->version + 1;
+
+        return JubanReport::create([
+            'year' => $rejectedReport->year,
+            'quarter' => $rejectedReport->quarter,
+            'version' => $newVersionNumber,
+            'period_from' => $rejectedReport->period_from,
+            'period_until' => $rejectedReport->period_until,
+            'status' => JubanReportStatus::REABERTO,
+            'snapshot' => [],
+            'pdf_path' => null,
+            'pdf_sha256' => null,
+            'reopened_by' => $creator->id,
             'reopened_at' => now(),
             'reopen_reason' => $reason,
         ]);
