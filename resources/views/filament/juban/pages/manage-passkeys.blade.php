@@ -31,7 +31,7 @@
                     </h3>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">
                         Cadastre a biometria do seu dispositivo (Windows Hello, Touch ID, Face ID ou chave física de segurança).
-                        As passkeys são utilizadas pelo tesoureiro e pelo presidente da JUBAN para assinar de forma não-repudiável os relatórios financeiros trimestrais.
+                        As passkeys são utilizadas pela tesouraria, presidência e membros do Conselho Fiscal para assinar de forma não-repudiável os relatórios financeiros e pareceres oficiais.
                     </p>
                 </div>
 

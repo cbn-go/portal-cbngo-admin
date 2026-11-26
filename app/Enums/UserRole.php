@@ -14,6 +14,7 @@ enum UserRole: string implements HasColor, HasLabel
     case MINISTER = 'minister';
     case JUBAN_TREASURER = 'juban_treasurer';
     case JUBAN_PRESIDENT = 'juban_president';
+    case FISCAL_COUNCIL = 'fiscal_council';
 
     public function getLabel(): string
     {
@@ -25,6 +26,7 @@ enum UserRole: string implements HasColor, HasLabel
             self::MINISTER => 'Ministro Ormiban',
             self::JUBAN_TREASURER => 'Tesouraria JUBAN',
             self::JUBAN_PRESIDENT => 'Presidência JUBAN',
+            self::FISCAL_COUNCIL => 'Conselho Fiscal',
         };
     }
 
@@ -38,6 +40,7 @@ enum UserRole: string implements HasColor, HasLabel
             self::MINISTER => 'primary',
             self::JUBAN_TREASURER => 'info',
             self::JUBAN_PRESIDENT => 'primary',
+            self::FISCAL_COUNCIL => 'warning',
         };
     }
 
@@ -74,6 +77,16 @@ enum UserRole: string implements HasColor, HasLabel
     public function isJubanPresident(): bool
     {
         return $this === self::JUBAN_PRESIDENT;
+    }
+
+    public function isFiscalCouncil(): bool
+    {
+        return $this === self::FISCAL_COUNCIL;
+    }
+
+    public function hasFiscalCouncilPanelAccess(): bool
+    {
+        return in_array($this, [self::SUPER_ADMIN, self::FISCAL_COUNCIL], true);
     }
 
     public function canManageJubanTreasury(): bool
