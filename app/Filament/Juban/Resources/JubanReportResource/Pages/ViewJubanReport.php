@@ -6,7 +6,9 @@ use App\Enums\JubanReportStatus;
 use App\Enums\JubanSigningRole;
 use App\Filament\Juban\Resources\JubanReportResource;
 use App\Models\JubanReport;
+use App\Models\JubanReportInquiry;
 use App\Models\User;
+use App\Services\FiscalCouncil\JubanReportInquiryService;
 use App\Services\Juban\Exceptions\JubanSigningException;
 use App\Services\Juban\Exceptions\QuarterlyClosingException;
 use App\Services\Juban\JubanReportSigningService;
@@ -16,6 +18,7 @@ use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -73,6 +76,44 @@ class ViewJubanReport extends ViewRecord
         }
 
         return null;
+    }
+
+    public function answerInquiryAction(): Action
+    {
+        return Action::make('answerInquiry')
+            ->label('Responder')
+            ->icon('heroicon-m-chat-bubble-left-ellipsis')
+            ->color('success')
+            ->form([
+                Forms\Components\Textarea::make('answer')
+                    ->label('Resposta ao Conselho Fiscal')
+                    ->required()
+                    ->rows(4)
+                    ->placeholder('Escreva os esclarecimentos detalhados...'),
+                Forms\Components\FileUpload::make('attachment')
+                    ->label('Comprovante Anexo (opcional)')
+                    ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(10240)
+                    ->disk('local')
+                    ->directory('juban-inquiries/temp'),
+            ])
+            ->action(function (array $arguments, array $data): void {
+                $inquiryId = $arguments['inquiry'];
+                $inquiry = JubanReportInquiry::findOrFail($inquiryId);
+
+                Gate::authorize('answer', $inquiry);
+
+                $service = app(JubanReportInquiryService::class);
+                $service->answerInquiry($inquiry, auth()->user(), $data['answer'], $data['attachment'] ?? null);
+
+                Notification::make()
+                    ->title('Resposta enviada com sucesso!')
+                    ->body('O Conselho Fiscal foi notificado.')
+                    ->success()
+                    ->send();
+
+                $this->record->refresh();
+            });
     }
 
     protected function getHeaderActions(): array
