@@ -47,6 +47,10 @@ class FiscalCouncilReviewService
             throw new FiscalCouncilReviewException("Status de resultado de parecer inválido: {$resultStatus->value}. Deve ser aprovado, aprovado_com_ressalvas ou reprovado.");
         }
 
+        if ($report->hasOpenInquiries()) {
+            throw new FiscalCouncilReviewException('Não é possível concluir a revisão com pedidos de esclarecimento em aberto.');
+        }
+
         $report->update([
             'status' => $resultStatus,
         ]);

@@ -240,5 +240,91 @@
                 </div>
             </div>
         @endif
+
+        {{-- Seção de Pedidos de Esclarecimento do Conselho Fiscal --}}
+        @if ($record->inquiries()->exists())
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                        <x-heroicon-m-chat-bubble-left-right class="w-5 h-5 text-warning-600 dark:text-warning-400" />
+                        Pedidos de Esclarecimento do Conselho Fiscal
+                    </h3>
+                    <x-filament::badge color="{{ $record->hasOpenInquiries() ? 'warning' : 'gray' }}">
+                        {{ $record->inquiries->count() }} pedido(s)
+                    </x-filament::badge>
+                </div>
+
+                <div class="space-y-4">
+                    @foreach ($record->inquiries()->with(['askedBy', 'answeredBy', 'closedWithoutAnswerBy', 'transaction'])->latest()->get() as $inquiry)
+                        <div class="border border-gray-200 dark:border-gray-800 rounded-lg p-4 bg-gray-50/50 dark:bg-gray-800/40 space-y-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-gray-200 dark:border-gray-700 pb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-gray-900 dark:text-white text-sm">
+                                        {{ $inquiry->askedBy->name }}
+                                    </span>
+                                    <x-filament::badge :color="$inquiry->status->getColor()">
+                                        {{ $inquiry->status->getLabel() }}
+                                    </x-filament::badge>
+                                </div>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">
+                                    Perguntado em {{ $inquiry->asked_at->format('d/m/Y \à\s H:i') }}
+                                </span>
+                            </div>
+
+                            @if ($inquiry->transaction)
+                                <div class="p-2.5 rounded bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs text-gray-700 dark:text-gray-300">
+                                    <strong>Lançamento associado:</strong> {{ $inquiry->transaction->occurred_on->format('d/m/Y') }} &bull; {{ $inquiry->transaction->description }} &bull; R$ {{ number_format((float) $inquiry->transaction->amount, 2, ',', '.') }}
+                                </div>
+                            @endif
+
+                            <div class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap">
+                                <strong>Pergunta:</strong> {{ $inquiry->question }}
+                            </div>
+
+                            @if ($inquiry->isAnswered())
+                                <div class="mt-3 p-3 rounded-lg bg-success-50 dark:bg-success-950/40 border border-success-200 dark:border-success-800 text-sm space-y-2">
+                                    <div class="flex items-center justify-between text-xs text-success-800 dark:text-success-300 border-b border-success-200 dark:border-success-800 pb-1">
+                                        <span><strong>Respondido por:</strong> {{ $inquiry->answeredBy?->name }}</span>
+                                        <span>{{ $inquiry->answered_at?->format('d/m/Y \à\s H:i') }}</span>
+                                    </div>
+                                    <div class="text-gray-900 dark:text-white whitespace-pre-wrap">
+                                        {{ $inquiry->answer }}
+                                    </div>
+                                    @if ($inquiry->attachment_path)
+                                        <div class="pt-2">
+                                            <x-filament::button
+                                                tag="a"
+                                                href="{{ route('juban.inquiries.download-attachment', $inquiry) }}"
+                                                target="_blank"
+                                                color="gray"
+                                                size="xs"
+                                                icon="heroicon-m-paper-clip"
+                                            >
+                                                Baixar Comprovante Anexo
+                                            </x-filament::button>
+                                        </div>
+                                    @endif
+                                </div>
+                            @elseif ($inquiry->isClosedWithoutAnswer())
+                                <div class="mt-3 p-3 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-xs space-y-1">
+                                    <div class="font-semibold text-gray-700 dark:text-gray-300">
+                                        Encerrado sem resposta por {{ $inquiry->closedWithoutAnswerBy?->name }} em {{ $inquiry->closed_without_answer_at?->format('d/m/Y \à\s H:i') }}
+                                    </div>
+                                    @if ($inquiry->closed_without_answer_reason)
+                                        <div class="text-gray-600 dark:text-gray-400 italic">
+                                            Justificativa: {{ $inquiry->closed_without_answer_reason }}
+                                        </div>
+                                    @endif
+                                </div>
+                            @elseif ($inquiry->isOpen() && auth()->user()?->can('answer', $inquiry))
+                                <div class="pt-2 flex justify-end">
+                                    {{ ($this->answerInquiryAction)(['inquiry' => $inquiry->id]) }}
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
 </x-filament-panels::page>

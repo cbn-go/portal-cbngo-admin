@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\JubanReportInquiryStatus;
 use App\Enums\JubanReportStatus;
 use App\Enums\JubanSigningRole;
 use Carbon\Carbon;
@@ -118,6 +119,28 @@ class JubanReport extends Model
     {
         return $this->hasOne(JubanReportSignature::class, 'report_id')
             ->where('role', JubanSigningRole::PRESIDENCIA);
+    }
+
+    /**
+     * @return HasMany<JubanReportInquiry, $this>
+     */
+    public function inquiries(): HasMany
+    {
+        return $this->hasMany(JubanReportInquiry::class, 'report_id');
+    }
+
+    /**
+     * @return HasMany<JubanReportInquiry, $this>
+     */
+    public function openInquiries(): HasMany
+    {
+        return $this->hasMany(JubanReportInquiry::class, 'report_id')
+            ->where('status', JubanReportInquiryStatus::ABERTO);
+    }
+
+    public function hasOpenInquiries(): bool
+    {
+        return $this->openInquiries()->exists();
     }
 
     /**
