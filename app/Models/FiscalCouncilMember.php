@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 
@@ -82,6 +83,14 @@ class FiscalCouncilMember extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return HasMany<JubanReportOpinionMember, $this>
+     */
+    public function opinionMembers(): HasMany
+    {
+        return $this->hasMany(JubanReportOpinionMember::class, 'member_id');
     }
 
     public function isTermActive(?CarbonInterface $date = null): bool

@@ -144,6 +144,22 @@ class JubanReport extends Model
     }
 
     /**
+     * @return HasMany<JubanReportOpinion, $this>
+     */
+    public function opinions(): HasMany
+    {
+        return $this->hasMany(JubanReportOpinion::class, 'report_id');
+    }
+
+    /**
+     * @return HasOne<JubanReportOpinion, $this>
+     */
+    public function opinion(): HasOne
+    {
+        return $this->hasOne(JubanReportOpinion::class, 'report_id')->latestOfMany();
+    }
+
+    /**
      * Verifica se uma data de lançamento contábil recai dentro de um trimestre com relatório fechado/ativo.
      */
     public static function isDateLocked(string|CarbonInterface|null $date): bool

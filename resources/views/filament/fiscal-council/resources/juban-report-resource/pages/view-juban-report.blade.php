@@ -156,6 +156,140 @@
             @endif
         </div>
 
+        {{-- Seção do Parecer Fiscal --}}
+        @php
+            $opinion = $record->opinion;
+        @endphp
+        <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                    <x-heroicon-m-scale class="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    Parecer do Conselho Fiscal
+                </h3>
+                @if ($opinion)
+                    <div class="flex items-center gap-2">
+                        <x-filament::badge :color="$opinion->status->getColor()">
+                            {{ $opinion->status->getLabel() }}
+                        </x-filament::badge>
+                        <x-filament::badge :color="$opinion->result->getColor()">
+                            {{ $opinion->result->getLabel() }}
+                        </x-filament::badge>
+                    </div>
+                @endif
+            </div>
+
+            @if ($opinion)
+                <div class="space-y-4">
+                    {{-- Metadados da Reunião e Emissão --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50/70 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700 text-sm">
+                        <div>
+                            <span class="text-xs font-semibold text-gray-500 uppercase block">Reunião</span>
+                            <div class="text-gray-900 dark:text-white font-medium mt-0.5">
+                                {{ $opinion->meeting_date->format('d/m/Y') }} &bull; {{ $opinion->meeting_place }}
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-gray-500 uppercase block">Localidade & Emissão</span>
+                            <div class="text-gray-900 dark:text-white font-medium mt-0.5">
+                                {{ $opinion->city }}, {{ $opinion->issued_on->format('d/m/Y') }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Conselheiros da Reunião --}}
+                    <div>
+                        <span class="text-xs font-semibold text-gray-500 uppercase block mb-2">Composição da Reunião</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            @foreach ($opinion->members as $m)
+                                @php
+                                    $member = $m->member;
+                                    $user = $member?->user;
+                                    $title = trim((string) $member?->title);
+                                    $nameWithTitle = $title !== '' ? "{$title} {$user?->name}" : ($user?->name ?? '');
+                                @endphp
+                                <div class="p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                    <span class="text-xs font-bold text-primary-600 dark:text-primary-400 uppercase block">
+                                        {{ $m->role->getLabel() }}
+                                    </span>
+                                    <div class="font-medium text-gray-900 dark:text-white text-sm mt-0.5">
+                                        {{ $nameWithTitle }}
+                                    </div>
+                                    @if ($member?->qualification)
+                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                            {{ $member->qualification }}
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- Texto Oficial do Parecer --}}
+                    <div class="p-4 bg-gray-50/50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-lg space-y-3">
+                        <span class="text-xs font-semibold text-gray-500 uppercase block">Redação Oficial (Modelo Canônico)</span>
+                        <div class="text-sm text-gray-800 dark:text-gray-200 leading-relaxed text-justify">
+                            {{ app(\App\Services\FiscalCouncil\FiscalCouncilOpinionTextService::class)->buildMainText($opinion) }}
+                        </div>
+
+                        @if ($opinion->reservations)
+                            <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                                <span class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase block mb-1">
+                                    {{ $opinion->result === \App\Enums\JubanReportOpinionResult::REPROVADO ? 'Motivos:' : 'Ressalvas:' }}
+                                </span>
+                                <p class="text-sm text-gray-800 dark:text-gray-200">
+                                    {{ $opinion->reservations }}
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Hash do Parecer quando emitido --}}
+                    @if ($opinion->pdf_sha256)
+                        <div class="bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+                            <span class="text-xs font-semibold text-gray-500 uppercase block">Hash Criptográfico do Parecer (SHA-256)</span>
+                            <code class="text-xs text-gray-800 dark:text-gray-200 font-mono break-all select-all block mt-0.5">{{ $opinion->pdf_sha256 }}</code>
+                        </div>
+                    @endif
+
+                    {{-- Comentários no Rascunho --}}
+                    @if ($opinion->comments()->exists())
+                        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
+                            <span class="text-xs font-semibold text-gray-500 uppercase block">Comentários e Anotações no Rascunho</span>
+                            @foreach ($opinion->comments()->with('user')->latest()->get() as $c)
+                                <div class="text-xs p-2.5 rounded bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                                    <div class="flex justify-between font-bold text-gray-700 dark:text-gray-300">
+                                        <span>{{ $c->user->name }}</span>
+                                        <span class="font-normal text-gray-500">{{ $c->created_at->format('d/m/Y H:i') }}</span>
+                                    </div>
+                                    <p class="mt-1 text-gray-800 dark:text-gray-200">{{ $c->comment }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    {{-- Histórico de Pareceres Cancelados --}}
+                    @if ($opinion->histories()->exists())
+                        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
+                            <span class="text-xs font-semibold text-gray-500 uppercase block">Histórico de Emissões Canceladas</span>
+                            @foreach ($opinion->histories()->with('cancelledBy')->latest()->get() as $h)
+                                <div class="text-xs p-2.5 rounded bg-red-50/50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-gray-700 dark:text-gray-300">
+                                    <div><strong>Cancelado por:</strong> {{ $h->cancelledBy->name }} em {{ $h->cancelled_at->format('d/m/Y H:i') }}</div>
+                                    @if ($h->reason)
+                                        <div><strong>Motivo:</strong> {{ $h->reason }}</div>
+                                    @endif
+                                    <div class="font-mono text-gray-500 mt-1">Hash anterior: {{ $h->pdf_sha256 }}</div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            @else
+                <div class="text-center py-6 text-sm text-gray-500 dark:text-gray-400">
+                    O parecer fiscal deste relatório ainda não foi redigido. Clique em <strong>Redigir Parecer Fiscal</strong> no topo da página para iniciar o rascunho.
+                </div>
+            @endif
+        </div>
+
         {{-- Assinaturas Eletrônicas da Diretoria da JUBAN --}}
         @if ($record->signatures()->exists())
             <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
