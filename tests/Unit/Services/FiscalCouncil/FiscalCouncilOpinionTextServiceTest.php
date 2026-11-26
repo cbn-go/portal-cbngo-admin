@@ -47,12 +47,14 @@ class FiscalCouncilOpinionTextServiceTest extends TestCase
         $user1 = User::factory()->create(['name' => 'Abílio Rocha Neto']);
         $member1 = FiscalCouncilMember::factory()->create([
             'user_id' => $user1->id,
+            'seat' => FiscalCouncilSeat::RELATOR,
             'title' => 'Pr.',
         ]);
 
         $user2 = User::factory()->create(['name' => 'Marcos Fialho Silva']);
         $member2 = FiscalCouncilMember::factory()->create([
             'user_id' => $user2->id,
+            'seat' => FiscalCouncilSeat::VOGAL_1,
             'title' => null,
         ]);
 

@@ -32,8 +32,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('juban_report_signatures', function (Blueprint $table) {
-            $table->dropIndex(['opinion_id', 'role']);
             $table->dropForeign(['opinion_id']);
+        });
+
+        Schema::table('juban_report_signatures', function (Blueprint $table) {
+            $table->dropIndex(['opinion_id', 'role']);
             $table->dropColumn(['opinion_id', 'divergent_vote']);
         });
     }
