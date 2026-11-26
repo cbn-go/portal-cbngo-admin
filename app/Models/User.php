@@ -129,6 +129,22 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     }
 
     /**
+     * @return HasMany<FiscalCouncilMember, $this>
+     */
+    public function fiscalCouncilMembers(): HasMany
+    {
+        return $this->hasMany(FiscalCouncilMember::class);
+    }
+
+    /**
+     * @return HasOne<FiscalCouncilMember, $this>
+     */
+    public function fiscalCouncilMember(): HasOne
+    {
+        return $this->hasOne(FiscalCouncilMember::class)->where('active', true);
+    }
+
+    /**
      * @return HasOne<Minister, $this>
      */
     public function minister(): HasOne
@@ -180,6 +196,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             'portal' => $this->role->hasPortalPanelAccess(),
             'ormiban' => $this->role->hasOrmibanPanelAccess(),
             'juban' => $this->role->hasJubanPanelAccess(),
+            'conselho-fiscal' => $this->role->hasFiscalCouncilPanelAccess(),
             default => false,
         };
     }
@@ -190,6 +207,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             $this->role->hasAdminPanelAccess() => 'admin',
             $this->role->isMinister() => 'ormiban',
             $this->role->isJubanTreasurer() || $this->role->isJubanPresident() => 'juban',
+            $this->role->isFiscalCouncil() => 'conselho-fiscal',
             default => 'portal',
         };
 
@@ -216,6 +234,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             $this->role->hasAdminPanelAccess() => 'admin',
             $this->role->isMinister() => 'ormiban',
             $this->role->isJubanTreasurer() || $this->role->isJubanPresident() => 'juban',
+            $this->role->isFiscalCouncil() => 'conselho-fiscal',
             $this->role->hasPortalPanelAccess() => 'portal',
             default => null,
         };

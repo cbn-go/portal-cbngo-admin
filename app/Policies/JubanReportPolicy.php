@@ -19,11 +19,15 @@ class JubanReportPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->role->canViewJubanTreasury();
+        return $user->role->canViewJubanTreasury() || $user->role->isFiscalCouncil();
     }
 
     public function view(User $user, JubanReport $report): bool
     {
+        if ($user->role->isFiscalCouncil()) {
+            return $report->status->isVisibleToFiscalCouncil();
+        }
+
         return $user->role->canViewJubanTreasury();
     }
 
@@ -46,6 +50,7 @@ class JubanReportPolicy
     {
         return $user->role->isSuperAdmin()
             && $report->status !== JubanReportStatus::ASSINADO
+            && $report->status !== JubanReportStatus::AGUARDANDO_CONSELHO_FISCAL
             && $report->status !== JubanReportStatus::REABERTO;
     }
 }
